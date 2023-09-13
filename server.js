@@ -1,16 +1,18 @@
 const http = require('http');
 const fs = require('fs');
 const express = require('express');
+const socket = require('socket.io');
 
 const app = express();
 const server = app.listen(3000);
 
 app.use(express.static('public'));
-console.log('server started/starting')
+console.log('server started/starting');
 
+let io = socket(server);
 
-const port = 3000;
-const host = '127.0.0.1'
+io.sockets.on('connection', newConnection);
 
-
-
+function newConnection(socket){
+    console.log('er is iemand geconnect' + socket.id)
+}
