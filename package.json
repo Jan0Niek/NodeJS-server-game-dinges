@@ -2,7 +2,7 @@
   "name": "nodejs-server-game-dinges",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Jan0Niek/NodeJS-server-game-dinges/issues"
   },
-  "homepage": "https://github.com/Jan0Niek/NodeJS-server-game-dinges#readme"
+  "homepage": "https://github.com/Jan0Niek/NodeJS-server-game-dinges#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
