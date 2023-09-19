@@ -14,6 +14,9 @@ console.log('server started/starting');
 
 io.sockets.on('connection', (socket) => {
     console.log('Client connected: ' + socket.id);
-    socket.on('mouse', (data) => socket.broadcast.emit('mouse', data));
+
+    // socket.on('mouse', (data) => socket.broadcast.emit('mouse', data));
+    socket.on('typed', (data) => socket.broadcast.emit('typed', data));
+
     socket.on('disconnect', () => console.log('Client has disconnected'));
    });
