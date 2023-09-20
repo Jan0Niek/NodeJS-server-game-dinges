@@ -1,27 +1,25 @@
 let socket;
 
+let gravity = 12;
+let blocks;
+let player;
+let block1;
+
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(800, 700);
   socket = io();  //dit fixt het met dat alleen localhost werkt, nu kan ook 127.0.0.1
   
-  socket.on('typed', data => {
-    text(data.key, data.x, data.y);
-  });
+  block1 = new Block(20, 360, 220, 40, [0, 255, 0]);
+  player = new Player(50, 120, 12);
+
 }
 
 function draw() {
-  line(10, 20, 180, 160);
-  
-  // color()
-}
+  background(255);
+  player.move(key, 2);
+  player.collision(block1);
+  player.draw();
 
+  block1.draw();
 
-function keyPressed(){
-  const data = {
-    x: mouseX, 
-    y: mouseY,
-    key: key
-  }
-  socket.emit('typed', data);
-  text(data.key, data.x, data.y);
 }
