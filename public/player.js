@@ -7,7 +7,6 @@ class Player{
         this.accel = accel;
         this.velX=0.1;
         this.velY=0.1;
-        this.jumped = false;
     }
     platformGravityJumpHeightSideMovementSpeedFriction(
         gravity,
@@ -25,18 +24,9 @@ class Player{
               this.y +=(Math.abs(Number(this.velY)) /Number(this.velY)) *-1;
             }
             this.velY=0;
-            //hoger als je ingedrukt houdt, al tap/tik je ga ja laag
+            //moet nog fixen dat je meer spring als je langer ingedrukt houdt
             if (keyIsDown(32) || keyIsDown(87)){
-              this.jumped = true;
-              this.airFrames = 0;
-            }
-          }
-          if (this.jumped && this.airFrames < 6){
-            if (keyIsDown(32) || keyIsDown(87)){
-              this.velY -= jumpHeight;
-              this.airFrames++;
-            }else{
-              this.jumped = false;
+              this.velY = -jumpHeight;
             }
           }
         });
