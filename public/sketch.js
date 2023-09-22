@@ -18,8 +18,10 @@ function setup() {
 
 function draw() {
   background(255);
+  text(frameRate(), 20, 20);
   
-  player.platformGravityJumpHeightSideMovementSpeedFriction(1, 22, 2, 0.8, blocks);
+  //moet alle movement nog *deltaTime doen argh
+  player.platformGravityJumpHeightSideMovementSpeedFriction(1, 3.6, 2, 0.8, blocks);
   player.draw();
   blocks.forEach(block => {
     block.draw();
