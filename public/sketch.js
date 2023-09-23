@@ -18,8 +18,9 @@ function setup() {
 
 function draw() {
   background(255);
-  
-  player.platformGravityJumpHeightSideMovementSpeedFriction(1, 22, 2, 0.8, blocks);
+  text(frameRate(), 20, 20);
+  //movement done
+  player.platformGravityJumpHeightSideMovementSpeedFriction(1, 18, 2, 0.8, blocks);
   player.draw();
   blocks.forEach(block => {
     block.draw();

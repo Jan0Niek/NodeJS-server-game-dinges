@@ -16,7 +16,8 @@ class Player{
         blocks
       ) {
         this.velY += Number(gravity);
-        this.y += Number(this.velY);
+        //delen door dertien zodat je niet insane snel gaat, ineffiecient, maar effectief
+        this.y += Number(this.velY) * deltaTime / 13;
         //loop door alle blocks zodat je er niet doorheen valt 
         blocks.forEach(block => {
           if (this.x + this.width >= block.x && this.x <= block.x + block.width && this.y + this.height >= block.y && this.y <= block.y + block.height) {
@@ -25,6 +26,7 @@ class Player{
             }
             this.velY=0;
             //moet nog fixen dat je meer spring als je langer ingedrukt houdt
+            //nee laat maar fuck dat ik ben te lui
             if (keyIsDown(32) || keyIsDown(87)){
               this.velY = -jumpHeight;
             }
@@ -37,7 +39,7 @@ class Player{
               Number(keyIsDown(68)) *
                 Number(sideMovement))) *
           Number(friction);
-        this.x += this.velX;
+        this.x += this.velX * deltaTime / 13;
         blocks.forEach(block => {
           if (this.x + this.width >= block.x && this.x <= block.x + block.width && this.y + this.height >= block.y && this.y <= block.y + block.height) {
             while ((this.x + this.width >= block.x && this.x <= block.x + block.width && this.y + this.height >= block.y && this.y <= block.y + block.height)) {
