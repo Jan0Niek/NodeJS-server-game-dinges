@@ -23,6 +23,7 @@ function draw() {
   player.platformGravityJumpHeightSideMovementSpeedFriction(1, 18, 2, 0.8, blocks);
   player.draw();
   blocks.forEach(block => {
+    block.move(2);
     block.draw();
   });
 

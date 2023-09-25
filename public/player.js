@@ -46,6 +46,7 @@ class Player{
               this.x +=(Math.abs(Number(this.velX)) /Number(this.velX)) *-1;
             }
             this.velX=0;
+            this.velX += block.velX; // wil velocity op een block relatief maken maar werkt nog niet
           }
         });
       }
