@@ -15,25 +15,23 @@ class Player{
         friction,
         blocks
       ) {
-        blocks.forEach(block => {
-          if (this.x + this.width >= block.x && this.x <= block.x + block.width && this.y + this.height >= block.y && this.y <= block.y + block.height) {
-            
-          }
-        });
         this.velY += Number(gravity) * deltaTime / 13;
         //delen door dertien zodat je niet insane snel gaat, ineffiecient, maar effectief
         this.y += Number(this.velY) * deltaTime / 13;
         //loop door alle blocks zodat je er niet doorheen valt 
         blocks.forEach(block => {
           if (this.x + this.width >= block.x && this.x <= block.x + block.width && this.y + this.height >= block.y && this.y <= block.y + block.height) {
+            this.y += block.velY * deltaTime / 13;
             while ((this.x + this.width >= block.x && this.x <= block.x + block.width && this.y + this.height >= block.y && this.y <= block.y + block.height)) {
               this.y +=(Math.abs(Number(this.velY)) /Number(this.velY)) *-1;
             }
             this.x += block.velX * deltaTime / 13;
             
+            
             //moet nog fixen dat je meer spring als je langer ingedrukt houdt
             //nee laat maar fuck dat ik ben te lui
-            if (this.velY >= 0){
+            if (this.velY >= 1){
+              console.log(this.velY);
               this.velY=0;
               if (keyIsDown(32) || keyIsDown(87)){
                 this.velY = -jumpHeight;
