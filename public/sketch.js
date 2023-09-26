@@ -1,43 +1,25 @@
 let socket;
 
+let gravity = 12;
+let blocks=[];
+let player;
+let block1;
+
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(windowWidth, windowHeight);
   socket = io();  //dit fixt het met dat alleen localhost werkt, nu kan ook 127.0.0.1
   
-  socket.on('typed', data => {
-    text(data.key, data.x, data.y);
-  });
+  block1 = new Block(20, 500, 220, 40, [0, 255, 0]);
+  block2 = new Block(200, 400, 40, 200, [20, 200, 20]);
+  block3 = new Block(70, 100, 444, 30, [255, 20, 30]);
+  blocks.push(block1, block2, block3);
+  player = new Player(50, 120, 2);
+
+  frameRate(60);
 }
 
 function draw() {
-<<<<<<< Updated upstream
   line(10, 20, 180, 160);
-=======
-  background(255);
-  text(frameRate(), 20, 20);
-  blocks.forEach(block => {
-    velX = block.move(2);
-    block.draw();
-  });
-  //movement done
-  player.platformGravityJumpHeightSideMovementSpeedFriction(0.9, 24, 2, 0.8, blocks, velX);
-  player.draw();
-
-  fill(186, 41, 11)
-  ellipse(200, 260 , 170, 140);
-  fill(186, 41, 11)
-  ellipse(200, 200, 85, 110)
-  fill(15, 35, 135)
-  ellipse(250, 340, 40, 80)
-  fill(15, 35, 135)
-  ellipse(150, 340, 40, 80)
-  fill(255,255,255)
-  rect(172, 205, 60, 20, 20)
-  rect(205, 180, 20, 20, 10)
-  rect(175, 180, 20, 20, 10)
-
-  fill(186, 41, 11)
->>>>>>> Stashed changes
   
   // color()
 }
