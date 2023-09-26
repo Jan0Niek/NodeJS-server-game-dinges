@@ -13,9 +13,15 @@ class Player{
         jumpHeight,
         sideMovement,
         friction,
-        blocks
+        blocks, 
+        velXb
       ) {
-        this.velY += Number(gravity);
+        blocks.forEach(block => {
+          if (this.x + this.width >= block.x && this.x <= block.x + block.width && this.y + this.height >= block.y && this.y <= block.y + block.height) {
+            
+          }
+        });
+        this.velY += Number(gravity) * deltaTime / 13;
         //delen door dertien zodat je niet insane snel gaat, ineffiecient, maar effectief
         this.y += Number(this.velY) * deltaTime / 13;
         //loop door alle blocks zodat je er niet doorheen valt 
@@ -24,6 +30,8 @@ class Player{
             while ((this.x + this.width >= block.x && this.x <= block.x + block.width && this.y + this.height >= block.y && this.y <= block.y + block.height)) {
               this.y +=(Math.abs(Number(this.velY)) /Number(this.velY)) *-1;
             }
+              console.log(velXb);
+              this.x += velXb * deltaTime / 13;
             this.velY=0;
             //moet nog fixen dat je meer spring als je langer ingedrukt houdt
             //nee laat maar fuck dat ik ben te lui
@@ -32,21 +40,13 @@ class Player{
             }
           }
         });
-        this.velX =
-          (Number(this.velX) +
-            (Number(keyIsDown(65)) *
-              (Number(sideMovement) * -1) +
-              Number(keyIsDown(68)) *
-                Number(sideMovement))) *
-          Number(friction);
+        this.velX =(Number(this.velX) +(Number(keyIsDown(65)) *(Number(sideMovement) * -1) +Number(keyIsDown(68)) *Number(sideMovement))) *Number(friction);
         this.x += this.velX * deltaTime / 13;
         blocks.forEach(block => {
           if (this.x + this.width >= block.x && this.x <= block.x + block.width && this.y + this.height >= block.y && this.y <= block.y + block.height) {
             while ((this.x + this.width >= block.x && this.x <= block.x + block.width && this.y + this.height >= block.y && this.y <= block.y + block.height)) {
               this.x +=(Math.abs(Number(this.velX)) /Number(this.velX)) *-1;
             }
-            this.velX=0;
-            this.velX += block.velX; // wil velocity op een block relatief maken maar werkt nog niet
           }
         });
       }

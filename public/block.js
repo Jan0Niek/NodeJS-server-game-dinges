@@ -16,6 +16,7 @@ class Block{
         this.velY =(Number(this.velY) + (Number(keyIsDown(38)) * (Number(sideMovement) * -1) + Number(keyIsDown(40)) * Number(sideMovement)));
         this.x += this.velX * deltaTime / 13;
         this.y += this.velY * deltaTime / 13;
+        return this.velX;
     }
     draw(){
         fill(this.col);
