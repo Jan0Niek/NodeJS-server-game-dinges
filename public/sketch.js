@@ -4,7 +4,6 @@ let gravity = 12;
 let blocks=[];
 let player;
 let block1;
-let velX=0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -12,7 +11,8 @@ function setup() {
   
   block1 = new Block(20, 500, 220, 40, [0, 255, 0]);
   block2 = new Block(200, 400, 40, 200, [20, 200, 20]);
-  blocks.push(block1, block2);
+  block3 = new Block(70, 100, 444, 30, [255, 20, 30]);
+  blocks.push(block1, block2, block3);
   player = new Player(50, 120, 2);
 
   frameRate(60);
@@ -22,11 +22,11 @@ function draw() {
   background(255);
   text(frameRate(), 20, 20);
   blocks.forEach(block => {
-    velX = block.move(2);
+    block.move(2);
     block.draw();
   });
   //movement done
-  player.platformGravityJumpHeightSideMovementSpeedFriction(0.9, 24, 2, 0.8, blocks, velX);
+  player.platformGravityJumpHeightSideMovementSpeedFriction(0.9, 24, 2, 0.8, blocks);
   player.draw();
   
 }

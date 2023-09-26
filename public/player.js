@@ -13,8 +13,7 @@ class Player{
         jumpHeight,
         sideMovement,
         friction,
-        blocks, 
-        velXb
+        blocks
       ) {
         blocks.forEach(block => {
           if (this.x + this.width >= block.x && this.x <= block.x + block.width && this.y + this.height >= block.y && this.y <= block.y + block.height) {
@@ -30,13 +29,15 @@ class Player{
             while ((this.x + this.width >= block.x && this.x <= block.x + block.width && this.y + this.height >= block.y && this.y <= block.y + block.height)) {
               this.y +=(Math.abs(Number(this.velY)) /Number(this.velY)) *-1;
             }
-              console.log(velXb);
-              this.x += velXb * deltaTime / 13;
-            this.velY=0;
+            this.x += block.velX * deltaTime / 13;
+            
             //moet nog fixen dat je meer spring als je langer ingedrukt houdt
             //nee laat maar fuck dat ik ben te lui
-            if (keyIsDown(32) || keyIsDown(87)){
-              this.velY = -jumpHeight;
+            if (this.velY >= 0){
+              this.velY=0;
+              if (keyIsDown(32) || keyIsDown(87)){
+                this.velY = -jumpHeight;
+              }
             }
           }
         });
