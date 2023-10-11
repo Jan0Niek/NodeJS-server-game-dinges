@@ -22,9 +22,7 @@ io.sockets.on('connection', (socket) => {
         socket.broadcast.emit("username", socket.id, username);
     });
 
-    socket.on("position", (x, y) => {
-        socket.broadcast.emit("position", x, y);
-    });
+    socket.on("position", (data) => socket.broadcast.emit("position", data, socket.data.username));
 
     socket.on('disconnect', () => console.log('Client has disconnected'));
    });
