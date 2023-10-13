@@ -31,8 +31,11 @@ function setup() {
   });
   socket.emit("giveSockets");
   socket.on("giveSockets", (players) => {
+    console.log("Others in the lobby: ");
+    //server uuid-name pair to player Object with uuid and username
     for(let playeruuid in players){
       otherPlayers[playeruuid] = new OtherPlayer(playeruuid, players[playeruuid]);
+      console.log(players[playeruuid]);
     }
   })
 
