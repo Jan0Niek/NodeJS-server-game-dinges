@@ -17,12 +17,21 @@ let rooms = [];
 io.sockets.on('connection', (socket) => {
     console.log('Client connected: ' + socket.id);
 
-    socket.on("username", (username) => {
+    socket.on("join", (username) => {
         socket.data.username = username;
-        socket.broadcast.emit("username", socket.id, username);
+        socket.broadcast.emit("join", socket.id, username);
     });
 
     socket.on("position", (data) => socket.broadcast.emit("position", data, socket.data.username));
 
-    socket.on('disconnect', () => console.log('Client has disconnected'));
+    // socket.on("disconnecting", (reason) => {
+    //     for (const room of socket.rooms) {
+    //       if (room !== socket.id) {
+    //         socket.to(room).emit("user has left", socket.id);
+    //       }
+    //     }
+    //   });
+    socket.on("disconnect", (reason) => {
+        socket.broadcast.emit("disconnected", socket.id, socket.data.username);
+    });
    });

@@ -4,30 +4,46 @@ let gravity = 12;
 let blocks=[];
 let player;
 let block1;
-let username;
+let chosenUsername;
+let otherPlayers = {};
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   socket = io();  //dit fixt het met dat alleen localhost werkt, nu kan ook 127.0.0.1
-  username = prompt("Type your username", "xX_GAMER_Xx");
-  socket.emit("username", username);
+  chosenUsername = prompt("Type your username", "xX_GAMER_Xx");
+  socket.emit("join", chosenUsername);
+
+  console.log(new OtherPlayer("hoi", "naampje"));
+  
+
+  console.log("my id: " + socket.id);
+  socket.on("join" , (id, username) => {
+    let otherPlayer = new OtherPlayer(id, username);
+    console.log(otherPlayer);
+    otherPlayers[id] = otherPlayer;
+    console.log(otherPlayers);
+  });
   socket.on("position", (data, username1) => {
-    background(255);
-    // console.log("pos ontvangen")
-    circle(data.x, data.y, 20)
-    text(username1, data.x, data.y-10)
+    otherPlayers[data.id].x = data.x;
+    otherPlayers[data.id].y = data.y;
   });
 }
 
 function draw() {
-  // background(255);
+  background(255);
+  for(let playerID in otherPlayers){
+    let otherPlayer = otherPlayers[playerID];
+
+    circle(otherPlayer.x, otherPlayer.y, 20);
+    text(otherPlayer.username, otherPlayer.x, otherPlayer.y-10);
+  }
 
   const data = {
     id: socket.id,
     x: mouseX, 
     y: mouseY
   }
-  text(username, data.x, data.y-10);
+  text(chosenUsername, data.x, data.y-10);
   circle(data.x, data.y, 20);
   socket.emit("position", data);
 }
