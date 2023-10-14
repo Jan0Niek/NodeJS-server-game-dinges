@@ -23,7 +23,7 @@ class OtherPlayer {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  socket = io({transports: ['websocket'], upgrade: false});;  //dit fixt het met dat alleen localhost werkt, nu kan ook 127.0.0.1
+  socket = io({transports: ['websocket'], upgrade: false});
   chosenUsername = prompt("Type your username", "xX_GAMER_Xx");
   socket.emit("join", chosenUsername);  
   socket.on("uuid", (uuid) => {
