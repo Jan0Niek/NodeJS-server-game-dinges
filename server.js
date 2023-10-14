@@ -18,14 +18,14 @@ let rooms = [];
 io.sockets.on('connection', (socket) => {
     console.log('Client connected: ' + socket.id);
 
-    socket.on("join", (username) => {
+    socket.on("join", async (username) => {
+        //gives a player their uuid and updates others of the new join
         socket.data.uuid = randomUUID();
         socket.data.username = username;
         socket.broadcast.emit("join", socket.data.uuid, username);
         socket.emit("uuid", socket.data.uuid);
-    });
 
-    socket.on("giveSockets", async () => {
+        //gets all other players in server/lobby, and send them to the new join
         const sockets = await io.fetchSockets();
         let players = {};
         const theiruuid = socket.data.uuid;
@@ -35,9 +35,9 @@ io.sockets.on('connection', (socket) => {
             }
         }
         socket.emit("giveSockets", players);
-    })
+    });
 
-    socket.on("position", (data) => socket.broadcast.emit("position", data, socket.data.username));
+    socket.on("position", (data) => socket.broadcast.emit("position", data));
 
     // socket.on("disconnecting", (reason) => {
     //     for (const room of socket.rooms) {

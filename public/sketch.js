@@ -16,41 +16,40 @@ class OtherPlayer {
       this.y=0;
 
   }
-  update(){
-      
-  }
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(windowWidth, windowHeight); //moet dit nog aanpassen, dit is niet perfect zeg maar
   socket = io({transports: ['websocket'], upgrade: false});
   chosenUsername = prompt("Type your username", "xX_GAMER_Xx");
   socket.emit("join", chosenUsername);  
   socket.on("uuid", (uuid) => {
     myuuid = uuid;
+    console.log("my id: " + socket.id);
+    console.log("my uuid: " + myuuid); 
   });
-  socket.emit("giveSockets");
   socket.on("giveSockets", (players) => {
     console.log("Others in the lobby: ");
-    //server uuid-name pair to player Object with uuid and username
+    //gets others in the lobby/server from the server's uuid+name pair, converts that to player Object with uuid and username
     for(let playeruuid in players){
       otherPlayers[playeruuid] = new OtherPlayer(playeruuid, players[playeruuid]);
       console.log(players[playeruuid]);
     }
   })
 
-  console.log("my id: " + socket.id);
   socket.on("join" , (uuid, username) => {
+    //adds a new join to player list
     console.log(username + " has joined. ");
     let otherPlayer = new OtherPlayer(uuid, username);
     otherPlayers[uuid] = otherPlayer;
-    console.log(otherPlayers);
   });
   socket.on("disconnected", (uuid, username) => {
+    //removes people who have left from the client
     console.log(username + " left.")
     delete otherPlayers[uuid];
   })
-  socket.on("position", (data, username1) => {
+  socket.on("position", (data) => {
+    //sets playerObject's x and y if changed
     otherPlayers[data.uuid].x = data.x;
     otherPlayers[data.uuid].y = data.y;
   });
@@ -59,11 +58,14 @@ function setup() {
 function draw() {
   background(255);
   for(let playeruuid in otherPlayers){
+    //draws other players at their positions
     let otherPlayer = otherPlayers[playeruuid];
     circle(otherPlayer.x, otherPlayer.y, 20);
     text(otherPlayer.username, otherPlayer.x, otherPlayer.y-10);
   }
 
+  
+  //draws own player and sends position to others
   const data = {
     uuid: myuuid,
     x: mouseX, 
