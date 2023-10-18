@@ -18,7 +18,23 @@ class Block{
         this.y += this.velY * deltaTime / 13;
     }
     draw(){
-        fill(this.col);
+        fill(this.chosen ? 'red' : this.col);
         rect(this.x, this.y, this.width, this.height);
+    }
+
+
+    toggleColor() {
+        this.col = this.col.map(value => (value + 128) % 256);
+    }
+
+    mousePressed(){
+        if (
+            mouseX >= this.x &&
+            mouseX <= this.x + this.width &&
+            mouseY >= this.y &&
+            mouseY <= this.y + this.height
+        ) {
+            this.chosen = !this.chosen;
+        }
     }
 }

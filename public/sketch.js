@@ -28,5 +28,19 @@ function draw() {
   //movement done
   player.platformGravityJumpHeightSideMovementSpeedFriction(0.9, 24, 2, 0.8, blocks);
   player.draw();
-  
+
 }
+
+function mousePressed() {
+  blocks.forEach(block => {
+    if (
+      mouseX >= block.x &&
+      mouseX <= block.x + block.width &&
+      mouseY >= block.y &&
+      mouseY <= block.y + block.height
+    ) {
+      block.toggleColor();
+    }
+  });
+}
+
