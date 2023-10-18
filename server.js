@@ -17,7 +17,8 @@ let rooms = [];
 
 io.sockets.on('connection', (socket) => {
     console.log('Client connected: ' + socket.id);
-
+    //some more of the code could be in 'connection' instead of 'join', but it's here now, and it's here to stay
+    
     socket.on("join", async (username) => {
         //gives a player their uuid and updates others of the new join
         socket.data.uuid = randomUUID();
