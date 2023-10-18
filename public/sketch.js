@@ -56,6 +56,11 @@ function setup() {
 }
 
 function draw() {
+  
+}
+
+
+function gameScene(){
   background(255);
   for(let playeruuid in otherPlayers){
     //draws other players at their positions
@@ -74,4 +79,8 @@ function draw() {
   text(chosenUsername, data.x, data.y-10);
   circle(data.x, data.y, 20);
   socket.emit("position", data);
+}
+
+function lobbiesScene(){
+  quickGameButton = new Button(oasijd)
 }
