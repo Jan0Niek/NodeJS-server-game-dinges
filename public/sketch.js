@@ -31,16 +31,23 @@ function draw() {
 
 }
 
+function deselectAllBlocks() {
+  blocks.forEach(block => {
+    block.chosen = false;
+  });
+}
+
 function mousePressed() {
+  deselectAllBlocks(); 
   blocks.forEach(block => {
     if (
       mouseX >= block.x &&
       mouseX <= block.x + block.width &&
       mouseY >= block.y &&
       mouseY <= block.y + block.height
-    ) {
-      block.toggleColor();
-    }
+      ){
+        block.toggleColor();
+      }
   });
 }
 
