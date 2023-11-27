@@ -8,20 +8,15 @@ let chosenUsername;
 let otherPlayers = {};
 let myuuid;
 
-class OtherPlayer {
-  constructor(uuid, username){
-      this.uuid = uuid;
-      this.username = username;
-      this.x=0;
-      this.y=0;
-
-  }
-}
-
 function setup() {
   createCanvas(windowWidth, windowHeight); //moet dit nog aanpassen, dit is niet perfect zeg maar
-  socket = io({transports: ['websocket'], upgrade: false});
-  chosenUsername = prompt("Type your username", "xX_GAMER_Xx");
+  textStyle(BOLD);
+  strokeWeight(1);
+  // socket = io({transports: ['websocket'], upgrade: false});
+  // chosenUsername = prompt("Type your username", "xX_GAMER_Xx");
+
+  button1 = new Button(60, 100, 120, 45, "Knopje 1", [255, 0, 0], 20,[120, 120, 255], [100, 255, 100]);
+  
   socket.emit("join", chosenUsername);  
   socket.on("uuid", (uuid) => {
     myuuid = uuid;
@@ -53,10 +48,11 @@ function setup() {
     otherPlayers[data.uuid].x = data.x;
     otherPlayers[data.uuid].y = data.y;
   });
+
 }
 
 function draw() {
-  
+  button1.draw(mouseX, mouseY);
 }
 
 

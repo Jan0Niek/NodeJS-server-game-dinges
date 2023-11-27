@@ -10,10 +10,12 @@ const io = require('socket.io')(server);
 
 app.set('port', '3000');
 
-app.use(express.static('public'));
+app.use(express.static('./public'));
 console.log('server started/starting');
 
+
 let rooms = [];
+let players = [];
 
 io.sockets.on('connection', (socket) => {
     console.log('Client connected: ' + socket.id);
