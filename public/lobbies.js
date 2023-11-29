@@ -4,8 +4,8 @@ socket.on("uuid", (uuid) => {
     window.sessionStorage.setItem("uuid", uuid);
 });
 
-socket.on("rooms", (rooms) => {
-    //ja en doe de rooms dan in de html-pagina
+socket.on("room", (roomName, players) => {
+    //voeg een div toe met roomname en join knop, on:hover moet het de daarinzittende players laten zien   !! !! !! !!
 });
 
 function makeRed(elementId){
@@ -16,7 +16,7 @@ function makeNotRed(elementId){
     document.getElementById(elementId).classList.remove("red");
 }
 
-function flickerElementRed(elementId, flickerTime, stopTime){
+function flickerElementRedById(elementId, flickerTime, stopTime){
     let intevalVar = setInterval(() => {
         setTimeout(function () {
             makeRed(elementId);
@@ -35,18 +35,25 @@ document.getElementById("nameConfirm").addEventListener("click", function(){
     document.getElementById("username").style.color = "black";
     let username = document.getElementById("username").value;
 
-    if (username.length == 0) { flickerElementRed("username", 400, 3200); return; }
+    if (username.length == 0) { flickerElementRedById("username", 400, 3200); return; }
 
     window.sessionStorage.setItem("username", username);
-    socket.emit("join", username);
+    socket.emit("username", username);
 });
 
 document.getElementById("createRoom").addEventListener("click", function(){
+    let roomName = document.getElementById("roomName").value;
+    let haveToBreak = false;
+    
     if (document.getElementById("username").value.length === 0){
-        flickerElementRed("username", 400, 3200);
+        flickerElementRedById("username", 400, 3200);
+        haveToBreak = true;
+    } if (roomName.length === 0){
+        flickerElementRedById("roomName", 400, 3200);
+        haveToBreak = true;
+    } if (haveToBreak) {
         return;
     }
-    
-    let roomName = document.getElementById("roomName").value;
-    
+
+    socket.emit("newRoom", roomName); //zoiets ofzo? idk
 });

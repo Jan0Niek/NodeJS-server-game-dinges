@@ -12,9 +12,12 @@ body {
     background: rgb(67, 64, 64);
 }
 
+.red {
+    color: red;
+}
+
 .red::placeholder {
   color: red;
-
 }
 
 input {

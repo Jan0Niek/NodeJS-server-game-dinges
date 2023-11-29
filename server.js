@@ -19,28 +19,51 @@ let players = [];
 
 io.sockets.on('connection', (socket) => {
     console.log('Client connected: ' + socket.id);
-    //some more of the code could be in 'connection' instead of 'join', but it's here now, and it's here to stay
     
-    socket.on("join", async (username) => {
-        //gives a player their uuid and updates others of the new join
+    socket.on("username", (username) => {
         socket.data.uuid = randomUUID();
         socket.data.username = username;
-        socket.broadcast.emit("join", socket.data.uuid, username);
         socket.emit("uuid", socket.data.uuid);
 
-        //gets all other players in server/lobby, and send them to the new join
-        const sockets = await io.fetchSockets();
-        let players = {};
-        const theiruuid = socket.data.uuid;
-        for (const socket of sockets){
-            if(socket.data.uuid != theiruuid){
-                players[socket.data.uuid] = socket.data.username;
+        rooms.forEach(async room => {
+            const sockets = await io.in(room).fetchSockets();
+            let players = {};
+            const theiruuid = socket.data.uuid;
+            for (const socket of sockets){
+                if(socket.data.uuid != theiruuid){
+                    players[socket.data.uuid] = socket.data.username;
+                }
             }
-        }
-        socket.emit("giveSockets", players);
+            socket.emit("room", room, players);
+        });
     });
 
-    socket.on("position", (data) => socket.broadcast.emit("position", data));
+    socket.on("newRoom", (roomName) => {
+        rooms.push(roomName);
+        socket.join(roomName);
+        console.log(rooms);
+    })
+    
+    // socket.on("join", async (username) => {
+    //     //gives a player their uuid and updates others of the new join
+    //     socket.data.uuid = randomUUID();
+    //     socket.data.username = username;
+    //     socket.broadcast.emit("join", socket.data.uuid, username);
+    //     socket.emit("uuid", socket.data.uuid);
+
+    //     //gets all other players in server/lobby, and send them to the new join
+    //     const sockets = await io.fetchSockets();
+    //     let players = {};
+    //     const theiruuid = socket.data.uuid;
+    //     for (const socket of sockets){
+    //         if(socket.data.uuid != theiruuid){
+    //             players[socket.data.uuid] = socket.data.username;
+    //         }
+    //     }
+    //     socket.emit("giveSockets", players);
+    // });
+
+    socket.on("position", (data) => socket.broadcast.emit("position", data)); //moet binnen de room dat doen, niet naar elke andere room ook dit sturen
 
     // socket.on("disconnecting", (reason) => {
     //     for (const room of socket.rooms) {
@@ -50,7 +73,7 @@ io.sockets.on('connection', (socket) => {
     //     }
     //   });
     socket.on("disconnect", (reason) => {
-        console.log("client disconnected: " + socket.id + " " + socket.data.username);
+        console.log("client disconnected: " + socket.id + " " + socket.data.username); //rooms!!!!
         socket.broadcast.emit("disconnected", socket.data.uuid, socket.data.username);
     });
    });
