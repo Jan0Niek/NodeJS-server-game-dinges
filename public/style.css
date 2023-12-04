@@ -37,8 +37,7 @@ input {
 }
 
 #lobbies {
-    left: 50%;
-  transform: translate(-360%, 0%);
+    left: 46%;
   float: left;
 
   margin: auto;
