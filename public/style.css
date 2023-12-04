@@ -4,6 +4,7 @@
     margin: 0px;
     padding: 0px;
     color: white;
+    float: block;
 }
 
 body {
@@ -26,9 +27,35 @@ input {
   width:40vw;
   box-sizing: border-box;  
 }
-#roomsList {
+.roomsList {
+  float: none;
   position: absolute;
   margin: auto;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  padding: 10px;
+}
+
+#lobbies {
+    left: 50%;
+  transform: translate(-360%, 0%);
+  float: left;
+
+  margin: auto;
+    margin-top: 60px;
+    border-style: double;
+    border-radius: 5px;
+   border-color: red;
+}
+
+.lobby {
+    border-style: double;
+    border-radius: 5px;
+   border-color: red;
+
+  position: relative;
+  margin: auto;
+  margin-top: 20%;
   left: 50%;
   transform: translate(-50%, 0%);
   padding: 10px;

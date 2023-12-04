@@ -6,6 +6,20 @@ socket.on("uuid", (uuid) => {
 
 socket.on("room", (roomName, players) => {
     //voeg een div toe met roomname en join knop, on:hover moet het de daarinzittende players laten zien   !! !! !! !!
+    let lobbylist = document.getElementById("lobbies");
+    let lobby = document.createElement("div");
+    lobby.classList.add("lobby");
+    lobby.innerHTML = "hihihihaw";
+
+});
+
+document.getElementById("body").addEventListener("click", () => {
+    let lobbylist = document.getElementById("lobbies");
+    let lobby = document.createElement("div");
+    lobby.classList.add("lobby");
+    lobby.innerHTML = "hihihihaw";
+
+    lobbylist.appendChild(lobby);
 });
 
 function makeRed(elementId){
@@ -27,8 +41,7 @@ function flickerElementRedById(elementId, flickerTime, stopTime){
     }, flickerTime);
     setTimeout(() => {
         clearInterval(intevalVar);
-    }, stopTime);
-    
+    }, stopTime); 
 }
 
 document.getElementById("nameConfirm").addEventListener("click", function(){
