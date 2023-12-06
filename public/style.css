@@ -27,10 +27,12 @@ input {
   width:40vw;
   box-sizing: border-box;  
 }
-.roomsList {
-    /* HIER, HIER ZIT EM DE TYFUS ERROR!!! */
+
+
+#inputFields {
+    /* HIER, HIER ZIT EM DE  ERROR!!! */
     margin: auto; 
-  position: absolute;
+  position:absolute;
   margin: auto;
   left: 50%;
   transform: translate(-50%, 0%);
@@ -39,8 +41,6 @@ input {
 
 #lobbies {
     left: 46%;
-
-  
   margin: auto;
   margin-bottom: 20px;
     margin-top: 60px;
@@ -55,10 +55,7 @@ input {
    border-color: red;
 
   position: relative;
-  margin: auto;
-  margin-top: 20%;
-  left: 50%;
-  transform: translate(-50%, 0%);
+  margin: 10px;
   padding: 10px;
 }
 
