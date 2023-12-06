@@ -30,20 +30,18 @@ input {
 
 
 #inputFields {
-    /* HIER, HIER ZIT EM DE  ERROR!!! */
+    /* wacky kut-css ik kan het niet goed cry cry */
     margin: auto; 
-  position:absolute;
-  margin: auto;
-  left: 50%;
-  transform: translate(-50%, 0%);
+  position:relative;
+  margin-left: 50vw;
+  transform: translateX(-42.5%);
+  /* nog steeds niet centered maar goed genoeg... */
   padding: 10px;
 }
 
 #lobbies {
     left: 46%;
-  margin: auto;
-  margin-bottom: 20px;
-    margin-top: 60px;
+    margin: 35px;
     border-style: double;
     border-radius: 5px;
    border-color: red;
@@ -55,7 +53,7 @@ input {
    border-color: red;
 
   position: relative;
-  margin: 10px;
+  margin: 15px;
   padding: 10px;
 }
 
