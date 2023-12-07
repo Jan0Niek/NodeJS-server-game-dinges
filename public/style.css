@@ -11,6 +11,13 @@ body {
     font-family: 'JetBrains Mono', monospace;
     font-family: Verdana, Helvetica, sans-serif;
     background: rgb(67, 64, 64);
+
+    /* not supposed to do it this way per se, but i did it anyway! */
+}
+#wrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction:column;
 }
 
 .red {
@@ -24,7 +31,7 @@ body {
 input {
   text-align: center;
   color: rgb(20, 20, 20);
-  width:40vw;
+  width:45vw;
   box-sizing: border-box;  
 }
 
@@ -33,28 +40,35 @@ input {
     /* wacky kut-css ik kan het niet goed cry cry */
     margin: auto; 
   position:relative;
-  margin-left: 50vw;
-  transform: translateX(-42.5%);
-  /* nog steeds niet centered maar goed genoeg... */
+    /* nog steeds niet centered maar goed genoeg... LATER: now the whole body is centered haha */
   padding: 10px;
 }
 
 #lobbies {
-    left: 46%;
+    display:none;
+    align-self: center;
     margin: 35px;
-    border-style: double;
-    border-radius: 5px;
-   border-color: red;
+    background-color: rgb(75, 75, 75);
+    border-radius: 30px 30px 30px 30px;
+    padding: 8px;
+    min-width: 45vw;
+    max-width: 50vw;
 }
 
 .lobby {
-    border-style: double;
+    border-style:dashed;
     border-radius: 5px;
-   border-color: red;
+   border-color: rgb(153, 55, 55);
+   border-radius: 20px 20px 20px 20px;
 
   position: relative;
   margin: 15px;
   padding: 10px;
+}
+.lobbyButton {
+    margin-left: 40px;
+    color: rgb(20, 20, 20);
+    padding: 10px;
 }
 
 header img {
@@ -117,3 +131,7 @@ section:hover {
     border: double 4px white;
 }
 
+/* p {
+    align-self: center;
+    huh haha
+} */

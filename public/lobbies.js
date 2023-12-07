@@ -7,18 +7,39 @@ socket.on("uuid", (uuid) => {
 socket.on("room", (roomName, players) => {
     //voeg een div toe met roomname en join knop, on:hover moet het de daarinzittende players laten zien   !! !! !! !!
     let lobbylist = document.getElementById("lobbies");
+    lobbylist.style.display = "block";
+    
     let lobby = document.createElement("div");
     lobby.classList.add("lobby");
-    lobby.innerHTML = "hihihihaw";
+    lobby.innerHTML = roomName;
+    let joinBtn = document.createElement("button");
+    joinBtn.classList.add("lobbyButton");
+    joinBtn.innerHTML = "Join!";
+
+
+    lobby.append(joinBtn);
+    lobbylist.appendChild(lobby);
 
 });
 
 document.getElementById("body").addEventListener("click", () => {
     let lobbylist = document.getElementById("lobbies");
+    lobbylist.style.display = "block";
+
     let lobby = document.createElement("div");
     lobby.classList.add("lobby");
-    lobby.innerHTML = "hihihihaw";
+    lobby.innerHTML = "lobbyName";
 
+    let joinBtn = document.createElement("button");
+    joinBtn.classList.add("lobbyButton");
+    joinBtn.innerHTML = "Join!";
+
+    let playersBtn = document.createElement("button");
+    playersBtn.classList.add("lobbyButton");
+    playersBtn.innerHTML = "Show players in this lobby";
+
+    lobby.append(joinBtn);
+    lobby.append(playersBtn);
     lobbylist.appendChild(lobby);
 });
 
