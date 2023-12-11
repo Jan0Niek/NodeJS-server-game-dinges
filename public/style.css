@@ -67,13 +67,16 @@ input {
 
 }
 
+.lobbyButtons {
+    display: flex; justify-content: space-around;
+}
+
 .lobby ul {
-    margin: 20px;
-    
+    margin: 12px;
+    /* display: list-item; */
 }
 
 .lobbyButton {
-    margin-left: 20%;
     color: rgb(20, 20, 20);
     padding: 10px;
 }

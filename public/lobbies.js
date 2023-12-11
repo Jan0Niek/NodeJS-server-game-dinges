@@ -37,6 +37,9 @@ document.getElementById("createRoom").addEventListener("click", () => {
     lobby.classList.add("lobby");
     lobby.innerHTML = "lobbyName";
 
+    let buttons = document.createElement("div");
+    buttons.classList.add("lobbyButtons")
+
     let joinBtn = document.createElement("button");
     joinBtn.classList.add("lobbyButton");
     joinBtn.innerHTML = "Join!";
@@ -61,9 +64,10 @@ document.getElementById("createRoom").addEventListener("click", () => {
         }
     });
 
-    
-    lobby.append(joinBtn);
-    lobby.append(playersBtn);
+    //de volgorde hiervan NIET aanpassen ajb
+    buttons.append(joinBtn);
+    buttons.append(playersBtn);
+    lobby.append(buttons)
     lobby.append(playerList)
     lobbylist.appendChild(lobby);
 });
