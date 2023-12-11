@@ -56,6 +56,8 @@ input {
 }
 
 .lobby {
+    display: flex;
+    justify-content:space-evenly;
     border-style:dashed;
     border-radius: 5px;
    border-color: rgb(153, 55, 55);
@@ -68,7 +70,9 @@ input {
 }
 
 .lobbyButtons {
-    display: flex; justify-content: space-around;
+    display: flex; justify-content: space-evenly;
+    margin: 2px;
+    padding: 2px;
 }
 
 .lobby ul {
