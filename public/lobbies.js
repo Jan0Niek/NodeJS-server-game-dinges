@@ -22,7 +22,14 @@ socket.on("room", (roomName, players) => {
 
 });
 
-document.getElementById("body").addEventListener("click", () => {
+function displayNone(element){
+    element.style.display = "none";
+}
+function displayBlock(element){
+    element.style.display = "block";
+}
+
+document.getElementById("createRoom").addEventListener("click", () => {
     let lobbylist = document.getElementById("lobbies");
     lobbylist.style.display = "block";
 
@@ -34,14 +41,33 @@ document.getElementById("body").addEventListener("click", () => {
     joinBtn.classList.add("lobbyButton");
     joinBtn.innerHTML = "Join!";
 
+
+    let playerList = document.createElement("ul");
+    for (let i = 0; i < 3; i++) {
+        let li = document.createElement("li");
+        li.appendChild(document.createTextNode("playerName"));
+        playerList.appendChild(li);  
+    }
+    playerList.style.display = "none";
+
     let playersBtn = document.createElement("button");
     playersBtn.classList.add("lobbyButton");
-    playersBtn.innerHTML = "Show players in this lobby";
+    playersBtn.innerHTML = "Show/hide players in this lobby";
+    playersBtn.addEventListener("click", () => {
+        if (playerList.style.display === "none"){
+            displayBlock(playerList);
+        } else {
+            displayNone(playerList);
+        }
+    });
 
+    
     lobby.append(joinBtn);
     lobby.append(playersBtn);
+    lobby.append(playerList)
     lobbylist.appendChild(lobby);
 });
+
 
 function makeRed(elementId){
     console.log(elementId)

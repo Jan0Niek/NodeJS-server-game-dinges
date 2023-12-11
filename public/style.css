@@ -64,9 +64,16 @@ input {
   position: relative;
   margin: 15px;
   padding: 10px;
+
 }
+
+.lobby ul {
+    margin: 20px;
+    
+}
+
 .lobbyButton {
-    margin-left: 40px;
+    margin-left: 20%;
     color: rgb(20, 20, 20);
     padding: 10px;
 }
