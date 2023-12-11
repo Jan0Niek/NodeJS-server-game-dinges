@@ -4,24 +4,6 @@ socket.on("uuid", (uuid) => {
     window.sessionStorage.setItem("uuid", uuid);
 });
 
-socket.on("room", (roomName, players) => {
-    //voeg een div toe met roomname en join knop, on:hover moet het de daarinzittende players laten zien   !! !! !! !!
-    let lobbylist = document.getElementById("lobbies");
-    lobbylist.style.display = "block";
-    
-    let lobby = document.createElement("div");
-    lobby.classList.add("lobby");
-    lobby.innerHTML = roomName;
-    let joinBtn = document.createElement("button");
-    joinBtn.classList.add("lobbyButton");
-    joinBtn.innerHTML = "Join!";
-
-
-    lobby.append(joinBtn);
-    lobbylist.appendChild(lobby);
-
-});
-
 function displayNone(element){
     element.style.display = "none";
 }
@@ -29,13 +11,16 @@ function displayBlock(element){
     element.style.display = "block";
 }
 
-document.getElementById("createRoom").addEventListener("click", () => {
+socket.on("room", (lobbyName, players) => {
+    //voeg een div toe met roomname en join knop, on:hover moet het de daarinzittende players laten zien   !! !! !! !!
+    console.log("room dinges")
+
     let lobbylist = document.getElementById("lobbies");
     lobbylist.style.display = "block";
 
     let lobby = document.createElement("div");
     lobby.classList.add("lobby");
-    lobby.innerHTML = "lobbyName";
+    lobby.innerHTML = lobbyName;
 
     let buttons = document.createElement("div");
     buttons.classList.add("lobbyButtons")
@@ -46,9 +31,9 @@ document.getElementById("createRoom").addEventListener("click", () => {
 
 
     let playerList = document.createElement("ul");
-    for (let i = 0; i < 3; i++) {
+    for (var uuid of Object.keys(players)){
         let li = document.createElement("li");
-        li.appendChild(document.createTextNode("playerName"));
+        li.appendChild(document.createTextNode(players[uuid]));
         playerList.appendChild(li);  
     }
     playerList.style.display = "none";
@@ -102,7 +87,22 @@ document.getElementById("nameConfirm").addEventListener("click", function(){
     if (username.length == 0) { flickerElementRedById("username", 400, 3200); return; }
 
     window.sessionStorage.setItem("username", username);
+    console.log("username was set to: " + username);
+
+    //bodge-esque fix, should make username and server-listing seperate functions, but not now... zzz...
+    // username event and lobbylist event are intertwined serverside as well, so i messed up...
+    let lobbies = document.getElementById("lobbies");
+    lobbies.remove();
+    let newLobbies = document.createElement("div");
+    newLobbies.classList.add("roomsList");
+    newLobbies.id = "lobbies";
+    newLobbies.style.display = "block";
+    document.getElementById("wrapper").append(newLobbies);
+
     socket.emit("username", username);
+
+    
+
 });
 
 document.getElementById("createRoom").addEventListener("click", function(){
