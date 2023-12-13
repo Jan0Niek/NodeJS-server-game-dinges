@@ -12,12 +12,10 @@ function setup() {
   createCanvas(windowWidth, windowHeight); //moet dit nog aanpassen, dit is niet perfect zeg maar
   textStyle(BOLD);
   strokeWeight(1);
-  // socket = io({transports: ['websocket'], upgrade: false});
+  socket = io({transports: ['websocket'], upgrade: false});
   // chosenUsername = prompt("Type your username", "xX_GAMER_Xx");
-
-  button1 = new Button(60, 100, 120, 45, "Knopje 1", [255, 0, 0], 20,[120, 120, 255], [100, 255, 100]);
   
-  socket.emit("join", chosenUsername);  
+  // socket.emit("join", chosenUsername);  
   socket.on("uuid", (uuid) => {
     myuuid = uuid;
     console.log("my id: " + socket.id);
@@ -52,11 +50,6 @@ function setup() {
 }
 
 function draw() {
-  button1.draw(mouseX, mouseY);
-}
-
-
-function gameScene(){
   background(255);
   for(let playeruuid in otherPlayers){
     //draws other players at their positions
@@ -75,8 +68,4 @@ function gameScene(){
   text(chosenUsername, data.x, data.y-10);
   circle(data.x, data.y, 20);
   socket.emit("position", data);
-}
-
-function lobbiesScene(){
-  quickGameButton = new Button(oasijd)
 }
