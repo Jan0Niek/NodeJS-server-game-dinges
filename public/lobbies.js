@@ -28,6 +28,10 @@ socket.on("room", (lobbyName, players) => {
     let joinBtn = document.createElement("button");
     joinBtn.classList.add("lobbyButton");
     joinBtn.innerHTML = "Join!";
+    joinBtn.addEventListener("click", () => { 
+        // room joining!!! ofzo
+        socket.emit("joinRoom", (lobbyName));
+    })
 
 
     let playerList = document.createElement("ul");

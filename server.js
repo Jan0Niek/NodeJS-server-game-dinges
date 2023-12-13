@@ -42,7 +42,15 @@ io.sockets.on('connection', (socket) => {
         rooms.push(roomName);
         socket.join(roomName);
         console.log(rooms);
-    })
+    });
+    socket.on("joinRoom", async (roomName) => {
+        socket.join(roomName); //why doesn't it work!!!!!
+        console.log(rooms);
+        const sockets = await io.in(roomName).fetchSockets();
+        for (const socket of sockets){
+            console.log(socket.data.username);
+        }
+    });
     
     // socket.on("join", async (username) => {
     //     //gives a player their uuid and updates others of the new join
