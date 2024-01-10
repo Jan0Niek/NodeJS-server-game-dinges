@@ -18,7 +18,6 @@ let rooms = [];
 let players = [];
 
 io.sockets.on('connection', (socket) => {
-    console.log('Client connected: ' + socket.id);
     
     socket.on("username", (username) => {
         socket.data.uuid = randomUUID();
@@ -80,8 +79,7 @@ io.sockets.on('connection', (socket) => {
     //       }
     //     }
     //   });
-    socket.on("disconnect", (reason) => {
-        console.log("client disconnected: " + socket.id + " " + socket.data.username); //rooms!!!!
+    socket.on("disconnect", (reason) => { //rooms!!!!
         socket.broadcast.emit("disconnected", socket.data.uuid, socket.data.username);
     });
    });
