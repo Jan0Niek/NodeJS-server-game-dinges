@@ -19,18 +19,16 @@ let players = [];
 
 io.sockets.on('connection', (socket) => {
     
-    socket.on("username", (username) => {
-        socket.data.uuid = randomUUID();
-        socket.data.username = username;
-        socket.emit("uuid", socket.data.uuid);
+    socket.on("username", (username) => { socket.data.username = username; });
 
+    socket.on("getLobbies", () => {
         rooms.forEach(async room => {
             const sockets = await io.in(room).fetchSockets();
             let players = {};
-            const theiruuid = socket.data.uuid;
+            const theirid = socket.id;
             for (const socket of sockets){
-                if(socket.data.uuid != theiruuid){
-                    players[socket.data.uuid] = socket.data.username;
+                if(socket.id != theirid){
+                    players[socket.id] = socket.data.username;
                 }
             }
             socket.emit("room", room, players);
@@ -51,24 +49,22 @@ io.sockets.on('connection', (socket) => {
         }
     });
     
-    // socket.on("join", async (username) => {
-    //     //gives a player their uuid and updates others of the new join
-    //     socket.data.uuid = randomUUID();
-    //     socket.data.username = username;
-    //     socket.broadcast.emit("join", socket.data.uuid, username);
-    //     socket.emit("uuid", socket.data.uuid);
+    socket.on("join", async (username) => {
+        //gives a player their uuid and updates others of the new join
+        socket.data.username = username;
+        socket.broadcast.emit("join", socket.id, username);
 
-    //     //gets all other players in server/lobby, and send them to the new join
-    //     const sockets = await io.fetchSockets();
-    //     let players = {};
-    //     const theiruuid = socket.data.uuid;
-    //     for (const socket of sockets){
-    //         if(socket.data.uuid != theiruuid){
-    //             players[socket.data.uuid] = socket.data.username;
-    //         }
-    //     }
-    //     socket.emit("giveSockets", players);
-    // });
+        //gets all other players in server/lobby, and send them to the new join
+        const sockets = await io.fetchSockets();
+        let usernameandid = {};
+        const theirid = socket.id;
+        for (const socket of sockets){
+            if(socket.id != theirid){
+                plausernameandidyers[socket.id] = socket.data.username;
+            }
+        }
+        socket.emit("giveSockets", usernameandid);
+    });
 
     socket.on("position", (data) => socket.broadcast.emit("position", data)); //moet binnen de room dat doen, niet naar elke andere room ook dit sturen
 
@@ -80,6 +76,6 @@ io.sockets.on('connection', (socket) => {
     //     }
     //   });
     socket.on("disconnect", (reason) => { //rooms!!!!
-        socket.broadcast.emit("disconnected", socket.data.uuid, socket.data.username);
+        socket.broadcast.emit("disconnected", socket.id, socket.data.username);
     });
    });

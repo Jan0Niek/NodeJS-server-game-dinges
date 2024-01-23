@@ -4,56 +4,47 @@ let gravity = 12;
 let blocks=[];
 let player;
 let block1;
-let chosenUsername;
+let chosenUsername = window.sessionStorage.getItem("username");
 let otherPlayers = {};
-let myuuid;
 
 function setup() {
   createCanvas(windowWidth, windowHeight); //moet dit nog aanpassen, dit is niet perfect zeg maar
   textStyle(BOLD);
   strokeWeight(1);
   socket = io({transports: ['websocket'], upgrade: false});
-  // chosenUsername = prompt("Type your username", "xX_GAMER_Xx");
-  
-  // socket.emit("join", chosenUsername);  
-  socket.on("uuid", (uuid) => {
-    myuuid = uuid;
-    console.log("my id: " + socket.id);
-    console.log("my uuid: " + myuuid); 
-  });
+
   socket.on("giveSockets", (players) => {
     console.log("Others in the lobby: ");
-    //gets others in the lobby/server from the server's uuid+name pair, converts that to player Object with uuid and username
-    for(let playeruuid in players){
-      otherPlayers[playeruuid] = new OtherPlayer(playeruuid, players[playeruuid]);
-      console.log(players[playeruuid]);
+    //gets others in the lobby/server from the server's id+name pair, converts that to player Object with id and username
+    for(let idnusername in players){
+      
     }
   })
 
-  socket.on("join" , (uuid, username) => {
+  socket.on("join" , (id, username) => {
     //adds a new join to player list
     console.log(username + " has joined. ");
-    let otherPlayer = new OtherPlayer(uuid, username);
-    otherPlayers[uuid] = otherPlayer;
+    let otherPlayer = new OtherPlayer(id, username);
+    otherPlayers[id] = otherPlayer;
   });
-  socket.on("disconnected", (uuid, username) => {
+  socket.on("disconnected", (id, username) => {
     //removes people who have left from the client
     console.log(username + " left.")
-    delete otherPlayers[uuid];
+    delete otherPlayers[id];
   })
   socket.on("position", (data) => {
     //sets playerObject's x and y if changed
-    otherPlayers[data.uuid].x = data.x;
-    otherPlayers[data.uuid].y = data.y;
+    otherPlayers[data.id].x = data.x;
+    otherPlayers[data.id].y = data.y;
   });
 
 }
 
 function draw() {
   background(255);
-  for(let playeruuid in otherPlayers){
+  for(let playerid in otherPlayers){
     //draws other players at their positions
-    let otherPlayer = otherPlayers[playeruuid];
+    let otherPlayer = otherPlayers[playerid];
     circle(otherPlayer.x, otherPlayer.y, 20);
     text(otherPlayer.username, otherPlayer.x, otherPlayer.y-10);
   }
@@ -61,7 +52,7 @@ function draw() {
   
   //draws own player and sends position to others
   const data = {
-    uuid: myuuid,
+    id: myid,
     x: mouseX, 
     y: mouseY
   }
