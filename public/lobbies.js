@@ -27,7 +27,7 @@ socket.on("room", (lobbyName, players) => {
     joinBtn.addEventListener("click", () => { 
         // room joining!!! ofzo
         socket.emit("joinRoom", (lobbyName));
-        location.href = "game.html";
+        // location.href = "game.html";
     })
 
 
@@ -120,5 +120,5 @@ document.getElementById("createRoom").addEventListener("click", function(){
     }
 
     socket.emit("newRoom", roomName); //zoiets ofzo? idk
-    location.href = "game.html";
+    // location.href = "game.html";
 });
