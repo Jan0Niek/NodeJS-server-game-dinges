@@ -4,6 +4,10 @@ class Player extends Sprite{
         this.y = y;
         this.width = width
         this.height = height;
-        this.draw()
+        // this.draw();
+        
+    }
+    draw(){
+        new Sprite(this.x, this.y, this.width, this.height);
     }
 }
