@@ -8,7 +8,8 @@ let chosenUsername = window.sessionStorage.getItem("username");
 let otherPlayers = {};
 
 function setup() {
-  createCanvas(windowWidth, windowHeight); //moet dit nog aanpassen, dit is niet perfect zeg maar
+  let canvas = createCanvas(400, 400); //moet dit nog aanpassen, dit is niet perfect zeg maar
+  document.getElementById("wrapper").appendChild(canvas);
   textStyle(BOLD);
   strokeWeight(1);
   socket = io({transports: ['websocket'], upgrade: false});
