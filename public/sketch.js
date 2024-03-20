@@ -1,10 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+
+
 let thing;
-let floor; //typescript?
+let floor;
 let canvas;
-let Player = declarePlayer();
 function setup() {
+    let Player = declarePlayer(Sprite);
     canvas = new Canvas(500, 500);
     world.gravity.y = 9.81;
     thing = new Player(70, 70, 20, 40);

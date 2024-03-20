@@ -1,5 +1,5 @@
 "use strict";
-function declarePlayer() {
+function declarePlayer(Sprite) {
     return class Player extends Sprite {
         constructor(x, y, width, height) {
             super(x, y, width, height);
