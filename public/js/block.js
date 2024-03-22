@@ -1,5 +1,5 @@
-new Q5()
-export default class Block extends Sprite(){
+function declareBlock(){
+return class Block extends Sprite(){
         constructor(x, y, width, height, maxSpeed){
             super(x, y, width, height, 'k');
             this.x = x;
@@ -11,13 +11,14 @@ export default class Block extends Sprite(){
 
         control() {
             if (kb.pressing('arrowUp')){
-                blocks.move(blocks.maxSpeed, 'up', blocks.maxSpeed);
+                this.move(this.maxSpeed, 'up', this.maxSpeed);
             } else if (kb.pressing('arrowLeft')) {
-                blocks.move(blocks.maxSpeed, 'left', blocks.maxSpeed);
+                this.move(this.maxSpeed, 'left', this.maxSpeed);
             } else if (kb.pressing('arrowRight')) {
-                blocks.move(blocks.maxSpeed, 'right', blocks.maxSpeed);
+                this.move(this.maxSpeed, 'right', this.maxSpeed);
             } else if (kb.pressing('arrowDown')) {
-                blocks.move(blocks.maxSpeed, 'down', blocks.maxSpeed);
+                this.move(this.maxSpeed, 'down', this.maxSpeed);
             }
         }
     }
+}

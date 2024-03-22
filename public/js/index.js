@@ -1,7 +1,6 @@
 new Q5();
 
 //maak hier de custom classes aan (van andere bestanden)
-import declareBlock from "./block.js"
 let Block = declareBlock();
 
 //hier de overige set-up and such
