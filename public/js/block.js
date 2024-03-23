@@ -1,5 +1,5 @@
 function declareBlock(){
-return class Block extends Sprite(){
+    return class Block extends Sprite{
         constructor(x, y, width, height, maxSpeed){
             super(x, y, width, height, 'k');
             this.x = x;
@@ -10,15 +10,13 @@ return class Block extends Sprite(){
         }
 
         control() {
-            if (kb.pressing('arrowUp')){
-                this.move(this.maxSpeed, 'up', this.maxSpeed);
-            } else if (kb.pressing('arrowLeft')) {
-                this.move(this.maxSpeed, 'left', this.maxSpeed);
-            } else if (kb.pressing('arrowRight')) {
-                this.move(this.maxSpeed, 'right', this.maxSpeed);
-            } else if (kb.pressing('arrowDown')) {
-                this.move(this.maxSpeed, 'down', this.maxSpeed);
-            }
+            this.vel.set(0, 0);
+            if (kb.pressing('arrowUp'))     this.vel.y -= 1;
+            if (kb.pressing('arrowLeft'))   this.vel.x -= 1;
+            if (kb.pressing('arrowRight'))  this.vel.x += 1;
+            if (kb.pressing('arrowDown'))   this.vel.y += 1;
+            this.vel.normalize();
+            this.vel.set(this.vel.x*this.maxSpeed, this.vel.y*this.maxSpeed)
         }
     }
 }
