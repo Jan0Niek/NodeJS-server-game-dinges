@@ -17,9 +17,9 @@ for (let i = 0; i < 0; i++) {
 }
 
 new Sprite (width/2, height-9, width, 20, 'k')
-let ablock = new Block(10, 10, 100, 40, 3);
+let ablock = new Block(300, 800, 100, 40, 3);
 
-let playertje = new Player(400, 160, 30, 100, 10, 6, 1)
+let playertje = new Player(400, 160, 30, 100, 1, 6, 3, 1)
 // playertje.drag = 2;
 
 //main game loop enz
