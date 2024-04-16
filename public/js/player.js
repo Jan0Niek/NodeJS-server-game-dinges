@@ -1,46 +1,37 @@
 function declarePlayer(){
     return class Player extends Sprite{
-        constructor(x, y, width, height, walkSpeed, runSpeed, jumpStrength){
+        constructor(x, y, width, height){
             super(x, y, width, height, 'd');
             this.x = x;
             this.y = y;
             this.width = width;
             this.height = height;
-            this.walkSpeed = walkSpeed;
-            this.runSpeed = runSpeed;
-            this.jumpStrength = jumpStrength;
-            // this.friction = friction;
+            this.walkSpeed = 12;
+            this.runSpeed = 8;
+            this.jumpStrength = 6;
+            // this.friction = 0.8;
             this.rotationLock = true;
             // this.bounciness = 0;
-            // this.drag = drag;
-            this.p_speed = 0;
-            this.min_p_speed = 60;
-            this.isRunning = false;
+            // this.p_speed = 0;
+            // this.min_p_speed = 60;
+            // this.isRunning = false;
+            // this.xSpeed = 0;
+            // this.ySpeed = 0;
         }
 
         control(){ //movement moet meer als mario, dus met p-speed en air-movement anders dan land en ook skidding 
             // ook moet je op een bewegend platform gewoon vastgeplakt zitten, niet met friction eraf kunnen glijden
             // spatie in mid-air moet zo'n twirl zijn om in de lucht te kunnen draaien, anders moet het lastiger zijn om in de lucht te sturen (this.grounded?)
-            this.isRunning = false;
-            if (kb.pressing('w') || kb.pressing(' ')) this.jump()
-
-            this.p_speed = kb.pressing('shift'); //moet controls configurabel maken eigenlijk
-            if(this.p_speed >= this.min_p_speed) this.isRunning = true;
             
-            if(kb.pressing('a')){
-                if(this.isRunning){
-                    this.x -= this.runSpeed;
-                }else{
-                    this.x -= this.walkSpeed + this.p_speed * 0.05; //magic numbers, geen idee hoe dit variabel zou heten
-                }
+            if (kb.pressing('w') || kb.pressing(' ')) this.jump();
+
+            if(kb.pressing('a') && this.vel.x > -this.walkSpeed){
+                this.applyForceScaled(-this.walkSpeed, 0);
             }
-            if(kb.pressing('d')){
-                if(this.isRunning){
-                    this.x += this.runSpeed;
-                }else{
-                    this.x += this.walkSpeed + this.p_speed * 0.05;
-                }
+            if(kb.pressing('d') && this.vel.x < this.walkSpeed){
+                this.applyForceScaled(this.walkSpeed, 0);
             }
+
         }
         jump(){
             if(this.colliding(allSprites)){

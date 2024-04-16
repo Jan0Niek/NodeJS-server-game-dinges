@@ -7,7 +7,7 @@ let Player = declarePlayer();
 //hier de overige set-up and such
 new Canvas(1900, 900)
 world.gravity.y = 9.81;
-allSprites.drag = 1;
+allSprites.drag = 0.24;
 world.allowSleeping = false;
 
 
@@ -19,7 +19,7 @@ for (let i = 0; i < 0; i++) {
 new Sprite (width/2, height-9, width, 20, 'k')
 let ablock = new Block(300, 800, 100, 40, 3);
 
-let playertje = new Player(400, 160, 30, 100, 1, 6, 6)
+let playertje = new Player(400, 160, 30, 100)
 // playertje.drag = 2;
 
 //main game loop enz
