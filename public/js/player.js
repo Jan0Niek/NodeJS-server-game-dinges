@@ -22,8 +22,11 @@ function declarePlayer(){
         control(){ //movement moet meer als mario, dus met p-speed en air-movement anders dan land en ook skidding 
             // ook moet je op een bewegend platform gewoon vastgeplakt zitten, niet met friction eraf kunnen glijden
             // spatie in mid-air moet zo'n twirl zijn om in de lucht te kunnen draaien, anders moet het lastiger zijn om in de lucht te sturen (this.grounded?)
-            
-            if (kb.pressing('w') || kb.pressing(' ')) this.jump();
+            this.gravityScale = 1;
+            if (kb.pressing('w') || kb.pressing(' ')){
+                this.jump();
+                this.gravityScale = 0.8;
+            }
 
             if(kb.pressing('a') && this.vel.x > -this.walkSpeed){
                 this.applyForceScaled(-this.walkSpeed, 0);

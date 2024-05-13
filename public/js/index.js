@@ -32,8 +32,10 @@ function draw(){
     allSprites.draw()
 
     
-    camera.x = playertje.x
+    let deltaX = playertje.x - camera.x;
+    camera.x += deltaX * 0.1;
     
+    camera.off()
     text(frameRate().toFixed(2), 20, 20)
     //uhuh
     ablock.control()
