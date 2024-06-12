@@ -27,16 +27,22 @@ let playertje = new Player(400, 160, 30, 100)
 function draw(){
     camera.on()
     background(0, 123, 123);
-    image(backgroundje, 0, 0)
-    image(backgroundje, backgroundje.width, 0)
+    
+    //looping background
+    image(backgroundje, backgroundje.width*(-1+floor(camera.x/backgroundje.width)), 0)
+    image(backgroundje, backgroundje.width*floor(camera.x/backgroundje.width), 0)
+    image(backgroundje, backgroundje.width*(1+floor(camera.x/backgroundje.width)), 0)
+    
+    
     allSprites.draw()
-
     
     let deltaX = playertje.x - camera.x;
     camera.x += deltaX * 0.1;
     
     camera.off()
     text(frameRate().toFixed(2), 20, 20)
+    text(    floor(camera.x/backgroundje.width), 100, 100    )
+
     //uhuh
     ablock.control()
     playertje.control()
