@@ -9,7 +9,16 @@ new Canvas(windowWidth-4, windowHeight-4)
 world.gravity.y = 9.81;
 allSprites.drag = 0.24;
 world.allowSleeping = false;
-let backgroundje = loadImage("assets/achtergrond.jpg")
+
+
+if(localStorage.getItem("refresh-rate") == null){
+    localStorage.setItem("refresh-rate", parseInt(prompt("Wat is de refresh-rate van diens monitor (in Hertz)?")));
+}
+frameRate(parseInt(localStorage.getItem("refresh-rate")));
+
+// frameRate(75);
+let backgroundje = loadImage("assets/achtergrond.jpg");
+textSize(15);
 
 
 new Sprite(50, 50, 50, 50).rotationLock = true;
@@ -27,7 +36,6 @@ let playertje = new Player(400, 160, 30, 100)
 function draw(){
     camera.on()
     background(0, 123, 123);
-    
     //looping background
     image(backgroundje, backgroundje.width*(-1+floor(camera.x/backgroundje.width)), 0)
     image(backgroundje, backgroundje.width*floor(camera.x/backgroundje.width), 0)
@@ -41,8 +49,11 @@ function draw(){
     
     camera.off()
     text(frameRate().toFixed(2), 20, 20)
-    text(    floor(camera.x/backgroundje.width), 100, 100    )
-
+    text(    floor(camera.x/backgroundje.width), 100, 15    )
+    text("FPS: "+frameRate().toFixed(2) + "   deltaTime: "+deltaTime.toFixed(2), 0, 35);
+    text('xpos: ' + playertje.x.toFixed(1) + '   ypos: ' + playertje.y.toFixed(1), 0, 70);
+    text('xvel: ' + playertje.vel.x.toFixed(1) + '   yvel: ' + playertje.vel.y.toFixed(1), 0, 105);
+    
     //uhuh
     ablock.control()
     playertje.control()
