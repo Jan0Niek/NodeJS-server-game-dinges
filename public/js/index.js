@@ -9,6 +9,7 @@ new Canvas(windowWidth-4, windowHeight-4)
 world.gravity.y = 9.81;
 allSprites.drag = 0.24;
 world.allowSleeping = false;
+allSprites.text = "ja"
 
 
 if(localStorage.getItem("refresh-rate") == null){
@@ -22,7 +23,7 @@ textSize(15);
 
 
 new Sprite(50, 50, 50, 50).rotationLock = true;
-for (let i = 0; i < 30; i++) {
+for (let i = 0; i < 5; i++) {
     new Sprite(random(20, 900), random(20, 480), random(4, 60), random(4, 60))
 }
 

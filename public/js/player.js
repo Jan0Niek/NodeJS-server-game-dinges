@@ -1,4 +1,10 @@
 function declarePlayer(){
+
+    // let topCollider = new Sprite()
+    // let bottomCollider = new Sprite();
+    // let leftCollider = new Sprite();
+    // let rightCollider = new Sprite();
+
     return class Player extends Sprite{
         constructor(x, y, width, height){
             super(x, y, width, height, 'd');
@@ -19,7 +25,14 @@ function declarePlayer(){
             // this.friction = 0.4;
             this.airborne = false;
             this.grounded = false; //voeg wat van die colliders toe van andere sprites om dit te checken!!!
+            this.colliding(allSprites, this.isColliding)
+            // declareColliders(this)
         }
+
+        isColliding(player, sprite){
+            
+        }
+
 
         control(){ //movement moet meer als mario, dus met p-speed en air-movement anders dan land en ook skidding 
             // ook moet je op een bewegend platform gewoon vastgeplakt zitten, niet met friction eraf kunnen glijden
@@ -27,11 +40,9 @@ function declarePlayer(){
             
             this.gravityScale = 1;
             if (kb.pressing('w') || kb.pressing(' ')){
-                this.jump();
-                this.gravityScale = 0.8;
+                if(this.colliding(allSprites)) this.vel.y = -10;
+                this.gravityScale = 0.7;
             }
-
-            this.friction = abs((1.5)/(this.vel.y*0+1)); //moet zorgen dat na een sprong landen beter is
 
             if(kb.pressing('a') && this.vel.x > -this.walkSpeed){
                 this.applyForceScaled(-this.walkSpeed*2, 0);
@@ -48,10 +59,14 @@ function declarePlayer(){
             // }
 
         }
-        jump(){
-            if(this.colliding(allSprites)){
-                this.vel.y = -10;
-            }
-        }
     }
+
+    // function declareColliders(player){
+    //     topCollider = new Sprite()
+    //     bottomCollider = new Sprite(player.x, player.y+player.halfwidth+7, player.width, 6);
+    //     bottomCollider.debug = true
+    //     bottomCollider.colliding(allSprites)
+    //     leftCollider = new Sprite();
+    //     rightCollider = new Sprite();
+    // }
 }
