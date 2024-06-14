@@ -9,7 +9,6 @@ new Canvas(windowWidth-4, windowHeight-4)
 world.gravity.y = 9.81;
 allSprites.drag = 0.24;
 world.allowSleeping = false;
-allSprites.text = "ja"
 
 
 if(localStorage.getItem("refresh-rate") == null){

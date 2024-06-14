@@ -23,14 +23,16 @@ function declarePlayer(){
             // this.xSpeed = 0;
             // this.ySpeed = 0;
             // this.friction = 0.4;
-            this.airborne = false;
+            this.airborne = false; //deze zijn beide ongebruikt...
             this.grounded = false; //voeg wat van die colliders toe van andere sprites om dit te checken!!!
             this.colliding(allSprites, this.isColliding)
-            // declareColliders(this)
+            this.groundsensor = new Sprite(this.x, this.y+this.halfHeight+6, this.width, 6, 'n');
+            this.groundsensor.visible = false;
+            new GlueJoint(this, this.groundsensor);
         }
 
         isColliding(player, sprite){
-            
+
         }
 
 
@@ -40,7 +42,10 @@ function declarePlayer(){
             
             this.gravityScale = 1;
             if (kb.pressing('w') || kb.pressing(' ')){
-                if(this.colliding(allSprites)) this.vel.y = -10;
+                if(this.groundsensor.overlapping(allSprites)){
+                    this.vel.y = -10;
+                    this.grounded = false;
+                }
                 this.gravityScale = 0.7;
             }
 
