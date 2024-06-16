@@ -16,13 +16,13 @@ function declarePlayer(){
             this.runSpeed = 9;
             this.jumpStrength = 6;
             this.rotationLock = true;
-            // this.bounciness = 0;
+            this.bounciness = 0;
             // this.p_speed = 0;
             // this.min_p_speed = 60;
             // this.isRunning = false;
             // this.xSpeed = 0;
             // this.ySpeed = 0;
-            // this.friction = 0.4;
+            this.friction = 0.0;
             this.airborne = false; //deze zijn beide ongebruikt...
             this.grounded = false; //voeg wat van die colliders toe van andere sprites om dit te checken!!!
             this.colliding(allSprites, this.isColliding)
@@ -58,6 +58,10 @@ function declarePlayer(){
             if(kb.pressing('d') && this.vel.x < this.walkSpeed){
                 this.applyForceScaled(this.walkSpeed*2, 0);
             }
+
+            this.vel.x *= 0.975;
+            if(abs(this.vel.x > -0.01 && this.vel.x < 0.01)) this.vel.x = 0;
+            
 
             // if(kb.pressing('a') && this.vel.x < -this.walkSpeed){
             //     this.friction = 0;
