@@ -3,7 +3,6 @@ new Q5();
 //maak hier de custom classes aan (van andere bestanden)
 let Block = declareBlock();
 let Player = declarePlayer();
-        
 
 //hier de overige set-up and such
 new Canvas(windowWidth-4, windowHeight-4)
@@ -23,8 +22,7 @@ textSize(15);
 
 
 new Sprite(50, 50, 50, 50).rotationLock = true;
-new Sprite(900, 700, 100, 100, 'k')
-for (let i = 0; i < 30; i++) {
+for (let i = 0; i < 5; i++) {
     new Sprite(random(20, 900), random(20, 480), random(4, 60), random(4, 60))
 }
 
@@ -43,12 +41,7 @@ function draw(){
     image(backgroundje, backgroundje.width*floor(camera.x/backgroundje.width), 0)
     image(backgroundje, backgroundje.width*(1+floor(camera.x/backgroundje.width)), 0)
     
-    if (this.isSelected) {
-        strokeWeight(2);
-        stroke(255); // Highlight selected block with white border
-    } else {
-        noStroke();}
-
+    
     allSprites.draw()
     
     let deltaX = playertje.x - camera.x;
@@ -65,8 +58,6 @@ function draw(){
     
     //uhuh
     ablock.control()
-    ablock.handleClick()
-    // ablock.collision()
     playertje.control()
 
 }
