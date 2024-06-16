@@ -46,7 +46,10 @@ function declarePlayer(){
                     this.vel.y = -10;
                     this.grounded = false;
                 }
-                this.gravityScale = 0.7;
+                this.gravityScale -= 0.4;
+            }
+            if (kb.pressing('s')){
+                this.gravityScale += 0.4;
             }
 
             if(kb.pressing('a') && this.vel.x > -this.walkSpeed){
