@@ -1,10 +1,5 @@
 function declarePlayer(){
 
-    // let topCollider = new Sprite()
-    // let bottomCollider = new Sprite();
-    // let leftCollider = new Sprite();
-    // let rightCollider = new Sprite();
-
     return class Player extends Sprite{
         constructor(x, y, width, height){
             super(x, y, width, height, 'd');
@@ -17,11 +12,7 @@ function declarePlayer(){
             this.jumpStrength = 6;
             this.rotationLock = true;
             this.bounciness = 0;
-            // this.p_speed = 0;
-            // this.min_p_speed = 60;
-            // this.isRunning = false;
-            // this.xSpeed = 0;
-            // this.ySpeed = 0;
+
             this.friction = 0.0;
             this.airborne = false; //deze zijn beide ongebruikt...
             this.grounded = false; //voeg wat van die colliders toe van andere sprites om dit te checken!!!
@@ -29,6 +20,7 @@ function declarePlayer(){
             this.groundsensor = new Sprite(this.x, this.y+this.halfHeight+6, this.width, 20, 'n');
             this.groundsensor.visible = false;
             new GlueJoint(this, this.groundsensor).visible=false;
+
         }
 
         isColliding(player, sprite){
@@ -36,9 +28,7 @@ function declarePlayer(){
         }
 
 
-        control(){ //movement moet meer als mario, dus met p-speed en air-movement anders dan land en ook skidding 
-            // ook moet je op een bewegend platform gewoon vastgeplakt zitten, niet met friction eraf kunnen glijden
-            // spatie in mid-air moet zo'n twirl zijn om in de lucht te kunnen draaien, anders moet het lastiger zijn om in de lucht te sturen (this.grounded?)
+        control(){ 
 
             this.gravityScale = 1;
             if (kb.pressing('w') || kb.pressing(' ')){
@@ -49,7 +39,7 @@ function declarePlayer(){
                 this.gravityScale -= 0.4;
             }
             if (kb.pressing('s')){
-                this.gravityScale += 0.4;
+                this.gravityScale += 1.0;
             }
 
             if(kb.pressing('a') && this.vel.x > -this.walkSpeed){
@@ -59,26 +49,9 @@ function declarePlayer(){
                 this.applyForceScaled(this.walkSpeed*2, 0);
             }
 
-            this.vel.x *= 0.975;
+            this.vel.x *= 0.975; // magic!
             if(abs(this.vel.x > -0.01 && this.vel.x < 0.01)) this.vel.x = 0;
-            
-
-            // if(kb.pressing('a') && this.vel.x < -this.walkSpeed){
-            //     this.friction = 0;
-            // }
-            // if(kb.pressing('d') && this.vel.x > this.walkSpeed){
-            //     this.friction = 0;
-            // }
 
         }
     }
-
-    // function declareColliders(player){
-    //     topCollider = new Sprite()
-    //     bottomCollider = new Sprite(player.x, player.y+player.halfwidth+7, player.width, 6);
-    //     bottomCollider.debug = true
-    //     bottomCollider.colliding(allSprites)
-    //     leftCollider = new Sprite();
-    //     rightCollider = new Sprite();
-    // }
 }
