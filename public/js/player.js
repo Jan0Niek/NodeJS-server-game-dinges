@@ -8,7 +8,7 @@ function declarePlayer(){
             this.width = width;
             this.height = height;
             this.walkSpeed = 7.5;
-            this.runSpeed = 9;
+            this.runSpeed = 9; //no
             this.jumpStrength = 6;
             this.rotationLock = true;
             this.bounciness = 0;
