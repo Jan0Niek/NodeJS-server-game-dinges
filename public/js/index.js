@@ -30,7 +30,8 @@ textSize(15);
 
 
 new Sprite (width/2, height-18, 1000000, 20, 'k')
-let ablock = new Block(300, 400, 100, 40, 3);
+
+let blocks = [new Block(300, 400, 100, 40, 3), new Block(600, 400, 100, 40, 3), new Block(600, 700, 100, 40, 3)]
 
 let playertje = new Player(400, 160, 30, 100);
 let enememytje = new Enemy(40, 40, 40, 40);
@@ -65,7 +66,10 @@ function draw(){
     text(playertje.friction, 800, 20)
     
     //uhuh
-    ablock.control()
+    blocks.forEach(block => {
+        block.control()
+        block.toggleSelection(blocks)
+    });
     playertje.control()
 
 }
