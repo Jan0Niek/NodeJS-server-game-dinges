@@ -34,7 +34,7 @@ for (let i = 0; i < 5; i++) {
 new Sprite (width/2, height-18, 1000000, 20, 'k')
 let ablock = new Block(300, 800, 100, 40, 3);
 
-// playertje.drag = 2;
+let playertje = new Player(400, 160, 30, 100);
 let enememytje = new Enemy(40, 40, 40, 40);
 //main game loop enz
 function draw(){
