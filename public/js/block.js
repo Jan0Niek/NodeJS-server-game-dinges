@@ -17,6 +17,7 @@ function declareBlock(){
 
             this.gravityScale = 0;
             this.mass=10;
+            this.tile = 'b';
         }
 
         control() {

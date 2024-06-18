@@ -10,6 +10,11 @@ world.gravity.y = 9.81;
 allSprites.drag = 0.24;
 world.allowSleeping = false;
 
+let tileSize;
+function setTileSize(size){
+    tileSize = size;
+}
+
 
 if(localStorage.getItem("refresh-rate") == null){
     localStorage.setItem("refresh-rate", parseInt(prompt("Wat is de refresh-rate van diens monitor (in Hertz)?")));
@@ -27,9 +32,7 @@ for (let i = 0; i < 5; i++) {
 }
 
 new Sprite (width/2, height-18, 1000000, 20, 'k')
-let ablock = new Block(300, 400, 100, 40, 3);
-
-let playertje = new Player(400, 160, 30, 100);
+let ablock = new Block(300, 800, 100, 40, 3);
 
 // playertje.drag = 2;
 let enememytje = new Enemy(40, 40, 40, 40);
