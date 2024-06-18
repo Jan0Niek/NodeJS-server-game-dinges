@@ -1,5 +1,5 @@
 function declareEnemy(){
-    return class Enemy extends sprite{
+    return class Enemy extends Sprite{
         constructor(x, y ,width, height){  
             super(x, y, height, width, 'k')
             this.x = x;

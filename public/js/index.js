@@ -3,6 +3,7 @@ new Q5();
 //maak hier de custom classes aan (van andere bestanden)
 let Block = declareBlock();
 let Player = declarePlayer();
+let Enemy = declareEnemy();
 
 //hier de overige set-up and such
 new Canvas(1280, 720)
@@ -37,6 +38,9 @@ let enememytje = new Enemy(40, 40, 40, 40);
 function draw(){
     if(mouse.presses()){
         new Sprite(mouse.x, mouse.y, random(20, 120), random(20, 120))
+    }
+    if(mouse.presses('right')){
+        new Enemy(mouse.x, mouse.y, random(20, 120), random	(20, 120))
     }
     camera.on()
     background(0, 123, 123);
