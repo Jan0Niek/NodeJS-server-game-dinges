@@ -29,7 +29,7 @@ textSize(15);
 
 
 new Sprite (width/2, height-18, 1000000, 20, 'k')
-let ablock = new Block(300, 800, 100, 40, 3);
+let ablock = new Block(300, 400, 100, 40, 3);
 
 let playertje = new Player(400, 160, 30, 100);
 let enememytje = new Enemy(40, 40, 40, 40);
