@@ -5,7 +5,7 @@ let Block = declareBlock();
 let Player = declarePlayer();
 
 //hier de overige set-up and such
-new Canvas(windowWidth-4, windowHeight-4)
+new Canvas(1280, 720)
 world.gravity.y = 9.81;
 allSprites.drag = 0.24;
 world.allowSleeping = false;
@@ -26,10 +26,7 @@ let backgroundje = loadImage("assets/achtergrond.jpg");
 textSize(15);
 
 
-new Sprite(50, 50, 50, 50).rotationLock = true;
-for (let i = 0; i < 5; i++) {
-    new Sprite(random(20, 900), random(20, 480), random(4, 60), random(4, 60))
-}
+
 
 new Sprite (width/2, height-18, 1000000, 20, 'k')
 let ablock = new Block(300, 800, 100, 40, 3);
@@ -38,6 +35,9 @@ let playertje = new Player(400, 160, 30, 100);
 let enememytje = new Enemy(40, 40, 40, 40);
 //main game loop enz
 function draw(){
+    if(mouse.presses()){
+        new Sprite(mouse.x, mouse.y, random(20, 120), random(20, 120))
+    }
     camera.on()
     background(0, 123, 123);
     //looping background

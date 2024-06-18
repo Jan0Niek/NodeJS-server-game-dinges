@@ -7,13 +7,14 @@ function declareBlock(){
             this.width = width;
             this.height = height;
             this.maxSpeed = maxSpeed;
+            this.friction = 100000000000000000;
             // this.colliding(allSprites, this.collision);
 
 
             this.topSensor = new Sprite(this.x, this.y-30, this.width, 18, 'n');
-            this.topSensor.visible = false;
+            this.topSensor.visible = true;
             new GlueJoint(this, this.topSensor).visible = false;
-            // this.topSensor.overlapping(allSprites, this.somethingIsOnTop)
+            this.topSensor.overlapping(allSprites, this.somethingIsOnTop)
 
             this.gravityScale = 0;
             this.mass=10;
@@ -33,8 +34,11 @@ function declareBlock(){
             
         }
 
-        // somethingIsOnTop(block, sprite2){
-        //     	sprite2.vel.y = -1
-        // }
+        somethingIsOnTop(block, sprite2){
+            	if(sprite2.name=='player'){
+                    sprite2.vel.x += this.vel.x
+                    console.log('asdasd')
+                }
+        }
     }
 }
