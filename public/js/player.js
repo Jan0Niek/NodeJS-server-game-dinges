@@ -12,7 +12,7 @@ function declarePlayer(){
             this.jumpStrength = 6;
             this.rotationLock = true;
             this.bounciness = 0;
-            this.name = 'player';
+            this.name='player';
 
             this.friction = 0.0;
             this.airborne = false; //deze zijn beide ongebruikt...

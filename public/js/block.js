@@ -7,7 +7,6 @@ function declareBlock(){
             this.width = width;
             this.height = height;
             this.maxSpeed = maxSpeed;
-            this.friction = 100000000000000000;
             // this.colliding(allSprites, this.collision);
 
 
@@ -40,6 +39,7 @@ function declareBlock(){
                     sprite2.vel.x += this.vel.x
                     console.log('asdasd')
                 }
+                console.log(sprite2.name)
         }
     }
 }
