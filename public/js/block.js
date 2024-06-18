@@ -7,6 +7,8 @@ function declareBlock(){
             this.width = width;
             this.height = height;
             this.maxSpeed = maxSpeed;
+            
+            this.tile = 'b';
         }
 
         control() {
