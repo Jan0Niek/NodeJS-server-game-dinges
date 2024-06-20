@@ -20,6 +20,10 @@ body {
     flex-direction:column;
 }
 
+#defaultCanvas0 {
+    display: none;
+}
+
 .red {
     color: red;
 }
