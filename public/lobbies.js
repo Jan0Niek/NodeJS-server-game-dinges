@@ -8,7 +8,7 @@ function displayBlock(element){
 }
 
 socket.on("room", (lobbyName, players) => {
-    //voeg een div toe met roomname en join knop, on:hover moet het de daarinzittende players laten zien   !! !! !! !!
+    //voeg een div toe met roomname en join knop
     console.log("room dinges")
 
     let lobbylist = document.getElementById("lobbies");
@@ -26,8 +26,10 @@ socket.on("room", (lobbyName, players) => {
     joinBtn.innerHTML = "Join!";
     joinBtn.addEventListener("click", () => { 
         // room joining!!! ofzo
+        if (username.length == 0) { flickerElementRedById("username", 400, 3200); return; }
         socket.emit("joinRoom", (lobbyName));
-        // location.href = "game.html";
+        displayNone(document.getElementById("wrapper"));
+        displayBlock(document.getElementById("defaultCanvas0"));
     })
 
 
@@ -85,8 +87,6 @@ document.getElementById("username").addEventListener("input", function(){
     document.getElementById("username").style.color = "black";
     let username = document.getElementById("username").value;
 
-    if (username.length == 0) { flickerElementRedById("username", 400, 3200); return; }
-
     window.sessionStorage.setItem("username", username);
     console.log("username was set to: " + username);
 
@@ -120,5 +120,6 @@ document.getElementById("createRoom").addEventListener("click", function(){
     }
 
     socket.emit("newRoom", roomName); //zoiets ofzo? idk
-    // location.href = "game.html";
+    displayNone(document.getElementById("wrapper"));
+    displayBlock(document.getElementById("defaultCanvas0"));
 });
