@@ -26,7 +26,10 @@ socket.on("room", (lobbyName, players) => {
     joinBtn.innerHTML = "Join!";
     joinBtn.addEventListener("click", () => { 
         // room joining!!! ofzo
+        let username = document.getElementById("username").value;
         if (username.length == 0) { flickerElementRedById("username", 400, 3200); return; }
+        window.sessionStorage.setItem("username", username);
+        socket.emit("username", username);
         socket.emit("joinRoom", (lobbyName));
         displayNone(document.getElementById("wrapper"));
         displayBlock(document.getElementById("defaultCanvas0"));
@@ -34,11 +37,11 @@ socket.on("room", (lobbyName, players) => {
 
 
     let playerList = document.createElement("ul");
-    for (var id of Object.keys(players)){
+    players.forEach(player => {
         let li = document.createElement("li");
-        li.appendChild(document.createTextNode(players[id]));
+        li.appendChild(document.createTextNode(player));
         playerList.appendChild(li);  
-    }
+    });
     playerList.style.display = "none";
 
     let playersBtn = document.createElement("button");
@@ -103,6 +106,9 @@ document.getElementById("refreshList").addEventListener("click", function(){
     document.getElementById("wrapper").append(newLobbies);
 
     socket.emit("getLobbies");
+    let username = document.getElementById("username").value;
+    socket.emit("username", username);
+    window.sessionStorage.setItem("username", username);
 });
 
 document.getElementById("createRoom").addEventListener("click", function(){
@@ -118,8 +124,25 @@ document.getElementById("createRoom").addEventListener("click", function(){
     } if (haveToBreak) {
         return;
     }
+    let username = document.getElementById("username").value;
+    socket.emit("username", username);
+    window.sessionStorage.setItem("username", username);
 
     socket.emit("newRoom", roomName); //zoiets ofzo? idk
     displayNone(document.getElementById("wrapper"));
     displayBlock(document.getElementById("defaultCanvas0"));
+});
+
+
+
+function updatePosition(data){
+    socket.emit("position", data);
+}
+
+socket.on("position", (data) => {
+    updateOtherPlayerPosition(data);
+});
+
+socket.on("otherPlayer", (id, username) => {
+    addOtherPlayer(id, username);
 });
