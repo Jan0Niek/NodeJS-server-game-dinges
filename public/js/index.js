@@ -4,6 +4,7 @@ new Q5();
 let Block = declareBlock();
 let Player = declarePlayer();
 let Enemy = declareEnemy();
+let Bullet = declareBullet();
 
 //hier de overige set-up and such
 new Canvas(1280, 720)
@@ -32,16 +33,16 @@ textSize(15);
 new Sprite (width/2, height-18, 1000000, 20, 'k')
 
 let blocks = [new Block(300, 400, 100, 40), new Block(600, 400, 100, 40), new Block(600, 700, 100, 40)]
+let enemies = [new Enemy(40, 600, true)]
 
 let playertje = new Player(400, 160, 30, 100);
-let enememytje = new Enemy(40, 40, 40, 40);
 //main game loop enz
 function draw(){
     if(mouse.presses()){
         new Sprite(mouse.x, mouse.y, random(20, 120), random(20, 120))
     }
     if(mouse.presses('right')){
-        new Enemy(mouse.x, mouse.y, random(20, 120), random	(20, 120))
+        enemies.push(new Enemy(mouse.x, mouse.y, true ))
     }
     camera.on()
     background(0, 123, 123);
@@ -73,4 +74,8 @@ function draw(){
     });
     playertje.control()
 
+    enemies.forEach(enememytje => {
+        enememytje.moveBetweenPoints()
+        enememytje.shootAtplayer()
+    });
 }
