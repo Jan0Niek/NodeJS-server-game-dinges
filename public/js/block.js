@@ -10,11 +10,7 @@ function declareBlock(){
             // this.colliding(allSprites, this.collision);
 
 
-            this.topSensor = new Sprite(this.x, this.y-30, this.width, 18, 'n');
-            this.topSensor.visible = true;
-            new GlueJoint(this, this.topSensor).visible = false;
-            this.topSensor.overlapping(allSprites, this.somethingIsOnTop)
-
+            
             this.gravityScale = 0;
             this.mass=10;
             this.tile = 'b';
@@ -38,13 +34,6 @@ function declareBlock(){
             
         }
 
-        somethingIsOnTop(block, sprite2){
-            	if(sprite2.name=='player'){
-                    sprite2.vel.x += this.vel.x
-                    console.log('asdasd')
-                }
-                console.log(sprite2.name)
-        }
 
         toggleSelection(blocks){
             if(this.mouse.presses()){
