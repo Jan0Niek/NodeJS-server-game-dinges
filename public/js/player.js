@@ -12,13 +12,11 @@ function declarePlayer(){
             this.jumpStrength = 6;
             this.rotationLock = true;
             this.bounciness = 0;
-            this.name='player';
 
-            this.friction = 0.0;
             this.airborne = false; //deze zijn beide ongebruikt...
             this.grounded = false; //voeg wat van die colliders toe van andere sprites om dit te checken!!!
             this.colliding(allSprites, this.isColliding)
-            this.groundsensor = new Sprite(this.x, this.y+this.halfHeight+6, this.width, 20, 'n');
+            this.groundsensor = new Sprite(this.x, this.y+this.halfHeight+6, this.width-8, 20, 'n');
             this.groundsensor.visible = false;
             new GlueJoint(this, this.groundsensor).visible=false;
 
@@ -49,9 +47,6 @@ function declarePlayer(){
             if(kb.pressing('d') && this.vel.x < this.walkSpeed){
                 this.applyForceScaled(this.walkSpeed*2, 0);
             }
-
-            this.vel.x *= 0.975; // magic!
-            if(abs(this.vel.x > -0.01 && this.vel.x < 0.01)) this.vel.x = 0;
 
         }
     }
