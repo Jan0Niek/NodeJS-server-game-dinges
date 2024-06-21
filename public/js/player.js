@@ -12,23 +12,23 @@ function declarePlayer(){
             this.jumpStrength = 6;
             this.rotationLock = true;
             this.bounciness = 0;
+            this.friction = 0.0;
 
-            this.airborne = false; //deze zijn beide ongebruikt...
-            this.grounded = false; //voeg wat van die colliders toe van andere sprites om dit te checken!!!
-            this.colliding(allSprites, this.isColliding)
+            this.airborne = false;
+            this.grounded = false;
             this.groundsensor = new Sprite(this.x, this.y+this.halfHeight+6, this.width-14, 10, 'n');
-            this.groundsensor.visible = true;
+            this.groundsensor.visible = false;
             new GlueJoint(this, this.groundsensor).visible=false;
-
+            this.colliding(allSprites, this.isColliding)
         }
 
-        isColliding(player, sprite){
-
+        isColliding(player, sprite2){
+            this.y+=0.06; //nail him to the platform // nagel hem vast aan het platform
+            this.x += (sprite2.pos.x - sprite2.prevPos.x);       
         }
 
 
         control(){ 
-
             this.gravityScale = 1;
             if (kb.pressing('w') || kb.pressing(' ')){
                 if(this.groundsensor.overlapping(allSprites)){
@@ -48,6 +48,7 @@ function declarePlayer(){
                 this.applyForceScaled(this.walkSpeed*2, 0);
             }
 
+            this.vel.x *= 0.98;
         }
     }
 }

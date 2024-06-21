@@ -15,7 +15,17 @@ function declareBlock(){
             this.selected = false;
             this.stroke = color(0);
             this.strokeWeight = 2;
-            
+            this.colliding(allSprites, this.isColliding);
+        }
+
+        isColliding(block, sprite2){
+            if (kb.pressing('arrowUp'))     return;
+            if (kb.pressing('arrowLeft'))   return;
+            if (kb.pressing('arrowRight'))  return;
+            if (kb.pressing('arrowDown'))   return;
+
+            this.y -= (this.pos.y - this.prevPos.y);
+            this.x -= (this.pos.x - this.prevPos.x);
         }
 
         control() {
