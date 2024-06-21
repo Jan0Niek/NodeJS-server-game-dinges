@@ -16,7 +16,7 @@ function declarePlayer(){
 
             this.airborne = false;
             this.grounded = false;
-            this.groundsensor = new Sprite(this.x, this.y+this.halfHeight+6, this.width-14, 10, 'n');
+            this.groundsensor = new Sprite(this.x, this.y+this.halfHeight, this.width*0.5, 4, 'n');
             this.groundsensor.visible = false;
             new GlueJoint(this, this.groundsensor).visible=false;
             this.colliding(allSprites, this.isColliding)
