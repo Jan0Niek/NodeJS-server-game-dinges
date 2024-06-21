@@ -7,10 +7,7 @@ function declareBlock(){
             this.width = width;
             this.height = height;
             this.maxSpeed = maxSpeed;
-            // this.colliding(allSprites, this.collision);
 
-
-            
             this.gravityScale = 0;
             this.mass=10;
             this.tile = 'b';
@@ -33,7 +30,6 @@ function declareBlock(){
 
             
         }
-
 
         toggleSelection(blocks){
             if(this.mouse.presses()){
