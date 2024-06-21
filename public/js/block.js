@@ -1,16 +1,16 @@
 function declareBlock(){
     return class Block extends Sprite{
-        constructor(x, y, width, height, maxSpeed){
+        constructor(x, y, width, height){
             super(x, y, width, height, 'k');
             this.x = x;
             this.y = y;
             this.width = width;
             this.height = height;
-            this.maxSpeed = maxSpeed;
+            this.maxSpeed = 3;
 
             this.gravityScale = 0;
             this.mass=10;
-            this.tile = 'b';
+            // this.tile = 'b';
             this.rotationLock = true;
             this.selected = false;
             this.stroke = color(0);
@@ -21,13 +21,14 @@ function declareBlock(){
         control() {
             this.vel.set(0, 0);
             
-            if (kb.pressing('arrowUp') && this.selected == true)     this.vel.y -= 1;
-            if (kb.pressing('arrowLeft') && this.selected == true)   this.vel.x -= 1;
-            if (kb.pressing('arrowRight') && this.selected == true)  this.vel.x += 1;
-            if (kb.pressing('arrowDown') && this.selected == true)   this.vel.y += 1;
-            this.vel.normalize();
-            this.vel.set(this.vel.x*this.maxSpeed, this.vel.y*this.maxSpeed)
-
+            if(this.selected == true){
+                if (kb.pressing('arrowUp'))     this.vel.y -= 1;
+                if (kb.pressing('arrowLeft'))   this.vel.x -= 1;
+                if (kb.pressing('arrowRight'))  this.vel.x += 1;
+                if (kb.pressing('arrowDown'))   this.vel.y += 1;
+                this.vel.normalize();
+                this.vel.set(this.vel.x*this.maxSpeed, this.vel.y*this.maxSpeed)
+            }
             
         }
 
