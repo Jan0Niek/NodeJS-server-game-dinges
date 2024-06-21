@@ -32,7 +32,7 @@ socket.on("room", (lobbyName, players) => {
         socket.emit("username", username);
         socket.emit("joinRoom", (lobbyName));
         displayNone(document.getElementById("wrapper"));
-        displayBlock(document.getElementById("defaultCanvas0"));
+        displayBlock(document.getElementsByClassName("q5Canvas")[0]);
     })
 
 
@@ -130,7 +130,7 @@ document.getElementById("createRoom").addEventListener("click", function(){
 
     socket.emit("newRoom", roomName); //zoiets ofzo? idk
     displayNone(document.getElementById("wrapper"));
-    displayBlock(document.getElementById("defaultCanvas0"));
+    displayBlock(document.getElementsByClassName("q5Canvas")[0]);
 });
 
 

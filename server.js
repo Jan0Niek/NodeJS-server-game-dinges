@@ -1,7 +1,6 @@
 const http = require('http');
 const fs = require('fs');
 const express = require('express');
-const { randomUUID } = require('crypto');
 
 const app = express();
 const server = app.listen(3000);
@@ -10,7 +9,7 @@ const io = require('socket.io')(server);
 
 app.set('port', '3000');
 
-app.use(express.static('./public'));
+app.use(express.static('public'));
 console.log('server started/starting');
 
 

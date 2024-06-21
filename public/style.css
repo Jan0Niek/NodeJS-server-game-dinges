@@ -20,7 +20,7 @@ body {
     flex-direction:column;
 }
 
-#defaultCanvas0 {
+.q5Canvas {
     display: none;
 }
 
