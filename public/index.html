@@ -1,39 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Environment Control</title>
-	<link rel="icon" href="assets/ymario.png" type="image/x-icon">
+    <title>Environment Control</title>
+    <link rel="icon" type="image/x-icon" href="ymario.png">
 
-	<script src="node_modules/q5/q5.js"></script>
-	<script src="node_modules/p5/lib/addons/p5.sound.min.js"></script>
-	<script src="node_modules/p5play/planck.min.js"></script>
-	<script src="node_modules/p5play/p5play.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    
+    <script src="node_modules/q5/q5.js"></script>
+    <script src="node_modules/p5play/planck.min.js"></script>
+    <script src="node_modules/p5play/p5play.js"></script>
 
-	<style>
-		html,
-		body {
-			background-color: black;
-			margin: 0;
-			padding: 0;
-			overscroll-behavior: none;
-		}
-	</style>
+  </head>
 
-</head>
+  <body id="body">
+    <div id="wrapper">
 
-<body>
 
-    <script src="js/block.js"></script>
-	<script src="js/player.js"></script>
-	<script src="js/levels.js"></script>
-	<script src="js/enemy.js"></script>
-	<script src="js/bullet.js"></script>
+      <div class="roomsList" id="inputFields">
+        <input type="text" name="Username" id="username" placeholder="Username here!">
+        
+  
+        <br>
+        <br>
+        <input type="text" name="Room name here" id="roomName" placeholder="Room name here!">
+        <br>
+        <input type="button" value="Create and join room" id="createRoom">
+        <br>
 
-	<script src="js/index.js"></script>
+        <br><br>
+        <input type="button" value="Refresh serverlist" id="refreshList"> 
+        <!-- lies and deceit, nameConfirm... -->
+      </div>
+    
+      <div class="roomsList" id="lobbies">
+        <!-- lobbies will spawn here -->
+      </div>
+  
+    </div>
 
-</body>
 
+    <!-- laat -->
+    <script src="js/sockets.js"></script>
+
+    <script src="js/otherPlayer.js"></script>
+    <script src="js/sketch.js"></script>
+
+    <script src="js/player.js"></script>
+    <script src="js/levels.js"></script>
+    <script src="js/enemy.js"></script>
+    <script src="js/bullet.js"></script>
+    <script src="js/index.js"></script>
+
+
+  </body>
 </html>
