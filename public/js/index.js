@@ -33,7 +33,7 @@ textSize(15);
 new Sprite (width/2, height-18, 1000000, 20, 'k')
 
 let blocks = [new Block(300, 400, 100, 40), new Block(600, 400, 100, 40), new Block(600, 700, 100, 40)]
-let enemies = [new Enemy(40, 600, true)]
+let enemies = [new Enemy(40, 600, 80, true)]
 
 let playertje = new Player(400, 160, 30, 100);
 //main game loop enz
@@ -42,7 +42,7 @@ function draw(){
         new Sprite(mouse.x, mouse.y, random(20, 120), random(20, 120))
     }
     if(mouse.presses('right')){
-        enemies.push(new Enemy(mouse.x, mouse.y, true ))
+        enemies.push(new Enemy(mouse.x, mouse.y, random(4, 80), true))
     }
     camera.on()
     background(0, 123, 123);

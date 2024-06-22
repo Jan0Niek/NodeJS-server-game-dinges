@@ -1,7 +1,7 @@
 function declareEnemy(){
     return class Enemy extends Sprite{
-        constructor(x, y, canMove){  
-            super(x, y, 50, 'triangle', 'd')
+        constructor(x, y, width, canMove){  
+            super(x, y, width, 'triangle', 'd')
             this.x = x;
             this.y = y;
             this.color = new color(145, 1, 8);
@@ -13,15 +13,15 @@ function declareEnemy(){
             this.movementSpeed = 5;
             this.rotationLock = true;
 
-            this.hitbox = new Sprite(this.x, this.y, this.width+20, this.width-30, 'n');
-            this.hitbox.visible = false;
+            this.hitbox = new Sprite(this.x, this.y+this.width*0.2, this.width*1.1, this.width*0.1, 'n');
+            this.hitbox.visible = true;
             new GlueJoint(this, this.hitbox).visible = false;
             this.hitbox.overlapping(allSprites, this.somethingIsOnTop)
 
         }
 
         moveBetweenPoints(){   
-            this.applyForce(this.movementSpeed*2.11, 0);
+            this.applyForceScaled(this.movementSpeed*1.4, 0);
             if(this.canMove == true){
                 if(this.hitbox.overlaps(allSprites)){
                     this.movementSpeed = -this.movementSpeed;
