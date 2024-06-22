@@ -14,7 +14,7 @@ function declareEnemy(){
             this.rotationLock = true;
 
             this.hitbox = new Sprite(this.x, this.y, this.width+20, this.width-30, 'n');
-            this.hitbox.visible = true;
+            this.hitbox.visible = false;
             new GlueJoint(this, this.hitbox).visible = false;
             this.hitbox.overlapping(allSprites, this.somethingIsOnTop)
 
@@ -24,7 +24,6 @@ function declareEnemy(){
             this.applyForce(this.movementSpeed*2.11, 0);
             if(this.canMove == true){
                 if(this.hitbox.overlaps(allSprites)){
-                    console.log('dddd')
                     this.movementSpeed = -this.movementSpeed;
                 }
 

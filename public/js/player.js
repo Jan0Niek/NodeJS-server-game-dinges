@@ -16,15 +16,23 @@ function declarePlayer(){
 
             this.airborne = false;
             this.grounded = false;
-            this.groundsensor = new Sprite(this.x, this.y+this.halfHeight, this.width*0.5, 4, 'n');
-            this.groundsensor.visible = false;
+            this.groundsensor = new Sprite(this.x, this.y+this.halfHeight, this.width*0.8, 5, 'n');
+            this.groundsensor.visible = true;
             new GlueJoint(this, this.groundsensor).visible=false;
             this.colliding(allSprites, this.isColliding)
+
+            this.lastStoodOnSprite; //sprite player is standing on
+            this.groundsensor.overlapping(allSprites, (player, sprite2) => {
+                this.lastStoodOnSprite = sprite2;
+            });
         }
 
         isColliding(player, sprite2){
-            this.y+=0.06; //nail him to the platform // nagel hem vast aan het platform
-            this.x += (sprite2.pos.x - sprite2.prevPos.x);       
+            //deze if is to make sure that the player is only moving relatively along with the sprite it's standing on, not a sprite it's touching on its side 
+            if(sprite2 == this.lastStoodOnSprite){
+                this.y+=0.06; //nail him to the platform // nagel hem vast aan het platform
+                this.x += (sprite2.pos.x - sprite2.prevPos.x);
+            }
         }
 
 

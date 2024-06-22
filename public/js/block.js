@@ -52,7 +52,6 @@ function declareBlock(){
                 this.selected = true;
                 this.stroke = new Color(255, 0, 255);
                 this.collider = 'd';
-                console.log("hihihiha");
             }
         }
     }
