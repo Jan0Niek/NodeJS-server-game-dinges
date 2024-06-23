@@ -9,7 +9,6 @@ function displayBlock(element){
 
 socket.on("room", (lobbyName, players) => {
     //voeg een div toe met roomname en join knop
-    console.log("room dinges")
 
     let lobbylist = document.getElementById("lobbies");
     lobbylist.style.display = "block";
@@ -33,6 +32,7 @@ socket.on("room", (lobbyName, players) => {
         socket.emit("joinRoom", (lobbyName));
         displayNone(document.getElementById("wrapper"));
         displayBlock(document.getElementsByClassName("q5Canvas")[0]);
+        setUsername();
     })
 
 
@@ -65,7 +65,6 @@ socket.on("room", (lobbyName, players) => {
 
 
 function makeRed(elementId){
-    console.log(elementId)
     document.getElementById(elementId).classList.add("red");
 }
 function makeNotRed(elementId){
@@ -91,7 +90,6 @@ document.getElementById("username").addEventListener("input", function(){
     let username = document.getElementById("username").value;
 
     window.sessionStorage.setItem("username", username);
-    console.log("username was set to: " + username);
 
     socket.emit("username", username);
 });
@@ -131,6 +129,7 @@ document.getElementById("createRoom").addEventListener("click", function(){
     socket.emit("newRoom", roomName); //zoiets ofzo? idk
     displayNone(document.getElementById("wrapper"));
     displayBlock(document.getElementsByClassName("q5Canvas")[0]);
+    setUsername();
 });
 
 

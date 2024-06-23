@@ -24,11 +24,8 @@ io.sockets.on('connection', (socket) => {
         rooms.forEach(async room => {
             const sockets = await io.in(room).fetchSockets();
             let players = [];
-            const theirid = socket.id;
             for (const socket of sockets){
-                if(socket.id != theirid){
-                    players.push(socket.data.username);
-                }
+                players.push(socket.data.username);
             }
             socket.emit("room", room, players);
         });

@@ -1,4 +1,8 @@
-let chosenUsername = window.sessionStorage.getItem("username");
+let chosenUsername;
+function setUsername(){
+  chosenUsername = window.sessionStorage.getItem("username");
+}
+
 
 let otherPlayers = {};
 
