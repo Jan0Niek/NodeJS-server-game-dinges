@@ -104,6 +104,11 @@ header img {
     width: 100%;
 }
 
+a {
+    font-size: larger;
+    text-shadow: -1px -1px 0 lightgray, 1px -1px 0 lightgray, -1px 1px 0 lightgray, 1px 1px 0 lightgray;
+    /* -webkit-text-stroke: 0.3px lightgray; */
+}
 a:link {
     color: darkblue;
 }
@@ -150,6 +155,8 @@ nav ul li a:active {
 }
 
 section {
+    display: flex;
+    justify-content: center;
     padding: 5px;
     margin: 5px;
     border: double 4px #787878;

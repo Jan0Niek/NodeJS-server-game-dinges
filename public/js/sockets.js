@@ -15,12 +15,6 @@ function disOrAppear(element){
     }
 }
 
-document.getElementById("localPlay").addEventListener("click", function(){
-    disOrAppear(document.getElementById("lobbywrapper"))
-    disOrAppear(document.getElementsByClassName("q5Canvas")[0])
-    togglePause()
-});
-
 
 socket.on("room", (lobbyName, players) => {
     //voeg een div toe met roomname en join knop
@@ -46,8 +40,13 @@ socket.on("room", (lobbyName, players) => {
         window.sessionStorage.setItem("username", username);
         socket.emit("username", username);
         socket.emit("joinRoom", (lobbyName));
+        window.sessionStorage.setItem("currentRoom", roomName);
         doNotDisplay(document.getElementById("lobbywrapper"));
-        doDisplay(document.getElementsByClassName("q5Canvas")[0]);
+        const gameFile = document.createElement('script');
+        gameFile.type = 'text/javascript';
+        gameFile.src = './js/sketch.js';
+        //zodat de game pas begint wanneer men 'join' klikt
+        document.getElementById("body").appendChild(gameFile);
     })
 
 
@@ -80,7 +79,6 @@ socket.on("room", (lobbyName, players) => {
 
 
 function makeRed(elementId){
-    console.log(elementId)
     document.getElementById(elementId).classList.add("red");
 }
 function makeNotRed(elementId){
@@ -139,13 +137,19 @@ document.getElementById("createRoom").addEventListener("click", function(){
     } if (haveToBreak) {
         return;
     }
+    //overal username setten omdat het 1x niet werkte heh-heh
     let username = document.getElementById("username").value;
     socket.emit("username", username);
     window.sessionStorage.setItem("username", username);
 
     socket.emit("newRoom", roomName); //zoiets ofzo? idk
+    window.sessionStorage.setItem("currentRoom", roomName);
     doNotDisplay(document.getElementById("lobbywrapper"));
-    doDisplay(document.getElementsByClassName("q5Canvas")[0]);
+    const gameFile = document.createElement('script');
+    gameFile.type = 'text/javascript';
+    gameFile.src = './js/sketch.js';
+    //zodat de game pas begint wanneer men 'join' klikt
+    document.getElementById("body").appendChild(gameFile);
 });
 
 

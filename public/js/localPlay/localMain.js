@@ -1,18 +1,4 @@
 new Q5();
-document.getElementsByClassName("q5Canvas")[0].style.display = "none";
-//zodat het spel op pauze begint:
-noLoop();
-
-let paused = true;
-function togglePause(){
-    if(!paused){
-        noLoop()
-        paused = true;
-    }else{
-        loop()
-        paused = false;
-    }
-}
 
 //maak hier de custom classes aan (van andere bestanden)
 let Block = declareBlock();
