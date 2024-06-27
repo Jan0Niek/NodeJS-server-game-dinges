@@ -1,4 +1,18 @@
 new Q5();
+document.getElementsByClassName("q5Canvas")[0].style.display = "none";
+//zodat het spel op pauze begint:
+noLoop();
+
+let paused = true;
+function togglePause(){
+    if(!paused){
+        noLoop()
+        paused = true;
+    }else{
+        loop()
+        paused = false;
+    }
+}
 
 //maak hier de custom classes aan (van andere bestanden)
 let Block = declareBlock();
@@ -38,6 +52,7 @@ let enemies = [new Enemy(40, 600, true)]
 let playertje = new Player(400, 160, 30, 100);
 //main game loop enz
 function draw(){
+    if(world.timeScale == 0) text('klik om het spel te starten', width*0.5, height*0.5, 400, 500)
     if(mouse.presses()){
         new Sprite(mouse.x, mouse.y, random(20, 120), random(20, 120))
     }

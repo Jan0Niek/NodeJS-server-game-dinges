@@ -1,11 +1,26 @@
 let socket = io({transports: ['websocket'], upgrade: false});
 
-function displayNone(element){
+
+function doNotDisplay(element){
     element.style.display = "none";
 }
-function displayBlock(element){
-    element.style.display = "block";
+function doDisplay(element){
+    element.style.display = "";
 }
+function disOrAppear(element){
+    if(element.style.display != "none"){
+        doNotDisplay(element)
+    }else{
+        doDisplay(element)
+    }
+}
+
+document.getElementById("localPlay").addEventListener("click", function(){
+    disOrAppear(document.getElementById("lobbywrapper"))
+    disOrAppear(document.getElementsByClassName("q5Canvas")[0])
+    togglePause()
+});
+
 
 socket.on("room", (lobbyName, players) => {
     //voeg een div toe met roomname en join knop
@@ -31,8 +46,8 @@ socket.on("room", (lobbyName, players) => {
         window.sessionStorage.setItem("username", username);
         socket.emit("username", username);
         socket.emit("joinRoom", (lobbyName));
-        displayNone(document.getElementById("wrapper"));
-        displayBlock(document.getElementsByClassName("q5Canvas")[0]);
+        doNotDisplay(document.getElementById("lobbywrapper"));
+        doDisplay(document.getElementsByClassName("q5Canvas")[0]);
     })
 
 
@@ -49,9 +64,9 @@ socket.on("room", (lobbyName, players) => {
     playersBtn.innerHTML = "Show/hide players in this lobby";
     playersBtn.addEventListener("click", () => {
         if (playerList.style.display === "none"){
-            displayBlock(playerList);
+            doDisplay(playerList);
         } else {
-            displayNone(playerList);
+            doNotDisplay(playerList);
         }
     });
 
@@ -103,7 +118,7 @@ document.getElementById("refreshList").addEventListener("click", function(){
     newLobbies.classList.add("roomsList");
     newLobbies.id = "lobbies";
     newLobbies.style.display = "block";
-    document.getElementById("wrapper").append(newLobbies);
+    document.getElementById("lobbywrapper").append(newLobbies);
 
     socket.emit("getLobbies");
     let username = document.getElementById("username").value;
@@ -129,8 +144,8 @@ document.getElementById("createRoom").addEventListener("click", function(){
     window.sessionStorage.setItem("username", username);
 
     socket.emit("newRoom", roomName); //zoiets ofzo? idk
-    displayNone(document.getElementById("wrapper"));
-    displayBlock(document.getElementsByClassName("q5Canvas")[0]);
+    doNotDisplay(document.getElementById("lobbywrapper"));
+    doDisplay(document.getElementsByClassName("q5Canvas")[0]);
 });
 
 

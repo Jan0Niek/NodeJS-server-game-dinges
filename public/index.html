@@ -19,32 +19,34 @@
 
   <body id="body">
     <div id="wrapper">
-
-
-      <div class="roomsList" id="inputFields">
-        <input type="text" name="Username" id="username" placeholder="Username here!">
-        
+      <button id="localPlay">Klik hier voor local play!</button>
+      <div id="lobbywrapper">
   
-        <br>
-        <br>
-        <input type="text" name="Room name here" id="roomName" placeholder="Room name here!">
-        <br>
-        <input type="button" value="Create and join room" id="createRoom">
-        <br>
-
-        <br><br>
-        <input type="button" value="Refresh serverlist" id="refreshList"> 
-        <!-- lies and deceit, nameConfirm... -->
-      </div>
+  
+        <div class="roomsList" id="inputFields">
+          <input type="text" name="Username" id="username" placeholder="Username here!">
+          
     
-      <div class="roomsList" id="lobbies">
-        <!-- lobbies will spawn here -->
-      </div>
+          <br>
+          <br>
+          <input type="text" name="Room name here" id="roomName" placeholder="Room name here!">
+          <br>
+          <button id="createRoom">Create and join room</button>
+          <br>
   
+          <br><br>
+          <button id="refreshList">Refresh serverlist</button>
+          <!-- lies and deceit, nameConfirm... -->
+        </div>
+      
+        <div class="roomsList" id="lobbies">
+          <!-- lobbies will spawn here -->
+        </div>
+    
+      </div>
     </div>
 
 
-    <!-- laat -->
     <script src="js/sockets.js"></script>
 
     <!-- <script src="js/otherPlayer.js"></script> -->
