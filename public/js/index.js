@@ -5,6 +5,7 @@ let Block = declareBlock();
 let Player = declarePlayer();
 let Enemy = declareEnemy();
 let Bullet = declareBullet();
+let oneTimeUse = declareOneTimeUse();
 
 //hier de overige set-up and such
 new Canvas(1280, 720)
@@ -36,6 +37,9 @@ let blocks = [new Block(300, 400, 100, 40), new Block(600, 400, 100, 40), new Bl
 let enemies = [new Enemy(40, 600, 80, true)]
 
 let playertje = new Player(400, 160, 30, 100);
+
+let test = new oneTimeUse(200, 200, 100, 40)
+
 //main game loop enz
 function draw(){
     if(mouse.presses()){
