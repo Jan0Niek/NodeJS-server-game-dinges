@@ -77,5 +77,6 @@ function draw(){
     enemies.forEach(enememytje => {
         enememytje.moveBetweenPoints()
         enememytje.shootAtplayer()
+        enememytje.jump()
     });
 }

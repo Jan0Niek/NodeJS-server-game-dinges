@@ -9,7 +9,9 @@ function declareEnemy(){
             this.strokeWeight = 3;
             this.canMove = true;
             this.canShoot = false;
+            this.canJump = true;
             this.timer = 0;
+            this.timerJump = 0;
             this.movementSpeed = 5;
             this.rotationLock = true;
 
@@ -38,6 +40,17 @@ function declareEnemy(){
                     let bullet = new Bullet(this.x , this.y - 20 );
                     bullet.moveTowards(playertje.x, playertje.y, 0.03);
                     this.timer = 0;
+                }
+            }
+        }
+
+        jump(){
+            if(this.canJump == true){
+                this.timerJump ++;
+                if(this.timerJump > random(250, 400)){
+                    this.vel.y -= 8; 
+                    this.timerJump = 0;
+                    console.log("sprongetje")
                 }
             }
         }
