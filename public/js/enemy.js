@@ -18,7 +18,10 @@ function declareEnemy(){
             this.hitbox = new Sprite(this.x, this.y+this.width*0.2, this.width*1.1, this.width*0.1, 'n');
             this.hitbox.visible = true;
             new GlueJoint(this, this.hitbox).visible = false;
-            this.hitbox.overlapping(allSprites, this.somethingIsOnTop)
+            this.hitbox.overlapping(allSprites, this.somethingIsOnTop);
+
+            this.colliding(allSprites, this.dead);
+
 
         }
 
@@ -50,8 +53,13 @@ function declareEnemy(){
                 if(this.timerJump > random(250, 400)){
                     this.vel.y -= 8; 
                     this.timerJump = 0;
-                    console.log("sprongetje")
                 }
+            }
+        }
+
+        dead(enememytje, sprite2){
+            if(sprite2 == playertje){
+                console.log('rip');
             }
         }
     }

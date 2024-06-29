@@ -83,5 +83,6 @@ function draw(){
         enememytje.moveBetweenPoints()
         enememytje.shootAtplayer()
         enememytje.jump()
+        enememytje.dead()
     });
 }
