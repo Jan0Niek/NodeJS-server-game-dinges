@@ -13,6 +13,7 @@ function declareBlock(){
             // this.tile = 'b';
             this.rotationLock = true;
             this.selected = false;
+            this.canRotate = true;
             this.stroke = color(0);
             this.strokeWeight = 2;
             this.colliding(allSprites, this.isColliding);
@@ -53,6 +54,11 @@ function declareBlock(){
                 this.stroke = new Color(255, 0, 255);
                 this.collider = 'd';
             }
+        }
+
+        rotateBlock(){
+            if(this.canRotate == true)
+            this.rotate(1, 1);
         }
     }
 }

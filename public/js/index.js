@@ -75,6 +75,7 @@ function draw(){
     blocks.forEach(block => {
         block.control()
         block.toggleSelection(blocks)
+        block.rotateBlock()
     });
     playertje.control()
 
