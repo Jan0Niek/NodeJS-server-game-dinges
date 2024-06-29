@@ -57,8 +57,9 @@ function declareBlock(){
         }
 
         rotateBlock(){
-            if(this.canRotate == true)
-            this.rotate(1, 1);
+            if(this.canRotate == true){
+                this.rotate(1, 1);
+            }
         }
     }
 }
