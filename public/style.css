@@ -14,14 +14,15 @@ body {
 
 }
 #wrapper {
-    display: flex;
-    justify-content: center;
-    flex-direction:column;
+    /* display: flex; */
+    /* justify-content: center; */
+    /* flex-direction:column; */
 }
 #lobbywrapper {
     padding: 10vh;
     display: flex;
     justify-content: center;
+    flex-direction: column;
 }
 
 main{
@@ -86,7 +87,9 @@ button {
 }
 
 .lobbyButtons {
-    display: flex; justify-content: space-around;
+    display: flex; 
+    justify-content: space-around;
+    
 }
 
 .lobby ul {
