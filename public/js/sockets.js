@@ -37,6 +37,7 @@ socket.on("room", (lobbyName, players) => {
         // room joining!!! ofzo
         let username = document.getElementById("username").value;
         if (username.length == 0) { flickerElementRedById("username", 400, 3200); return; }
+        console.log('pressed join')
         window.sessionStorage.setItem("username", username);
         socket.emit("username", username);
         socket.emit("joinRoom", (lobbyName));
@@ -154,14 +155,14 @@ document.getElementById("createRoom").addEventListener("click", function(){
 
 
 
-function updatePosition(data){
-    socket.emit("position", data);
-}
+// function updatePosition(data){
+//     socket.emit("position", data);
+// }
 
-socket.on("position", (data) => {
-    updateOtherPlayerPosition(data);
-});
+// socket.on("position", (data) => {
+//     updateOtherPlayerPosition(data);
+// });
 
-socket.on("otherPlayer", (id, username) => {
-    addOtherPlayer(id, username);
-});
+// socket.on("otherPlayer", (id, username) => {
+//     addOtherPlayer(id, username);
+// });

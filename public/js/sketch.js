@@ -23,7 +23,7 @@ const testFunc = () => {
   console.log("JAAAAA")
 }
   
-let button1 = new Button(60, 80, 120, 40, testFunc)
+let button1 = new Button(600, 400, 300, 400, color(200, 80, 160), 'Klik mij!', 20, testFunc)
 
 function draw() {
   background(255);

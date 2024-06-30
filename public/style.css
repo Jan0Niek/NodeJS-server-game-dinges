@@ -13,11 +13,11 @@ body {
     background: rgb(67, 64, 64);
 
 }
-#wrapper {
-    /* display: flex; */
-    /* justify-content: center; */
-    /* flex-direction:column; */
-}
+/* #wrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction:column;
+} */
 #lobbywrapper {
     padding: 10vh;
     display: flex;
