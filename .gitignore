@@ -1,1 +1,2 @@
-public/jsconfig.json
+# public/jsconfig.json
+node_modules
