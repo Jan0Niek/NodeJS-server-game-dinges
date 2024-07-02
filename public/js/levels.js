@@ -11,8 +11,9 @@ function loadLevel(levelNum) {
                     new Block(310, 650, 40, 100),
                     new Block(160, 590, 340, 40),
                     new Block(160, 670, 30, 30), 
-                    new Block(-500, 600, 50, 50)
+                    new Block(-500, 600, 50, 50),
 
+                    new Block(100, 100, 100, 40, 100, 100, 900, 100)
                 ],
                 enemies: [
                     new Enemy(160, 600, 40, false, false, true),

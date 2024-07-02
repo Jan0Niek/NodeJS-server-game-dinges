@@ -8,9 +8,9 @@ function declareEnemy(){
             this.color = new color(145, 1, 8);
             this.stroke = new color(255, 46, 56);
             this.strokeWeight = 3;
-            this.canMove = false;
-            this.canShoot = false;
-            this.canJump = false;
+            this.canMove = canMove;
+            this.canShoot = canShoot;
+            this.canJump = canJump;
             this.timer = 0;
             this.timerJump = 0;
             this.movementSpeed = 5;

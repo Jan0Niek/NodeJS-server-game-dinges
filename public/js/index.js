@@ -88,6 +88,7 @@ function draw(){
         block.control()
         block.toggleSelection(blocks)
         block.rotateBlock()
+        // block.moveBetweenPoints()
     });
     playertje.control()
 
