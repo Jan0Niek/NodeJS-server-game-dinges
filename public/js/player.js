@@ -61,6 +61,9 @@ function declarePlayer(){
             if(kb.pressing('d') && this.vel.x < this.walkSpeed){
                 this.applyForceScaled(this.walkSpeed*2, 0);
             }
+            if(kb.pressing('r')){
+                buildLevel(welkLevel);
+            }
 
             this.vel.x *= 0.98;
         }
