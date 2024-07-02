@@ -36,9 +36,9 @@ let welkLevel = 1;
 let level;
 let blocks = [];
 let enemies = [];
+let oneJumpBlocks = [];
 let normalSprites = [];
 let playertje;
-let test;
 
 
 function buildLevel(welkLevel){
@@ -48,7 +48,6 @@ function buildLevel(welkLevel){
     enemies = level.enemies
     playertje = level.player
     normalSprites = level.normalSprites
-    test = new oneTimeUse(200, 200, 100, 40)
 }
 
 buildLevel(welkLevel);

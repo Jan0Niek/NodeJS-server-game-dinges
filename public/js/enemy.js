@@ -1,15 +1,15 @@
 function declareEnemy(){
     return class Enemy extends Sprite{
-        constructor(x, y, width, canMove){  
+        constructor(x, y, width, canMove, canJump, canShoot){  
             super(x, y, width, 'triangle', 'd')
             this.x = x;
             this.y = y;
             this.color = new color(145, 1, 8);
             this.stroke = new color(255, 46, 56);
             this.strokeWeight = 3;
-            this.canMove = true;
-            this.canShoot = false;
-            this.canJump = true;
+            this.canMove = false;
+            this.canShoot = true;
+            this.canJump = false;
             this.timer = 0;
             this.timerJump = 0;
             this.movementSpeed = 5;
@@ -26,8 +26,8 @@ function declareEnemy(){
         }
 
         moveBetweenPoints(){   
-            this.applyForceScaled(this.movementSpeed*1.4, 0);
             if(this.canMove == true){
+                this.applyForceScaled(this.movementSpeed*1.4, 0);
                 if(this.hitbox.overlaps(allSprites)){
                     this.movementSpeed = -this.movementSpeed;
                 }
@@ -41,6 +41,7 @@ function declareEnemy(){
                 this.timer ++;
                 if(this.timer > 300){                
                     let bullet = new Bullet(this.x , this.y - 20 );
+                    console.log('geschoten');
                     bullet.moveTowards(playertje.x, playertje.y, 0.03);
                     this.timer = 0;
                 }

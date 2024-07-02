@@ -12,8 +12,11 @@ function declareBullet(){
         }
 
         contactWithSomething(bullet, sprite2){
-            if(sprite2 != playertje && sprite2 != enememytje){
+            if(sprite2 != playertje && !(enemies.includes(sprite2))){
                 this.remove()
+            }
+            if(sprite2 == playertje){
+                buildLevel(welkLevel);
             }
         }
     }

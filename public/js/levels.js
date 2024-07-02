@@ -5,17 +5,27 @@ function loadLevel(levelNum) {
                 blocks: [
                     // new Block(200, 300, 100, 40),
                     // new Block(500, 300, 100, 40),
-                    new Block(800, 500, 100, 40)
+                    new Block(800, 500, 100, 40),
+                    new Block(-300, 500, 100, 40),
+                    new Block(10, 650, 40, 100),
+                    new Block(310, 650, 40, 100),
+                        new Block(160, 509, 340, 200),
+                    new Block(160, 670, 30, 30) 
+
                 ],
                 enemies: [
-                    new Enemy(60, 500, 80, true),
-                    new Enemy(200, 500, 80, true)
+                    new Enemy(160, 600, 40, false, false, true),
+                    // new Enemy(200, 500, 80, true)
+                ],
+                oneJumpBlocks: [
+                    new oneTimeUse(200, 200, 100, 40)
+
                 ],
                 normalSprites: [
                     new Sprite (width/2, height-18, 1000000, 20, 'k')
                 ],
-                player: new Player(100, 160, 30, 100),
-                finish:  new Finish(400, 400, 100, 40)
+                player: new Player(-150, height -20, 30, 100),
+                finish:  new Finish(1300, 200, 100, 40)
 
             };
 
@@ -35,7 +45,7 @@ function loadLevel(levelNum) {
                 normalSprites: [
                     new Sprite (width/2, height-18, 1000000, 20, 'k')
                 ],
-                player: new Player(100, 160, 300, 100),
+                player: new Player(100, 160, 30, 100),
                 finish:  new Finish(400, 400, 100, 40)
 
             };
