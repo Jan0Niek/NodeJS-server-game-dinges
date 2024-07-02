@@ -6,17 +6,15 @@ function declareOneTimeUse(){
             this.y = y;
             this.width = width;
             this.height = height;
-            this.colliding(allSprites, this.isColliding)
-            this.timer = 0;
+            this.collided(allSprites, this.isColliding)
         }
 
         isColliding(oneTimeUse, sprite2){
-            this.timer ++;
-            if(this.timer > 120 && sprite2 == playertje){
-                this.remove()
-                this.timer = 0;
+            if(sprite2 == playertje){
+                setTimeout(() =>{
+                    this.remove()
+                }, 430)
             }
-
         }
     }
 }

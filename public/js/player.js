@@ -33,6 +33,12 @@ function declarePlayer(){
                 this.y+=0.06; //nail him to the platform // nagel hem vast aan het platform
                 this.x += (sprite2.pos.x - sprite2.prevPos.x);
             }
+
+            if(sprite2 == level.finish){
+                console.log('next level')
+                welkLevel++;
+                buildLevel(welkLevel);
+            }
         }
 
 

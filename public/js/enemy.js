@@ -21,7 +21,7 @@ function declareEnemy(){
             this.hitbox.overlapping(allSprites, this.somethingIsOnTop);
 
             this.colliding(allSprites, this.dead);
-
+            
 
         }
 
@@ -60,6 +60,7 @@ function declareEnemy(){
         dead(enememytje, sprite2){
             if(sprite2 == playertje){
                 console.log('rip');
+                buildLevel(welkLevel);
             }
         }
     }

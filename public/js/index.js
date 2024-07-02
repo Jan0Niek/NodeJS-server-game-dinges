@@ -6,6 +6,7 @@ let Player = declarePlayer();
 let Enemy = declareEnemy();
 let Bullet = declareBullet();
 let oneTimeUse = declareOneTimeUse();
+let Finish = declareFinish();
 
 //hier de overige set-up and such
 new Canvas(1280, 720)
@@ -28,17 +29,29 @@ frameRate(parseInt(localStorage.getItem("refresh-rate")));
 let backgroundje = loadImage("assets/achtergrond.jpg");
 textSize(15);
 
+let welkLevel = 1;
 
 
 
-new Sprite (width/2, height-18, 1000000, 20, 'k')
+let level;
+let blocks = [];
+let enemies = [];
+let normalSprites = [];
+let playertje;
+let test;
 
-let blocks = [new Block(300, 400, 100, 40), new Block(600, 400, 100, 40), new Block(600, 700, 100, 40)]
-let enemies = [new Enemy(40, 600, 80, true)]
 
-let playertje = new Player(400, 160, 30, 100);
+function buildLevel(welkLevel){
+    allSprites.remove()
+    level = loadLevel(welkLevel)
+    blocks = level.blocks
+    enemies = level.enemies
+    playertje = level.player
+    normalSprites = level.normalSprites
+    test = new oneTimeUse(200, 200, 100, 40)
+}
 
-let test = new oneTimeUse(200, 200, 100, 40)
+buildLevel(welkLevel);
 
 //main game loop enz
 function draw(){
@@ -83,6 +96,5 @@ function draw(){
         enememytje.moveBetweenPoints()
         enememytje.shootAtplayer()
         enememytje.jump()
-        enememytje.dead()
     });
 }
