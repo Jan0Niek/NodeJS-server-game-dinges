@@ -11,22 +11,29 @@ function declareButton(){
             this.callbackFunction = func;
             this.callbackFunctionArguments = args;
             this.color = col;
+            this.origColor = col;
             this.text = text;
             this.textSize = textSize;
+            this.clickable = true;
         }
         checkPressed(){
-            if(this.mouse.presses()){
-                this.callbackFunction(this.callbackFunctionArguments);
-            }
-
-            if(this.mouse.pressing()){
-                this.strokeWeight = 3;
-                this.width = this.constWidth * 0.95;
-                this.height = this.constHeight * 0.95;
+            if(this.clickable){
+                this.color = this.origColor;
+                if(this.mouse.presses()){
+                    this.callbackFunction(this.callbackFunctionArguments);
+                }
+    
+                if(this.mouse.pressing()){
+                    this.strokeWeight = 3;
+                    this.width = this.constWidth * 0.95;
+                    this.height = this.constHeight * 0.95;
+                }else{
+                    this.strokeWeight = 1;
+                    this.width = this.constWidth;
+                    this.height = this.constHeight;
+                }
             }else{
-                this.strokeWeight = 1;
-                this.width = this.constWidth;
-                this.height = this.constHeight;
+                this.color = color(40, 40, 40);
             }
         }
     }

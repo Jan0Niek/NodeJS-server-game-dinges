@@ -44,6 +44,7 @@ io.sockets.on('connection', (socket) => {
         if(!rooms.includes(roomName)){
             rooms.push(roomName);
             roomsStates[roomName] = ROOMSTATES.waitingForOthers;
+            socket.data.playerNum = -1;
             socket.join(roomName);
         }else{
             socket.emit("roomNameError");
@@ -51,8 +52,8 @@ io.sockets.on('connection', (socket) => {
     });
 
     socket.on("joinRoom", async (roomName) => {
-        socket.join(roomName); //why doesn't it work!!!!!
-        console.log("All rooms: " + rooms);
+        socket.join(roomName); 
+        socket.data.playerNum = -1;
         const sockets = await io.in(roomName).fetchSockets();
         for (const _socket of sockets){
             if(_socket.id != socket.id){
@@ -65,21 +66,17 @@ io.sockets.on('connection', (socket) => {
     socket.on("requestToBePlayerX", async (playerNum) => {
         for (const room of socket.rooms) {
             if(room != socket.id){
-                console.log("room: " + room)
                 const sockets = await io.in(room).fetchSockets();
                 let canBeThatPlayer = true;
                 for (const _socket of sockets) {
                     if(_socket.id != socket.id){
-                        console.log("andere user: " + _socket.data.username);
                         if(_socket.data.playerNum == playerNum){
                             canBeThatPlayer = false;
-                            console.log(socket.data.username + ' mag niet!!!');
                         }
                     }
                 }
                 if (canBeThatPlayer){
                     socket.data.playerNum = playerNum;
-                    console.log(socket.data.username +' hij mag!')
                     socket.emit("playerNum", (playerNum));
                     socket.broadcast.to(room).emit("otherPlayerNum", (socket.id, playerNum))
                 }else{
@@ -92,21 +89,24 @@ io.sockets.on('connection', (socket) => {
     });
 
     socket.on("startGame", () => {
-
-        p5Lobbies[socket.rooms[0]] = new Q5('namespace');
-        with (p5Lobbies[socket.rooms[0]]) {
-            p5Lobbies[socket.rooms[0]].setup = () => 
-            {
-                // new Canvas(1280, 720);
-                noCanvas();
-                allSprites.autoDraw = false;
-                //onUpdatePos en dan de shit
-            };
-            p5Lobbies[socket.rooms[0]].draw = () => 
-            {
-                background(100);
-                console.log('ja')
-            };
+        for (const room of socket.rooms) {
+            if(room != socket.id){
+                p5Lobbies[room] = new Q5('namespace');
+                with (p5Lobbies[room]) {
+                    p5Lobbies[room].setup = () => 
+                    {
+                        // new Canvas(1280, 720);
+                        noCanvas();
+                        allSprites.autoDraw = false;
+                        //onUpdatePos en dan de shit
+                    };
+                    p5Lobbies[room].draw = () => 
+                    {
+                        background(100);
+                        // console.log('ja')
+                    };
+                }
+            }
         }
     });
 
@@ -117,6 +117,11 @@ io.sockets.on('connection', (socket) => {
         });
     })
 
+
+    io.of("/").adapter.on("delete-room", (room) => {
+        const index = rooms.indexOf(room);
+        rooms.splice(index, 1);
+    });
     
     socket.on("disconnect", (reason) => { //rooms!!!!
         socket.broadcast.emit("disconnected", socket.id, socket.data.username);
