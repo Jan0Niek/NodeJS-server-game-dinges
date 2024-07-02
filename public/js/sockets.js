@@ -43,12 +43,9 @@ socket.on("room", (lobbyName, players) => {
         socket.emit("joinRoom", (lobbyName));
         window.sessionStorage.setItem("currentRoom", roomName);
         doNotDisplay(document.getElementById("lobbywrapper"));
-        const gameFile = document.createElement('script');
-        gameFile.type = 'text/javascript';
-        gameFile.src = './js/sketch.js';
-        //zodat de game pas begint wanneer men 'join' klikt
-        document.getElementById("body").appendChild(gameFile);
-    })
+        doDisplay(document.getElementById("q5Canvas0"));
+        setUsername(username);
+    });
 
 
     let playerList = document.createElement("ul");
@@ -146,14 +143,25 @@ document.getElementById("createRoom").addEventListener("click", function(){
     socket.emit("newRoom", roomName); //zoiets ofzo? idk
     window.sessionStorage.setItem("currentRoom", roomName);
     doNotDisplay(document.getElementById("lobbywrapper"));
-    const gameFile = document.createElement('script');
-    gameFile.type = 'text/javascript';
-    gameFile.src = './js/sketch.js';
-    //zodat de game pas begint wanneer men 'join' klikt
-    document.getElementById("body").appendChild(gameFile);
+    doDisplay(document.getElementById("q5Canvas0"));
+    setUsername(username);
 });
 
+socket.on("roomNameError", () => {
+    window.location.reload()
+});
 
+socket.on("playerNum", (playerNum) =>{
+    setPlayerNum(playerNum);
+});
+
+socket.on("notPlayerX", () => {
+    console.log("kies een andere player om te zijn, dit kan niet!!!")
+});
+
+socket.on("otherPlayer", (id, username) => {
+    addOtherPlayer(id, username);
+});
 
 // function updatePosition(data){
 //     socket.emit("position", data);
@@ -163,6 +171,3 @@ document.getElementById("createRoom").addEventListener("click", function(){
 //     updateOtherPlayerPosition(data);
 // });
 
-// socket.on("otherPlayer", (id, username) => {
-//     addOtherPlayer(id, username);
-// });

@@ -1,7 +1,7 @@
 function declareButton(){
     return class Button extends Sprite{
-        constructor(x, y, w, h, col, text, textSize, func){
-            super(x, y, w, h);
+        constructor(x, y, w, h, col, text, textSize, func, args){
+            super(x, y, w, h, 'k');
             this.x = x;
             this.y = y;
             this.width = w;
@@ -9,13 +9,14 @@ function declareButton(){
             this.constWidth = w;
             this.constHeight = h;
             this.callbackFunction = func;
+            this.callbackFunctionArguments = args;
             this.color = col;
             this.text = text;
             this.textSize = textSize;
         }
         checkPressed(){
             if(this.mouse.presses()){
-                this.callbackFunction();   
+                this.callbackFunction(this.callbackFunctionArguments);
             }
 
             if(this.mouse.pressing()){

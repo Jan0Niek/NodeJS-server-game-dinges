@@ -108,9 +108,11 @@ header img {
 }
 
 a {
+    /* transition: 0.3s; */
     font-size: larger;
     text-shadow: -1px -1px 0 lightgray, 1px -1px 0 lightgray, -1px 1px 0 lightgray, 1px 1px 0 lightgray;
     /* -webkit-text-stroke: 0.3px lightgray; */
+    opacity: 0.1;
 }
 a:link {
     color: darkblue;
@@ -122,6 +124,8 @@ a:visited {
 
 a:hover {
     color:darkred;
+    transition: 1s;
+    opacity: 1.0;
 }
 
 a:active {color: rebeccapurple;}
