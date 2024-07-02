@@ -54,7 +54,7 @@ function declareEnemy(){
         
         control() {
             if(this.selected == true){
-                this.gravityScale = 1;
+                this.gravityScale = 1.5;
             if (kb.pressing('arrowUp')){
                 console.log('sprongetje')
                 if(this.colliding(allSprites)){
@@ -97,7 +97,7 @@ function declareEnemy(){
                 if(this.canShoot == true){
                     this.timer ++;
                     if(this.timer > this.shootSpeed){                
-                        let bullet = new Bullet(this.x , this.y - 20 );
+                        let bullet = new Bullet(this.x , this.y - 30 );
                         console.log('geschoten');
                         bullet.moveTowards(playertje.x, playertje.y, 0.03);
                         this.timer = 0;

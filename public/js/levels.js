@@ -22,7 +22,8 @@ function loadLevel(levelNum) {
 
                 ],
                 normalSprites: [
-                    new Sprite (width/2, height-18, 1000000, 20, 'k')
+                    new Sprite (width/2, height-18, 1000000, 20, 'k'),
+                    new Sprite (-1000, 0, 20, 1000000, 'k')
                 ],
                 player: new Player(-150, height -20, 30, 100),
                 finish:  new Finish(1300, 200, 100, 40)

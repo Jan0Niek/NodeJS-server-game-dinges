@@ -43,7 +43,7 @@ function declarePlayer(){
 
 
         control(){ 
-            this.gravityScale = 1;
+            this.gravityScale = 1.5;
             if (kb.pressing('w') || kb.pressing(' ')){
                 if(this.groundsensor.overlapping(allSprites)){
                     this.vel.y = -8;
