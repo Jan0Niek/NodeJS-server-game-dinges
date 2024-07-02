@@ -95,5 +95,7 @@ function draw(){
         enememytje.moveBetweenPoints()
         enememytje.shootAtplayer()
         enememytje.jump()
+        enememytje.toggleSelection(enemies)
+        enememytje.control()
     });
 }
