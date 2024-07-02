@@ -9,7 +9,7 @@ function declareEnemy(){
             this.stroke = new color(255, 46, 56);
             this.strokeWeight = 3;
             this.canMove = false;
-            this.canShoot = true;
+            this.canShoot = false;
             this.canJump = false;
             this.timer = 0;
             this.timerJump = 0;
@@ -86,6 +86,11 @@ function declareEnemy(){
                     enememytje.stroke = color(0);
                     enememytje.shootSpeed = 300;
                 });
+                blocks.forEach(block => {
+                    block.selected = false;
+                    block.stroke = color(0);
+                    block.collider = 'k';
+                });
                 this.selected = true;
                 this.stroke = new Color(255, 0, 255);
                 this.shootSpeed = 50;
@@ -121,7 +126,7 @@ function declareEnemy(){
             if(this.canJump == true){
                 this.timerJump ++;
                 if(this.timerJump > random(250, 400)){
-                    this.vel.y -= 8; 
+                    this.vel.y -=8; 
                     this.timerJump = 0;
                 }
             }

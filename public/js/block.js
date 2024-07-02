@@ -50,6 +50,11 @@ function declareBlock(){
                     block.stroke = color(0);
                     block.collider = 'k';
                 });
+                enemies.forEach(enememytje => {
+                    enememytje.selected = false;
+                    enememytje.stroke = color(0);
+                    enememytje.shootSpeed = 300;
+                });
                 this.selected = true;
                 this.stroke = new Color(255, 0, 255);
                 this.collider = 'd';

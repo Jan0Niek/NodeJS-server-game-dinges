@@ -9,12 +9,14 @@ function loadLevel(levelNum) {
                     new Block(-300, 500, 100, 40),
                     new Block(10, 650, 40, 100),
                     new Block(310, 650, 40, 100),
-                        new Block(160, 509, 340, 200),
-                    new Block(160, 670, 30, 30) 
+                    new Block(160, 590, 340, 40),
+                    new Block(160, 670, 30, 30), 
+                    new Block(-500, 600, 50, 50)
 
                 ],
                 enemies: [
                     new Enemy(160, 600, 40, false, false, true),
+                    new Enemy(160, 590, 100, false, true, false)
                     // new Enemy(200, 500, 80, true)
                 ],
                 oneJumpBlocks: [

@@ -54,12 +54,12 @@ buildLevel(welkLevel);
 
 //main game loop enz
 function draw(){
-    if(mouse.presses()){
-        new Sprite(mouse.x, mouse.y, random(20, 120), random(20, 120))
-    }
-    if(mouse.presses('right')){
-        enemies.push(new Enemy(mouse.x, mouse.y, random(4, 80), true))
-    }
+    // if(mouse.presses()){
+    //     new Sprite(mouse.x, mouse.y, random(20, 120), random(20, 120))
+    // }
+    // if(mouse.presses('right')){
+    //     enemies.push(new Enemy(mouse.x, mouse.y, random(4, 80), true))
+    // }
     camera.on()
     background(0, 123, 123);
     //looping background
