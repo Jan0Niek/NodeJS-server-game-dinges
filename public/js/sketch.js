@@ -29,7 +29,7 @@ const requestToBePlayerX = (playerNum) => {
   socket.emit("requestToBePlayerX", (playerNum))
 }
 const tryStartGame = () =>{
-
+  socket.emit("tryStartGame");
 }
 
 
@@ -46,7 +46,6 @@ let button1 = new Button(200, 400, 300, 100, color(200, 80, 160), 'Klik mij voor
 let button2 = new Button(600, 400, 300, 100, color(200, 80, 160), 'Klik mij voor p2', 20, requestToBePlayerX, (2));
 
 let startButton = new Button(canvas.hw, 680, 300, 40, color(20, 240, 20), "Start game!", 40, tryStartGame, null);
-startButton.clickable = false;
 
 
 function draw() {

@@ -14,10 +14,8 @@ function declareButton(){
             this.origColor = col;
             this.text = text;
             this.textSize = textSize;
-            this.clickable = true;
         }
         checkPressed(){
-            if(this.clickable){
                 this.color = this.origColor;
                 if(this.mouse.presses()){
                     this.callbackFunction(this.callbackFunctionArguments);
@@ -32,9 +30,6 @@ function declareButton(){
                     this.width = this.constWidth;
                     this.height = this.constHeight;
                 }
-            }else{
-                this.color = color(40, 40, 40);
-            }
         }
     }
 }
