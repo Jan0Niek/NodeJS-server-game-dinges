@@ -12,8 +12,9 @@ function loadLevel(levelNum) {
                     new Block(160, 590, 340, 40),
                     new Block(160, 670, 30, 30), 
                     new Block(-500, 600, 50, 50),
+                    new Block(100, 100, 100, 40, true)
 
-                    new Block(100, 100, 100, 40, 100, 100, 900, 100)
+                    // new Block(100, 100, 100, 40, 100, 100, 900, 100)
                 ],
                 enemies: [
                     new Enemy(160, 600, 40, false, false, true),
@@ -29,7 +30,7 @@ function loadLevel(levelNum) {
                     new Sprite (-1000, 0, 20, 1000000, 'k')
                 ],
                 player: new Player(-150, height -20, 30, 100),
-                finish:  new Finish(1300, 200, 100, 40)
+                finish:  new Finish(1300, 600, 100, 40)
 
             };
 
