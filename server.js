@@ -30,11 +30,8 @@ io.sockets.on('connection', (socket) => {
         rooms.forEach(async room => {
             const sockets = await io.in(room).fetchSockets();
             let players = [];
-            const theirid = socket.id;
             for (const socket of sockets){
-                if(socket.id != theirid){
-                    players.push(socket.data.username);
-                }
+                players.push(socket.data.username);
             }
             socket.emit("room", room, players);
         });
@@ -123,7 +120,6 @@ io.sockets.on('connection', (socket) => {
                     p5Lobbies[room].draw = () => 
                     {
                         background(100);
-                        // console.log('ja')
                     };
                 }
             }
@@ -140,7 +136,7 @@ io.sockets.on('connection', (socket) => {
 
     io.of("/").adapter.on("delete-room", (room) => {
         const index = rooms.indexOf(room);
-        rooms.splice(index, 1);
+        if(index != -1) rooms.splice(index, 1);
     });
     
     socket.on("disconnect", (reason) => { //rooms!!!!
