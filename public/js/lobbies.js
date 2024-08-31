@@ -151,23 +151,3 @@ socket.on("roomNameError", () => {
     window.location.reload()
 });
 
-socket.on("playerNum", (playerNum) =>{
-    setPlayerNum(playerNum);
-});
-
-socket.on("notPlayerX", () => {
-    console.log("kies een andere player om te zijn, dit kan niet!!!")
-});
-
-socket.on("otherPlayer", (id, username) => {
-    addOtherPlayer(id, username);
-});
-
-// function updatePosition(data){
-//     socket.emit("position", data);
-// }
-
-// socket.on("position", (data) => {
-//     updateOtherPlayerPosition(data);
-// });
-

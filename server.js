@@ -85,22 +85,14 @@ io.sockets.on('connection', (socket) => {
 
     });
 
-    socket.on("tryStartGame", async () => {
-        let canStart = false;
-        let p1Exists = false;
-        let p2Exists = false;
+    socket.on("readyUp", async (readiness) => {
+        socket.data.ready = readiness;
         for (const room of socket.rooms) {
             if(room != socket.id){
                 const sockets = await io.in(room).fetchSockets();
                 for (const _socket of sockets) {
-                    if(_socket.data.playerNum == 1) p1Exists = true;
-                    if(_socket.data.playerNum == 2) p2Exists = true;
-                }
 
-                if(p1Exists && p2Exists){
-                    canStart = true;
                 }
-                //h
             }
         }
     });

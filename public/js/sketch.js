@@ -13,21 +13,14 @@ function setPlayerNum(num){
   myPlayerNum = num;
   console.log('ik ben p'+myPlayerNum)
 }
+/** @type {Map<String, OtherPlayer>} */
+let otherPlayers = new Map();
 
-let otherPlayers = new Set();
-
-function addOtherPlayer(id, username){
-  // otherPlayers.add(new OtherPlayer(id, username));
-  otherPlayers.add(username);
+function addOtherPlayer(id, username, playerNum=-1){
+  otherPlayers.set(id, new OtherPlayer(id, username, playerNum));
   console.log(username + "  toegevoegd")
 }
-const requestToBePlayerX = (playerNum) => {
-  console.log('knop nr ' + playerNum + ' gedrukt')
-  socket.emit("requestToBePlayerX", (playerNum))
-}
-const tryStartGame = () =>{
-  socket.emit("tryStartGame");
-}
+
 
 //declarations of custom classes:
 const Button = declareButton();
