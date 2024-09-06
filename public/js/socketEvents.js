@@ -9,10 +9,19 @@ socket.on("notPlayerX", () => {
 });
 
 socket.on("otherPlayer", (id, username) => {
-    addOtherPlayer(id, username);
+    console.log("iemand is er")
+    setOtherPlayer(id, username);
 });
 
 socket.on("otherPlayerNum", (id, playerNum) => {
-    addOtherPlayer(id, otherPlayers.get(id).username, playerNum)
+    setOtherPlayer(id, undefined, playerNum);
 })
 
+socket.on("otherPlayerReady", (id, ready) => {
+    setOtherPlayer(id, undefined, undefined, ready);
+});
+
+socket.on("otherPlayerDisconnect", (id) => {
+    console.log(otherPlayers.get(id).username + " has left.")
+    otherPlayers.delete(id);
+});

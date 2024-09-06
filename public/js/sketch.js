@@ -11,14 +11,17 @@ let activeScene = scenes.menu;
 let myPlayerNum = -1;
 function setPlayerNum(num){
   myPlayerNum = num;
-  console.log('ik ben p'+myPlayerNum)
+  // console.log('ik ben p'+myPlayerNum)
 }
 /** @type {Map<String, OtherPlayer>} */
 let otherPlayers = new Map();
 
-function addOtherPlayer(id, username, playerNum=-1){
-  otherPlayers.set(id, new OtherPlayer(id, username, playerNum));
-  console.log(username + "  toegevoegd")
+function setOtherPlayer(id, username=undefined, playerNum=undefined, readiness=undefined){
+  otherPlayers.set(id, new OtherPlayer(id));
+  // console.log(username + "  toegevoegd")
+  if(username) otherPlayers.get(id).username = username;
+  if(playerNum) otherPlayers.get(id).playerNum = playerNum;
+  if(playerNum) otherPlayers.get(id).ready = readiness;
 }
 
 

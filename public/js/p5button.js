@@ -1,6 +1,6 @@
 function declareButton(){
     return class Button extends Sprite{
-        constructor(x, y, w, h, col1, text, textSize, func=null, args=null, toggle=false, col2=null, text2=null){
+        constructor(x, y, w, h, col1, text, textSize, func=null, args=null, toggle=false, col2=null, text2=null, textCol1=color(0, 0, 0), textCol2=color(0, 0, 0)){
             super(x, y, w, h, 'k');
             this.x = x;
             this.y = y;
@@ -19,6 +19,9 @@ function declareButton(){
             this.toggled = false;
             this.origText = text;
             this.text2 = text2;
+            this.origTextColor = textCol1;
+            this.textColor = textCol1;
+            this.textColor2 = textCol2;
         }
         checkPressed(){
             if(this.mouse.presses()){
@@ -28,9 +31,11 @@ function declareButton(){
                     if(this.toggled){
                         this.color = this.col2;
                         this.text = this.text2;
+                        this.textColor = this.textColor2;
                     }else{
                         this.color = this.origColor;
                         this.text = this.origText;
+                        this.textColor = this.origTextColor;
                     }
                 }
                 

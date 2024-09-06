@@ -75,7 +75,7 @@ io.sockets.on('connection', (socket) => {
                 if (canBeThatPlayer){
                     socket.data.playerNum = playerNum;
                     socket.emit("playerNum", (playerNum));
-                    socket.broadcast.to(room).emit("otherPlayerNum", (socket.id, playerNum))
+                    socket.broadcast.to(room).emit("otherPlayerNum", socket.id, playerNum)
                 }else{
                     //idk zeg dat hij niet playerX mag zijn??
                     socket.emit("notPlayerX");
@@ -89,10 +89,8 @@ io.sockets.on('connection', (socket) => {
         socket.data.ready = readiness;
         for (const room of socket.rooms) {
             if(room != socket.id){
-                const sockets = await io.in(room).fetchSockets();
-                for (const _socket of sockets) {
-
-                }
+                //the room the socket is in
+                socket.to(room).emit("otherPlayerReady", socket.id, readiness);
             }
         }
     });
@@ -132,6 +130,7 @@ io.sockets.on('connection', (socket) => {
     });
     
     socket.on("disconnect", (reason) => { //rooms!!!!
-        socket.broadcast.emit("disconnected", socket.id, socket.data.username);
+        // console.log(socket.data.username + " has left.")
+        socket.broadcast.emit("otherPlayerDisconnect", (socket.id));
     });
    });
