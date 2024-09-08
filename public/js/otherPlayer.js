@@ -1,7 +1,7 @@
 class OtherPlayer {
-    constructor(id){
+    constructor(id, username=null){
         this.id = id;
-        this.username;
+        this.username = username;
         this.x;
         this.y;
         this.playerNum = -1;

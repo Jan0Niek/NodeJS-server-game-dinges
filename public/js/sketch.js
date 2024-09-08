@@ -13,15 +13,18 @@ function setPlayerNum(num){
   myPlayerNum = num;
   // console.log('ik ben p'+myPlayerNum)
 }
-/** @type {Map<String, OtherPlayer>} */
-let otherPlayers = new Map();
 
-function setOtherPlayer(id, username=undefined, playerNum=undefined, readiness=undefined){
-  otherPlayers.set(id, new OtherPlayer(id));
-  // console.log(username + "  toegevoegd")
-  if(username) otherPlayers.get(id).username = username;
-  if(playerNum) otherPlayers.get(id).playerNum = playerNum;
-  if(playerNum) otherPlayers.get(id).ready = readiness;
+/** @type {Map<String, OtherPlayer>} */
+var otherPlayers = new Map();
+function addOtherPlayer(id, username){
+  otherPlayers.set(id, new OtherPlayer(id, username));
+}
+function setOtherPlayer(id, playerNum=null, readiness=null){
+  //🤮
+  // if(username != null)  otherPlayers.get(id).username = username;
+  console.log(username + " lol wat is dit")
+  if(playerNum != null) otherPlayers.get(id).playerNum = playerNum;
+  if(readiness != null) otherPlayers.get(id).ready = readiness;
 }
 
 

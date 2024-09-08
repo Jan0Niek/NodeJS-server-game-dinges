@@ -32,6 +32,7 @@ io.sockets.on('connection', (socket) => {
             let players = [];
             for (const socket of sockets){
                 players.push(socket.data.username);
+                // console.log(socket.data.username);
             }
             socket.emit("room", room, players);
         });

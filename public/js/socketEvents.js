@@ -10,15 +10,15 @@ socket.on("notPlayerX", () => {
 
 socket.on("otherPlayer", (id, username) => {
     console.log("iemand is er")
-    setOtherPlayer(id, username);
+    addOtherPlayer(id, username);
 });
 
 socket.on("otherPlayerNum", (id, playerNum) => {
-    setOtherPlayer(id, undefined, playerNum);
+    setOtherPlayer(id, playerNum);
 })
 
 socket.on("otherPlayerReady", (id, ready) => {
-    setOtherPlayer(id, undefined, undefined, ready);
+    setOtherPlayer(id, null, ready);
 });
 
 socket.on("otherPlayerDisconnect", (id) => {
