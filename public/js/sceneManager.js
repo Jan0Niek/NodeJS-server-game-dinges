@@ -20,8 +20,8 @@ const scenes =
         textStyle(BOLD);
         strokeWeight(1);    
 
-        let button1 = new Button(200, 400, 300, 100, color(200, 80, 160), 'P1', 20, requestToBePlayerX, (1));
-        let button2 = new Button(600, 400, 300, 100, color(200, 80, 160), 'P2', 20, requestToBePlayerX, (2));
+        let button1 = new Button(200, 400, 300, 100, color(200, 80, 160), 'P1', 20, requestToBePlayerX, (1), false, color(160, 20, 100));
+        let button2 = new Button(600, 400, 300, 100, color(200, 80, 160), 'P2', 20, requestToBePlayerX, (2), false, color(160, 20, 100));
 
         let readyButton = new Button(canvas.hw, 680, 300, 40, color(20, 240, 20), "Ready up", 40, readyUp, null, true, color(0, 60, 0), "Readied", color(0, 0, 0), color(240, 240, 240));
         readyButton.autoDraw = false;
@@ -47,6 +47,8 @@ const scenes =
             
             button1.text = button1.origText;
             button2.text = button2.origText;
+            button1.color = button1.origColor;
+            button2.color = button2.origColor;
             
             let i=0;
             otherPlayers.forEach((otherP) => {
@@ -70,8 +72,10 @@ const scenes =
 
             if(myPlayerNum == 1){
                 button1.text = `${button1.origText}: 🫵 (you!)`;
+                button1.color = button1.col2;
             }else if(myPlayerNum == 2){
                 button2.text = `${button2.origText}: 🫵 (you!)`;
+                button2.color = button2.col2;
             }
 
         }
