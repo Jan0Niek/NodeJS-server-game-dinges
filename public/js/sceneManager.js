@@ -53,10 +53,18 @@ const scenes =
                 text(otherP.username, 40, 24+i*textSize());
                 i++;
                 if(otherP.playerNum == 1) {
-                    button1.text = `${button1.origText}: ${otherP.username}`;
+                    if(otherP.ready){
+                        button1.text = `${button1.origText}: ${otherP.username} \n READY`;
+                    }else {
+                        button1.text = `${button1.origText}: ${otherP.username} \n unready`;
+                    }
                 }
                 if(otherP.playerNum == 2) {
-                    button2.text = `${button2.origText}: ${otherP.username}`;
+                    if(otherP.ready){
+                        button2.text = `${button2.origText}: ${otherP.username} \n READY`;
+                    }else {
+                        button2.text = `${button2.origText}: ${otherP.username} \n unready`;
+                    }                
                 }
             });
 
