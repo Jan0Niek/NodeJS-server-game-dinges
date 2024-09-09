@@ -16,13 +16,17 @@ function setPlayerNum(num){
 
 /** @type {Map<String, OtherPlayer>} */
 var otherPlayers = new Map();
-function addOtherPlayer(id, username){
-  otherPlayers.set(id, new OtherPlayer(id, username));
+
+function addOtherPlayer(data){
+  otherPlayers.set(data.id, new OtherPlayer(data.id, data.username));
+
+  if(data.playerNum != null) otherPlayers.get(data.id).playerNum = data.playerNum;
+  if(data.readiness != null) otherPlayers.get(data.id).ready = data.readiness;
 }
 function setOtherPlayer(id, playerNum=null, readiness=null){
   //🤮
   // if(username != null)  otherPlayers.get(id).username = username;
-  console.log(username + " lol wat is dit")
+  // console.log(username + " lol wat is dit")
   if(playerNum != null) otherPlayers.get(id).playerNum = playerNum;
   if(readiness != null) otherPlayers.get(id).ready = readiness;
 }

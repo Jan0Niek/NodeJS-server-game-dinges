@@ -6,11 +6,12 @@ socket.on("playerNum", (playerNum) =>{
 
 socket.on("notPlayerX", () => {
     console.log("kies een andere player om te zijn, dit kan niet!!!")
+    window.alert("Someone else is already that player");
 });
 
-socket.on("otherPlayer", (id, username) => {
+socket.on("otherPlayer", data => {
     console.log("iemand is er")
-    addOtherPlayer(id, username);
+    addOtherPlayer(data);
 });
 
 socket.on("otherPlayerNum", (id, playerNum) => {

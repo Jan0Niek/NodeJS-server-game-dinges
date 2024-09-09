@@ -55,8 +55,20 @@ io.sockets.on('connection', (socket) => {
         const sockets = await io.in(roomName).fetchSockets();
         for (const _socket of sockets){
             if(_socket.id != socket.id){
-                socket.emit("otherPlayer", _socket.id, _socket.data.username);
-                _socket.emit("otherPlayer", socket.id, socket.data.username);
+                const data = {
+                    id: _socket.id,
+                    username: _socket.data.username,
+                    playerNum: _socket.data.playerNum,
+                    readiness: _socket.data.ready
+                }
+                socket.emit("otherPlayer", data);
+                const _data = {
+                    id: socket.id,
+                    username: socket.data.username,
+                    playerNum: socket.data.playerNum,
+                    readiness: socket.data.ready
+                }
+                _socket.emit("otherPlayer", _data);
             }
         }
     });

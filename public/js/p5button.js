@@ -1,6 +1,6 @@
 function declareButton(){
     return class Button extends Sprite{
-        constructor(x, y, w, h, col1, text, textSize, func=null, args=null, toggle=false, col2=null, text2=null, textCol1=color(0, 0, 0), textCol2=color(0, 0, 0)){
+        constructor(x, y, w, h, col1, text, textSize, func=null, args=null, toggle=false, col2=col1, text2=text, textCol1=color(0, 0, 0), textCol2=color(0, 0, 0)){
             super(x, y, w, h, 'k');
             this.x = x;
             this.y = y;
