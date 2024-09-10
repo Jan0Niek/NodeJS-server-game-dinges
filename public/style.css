@@ -1,10 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital@1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap');
+
 
 * {
     margin: 0px;
     padding: 0px;
     color: white;
     float: block;
+    font-family: "Noto Color Emoji", system-ui;
 }
 
 body {

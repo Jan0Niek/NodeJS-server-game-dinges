@@ -1,5 +1,8 @@
 new Q5();
 doNotDisplay(document.getElementById("q5Canvas0"));
+const emojiFont = loadFont("assets/NotoColorEmoji-Regular.ttf");
+const suseFont = loadFont("assets/SUSE-VariableFont_wght.ttf")
+textFont(suseFont)
 
 let chosenUsername;
 function setUsername(name){
