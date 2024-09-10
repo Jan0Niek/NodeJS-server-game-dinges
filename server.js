@@ -100,34 +100,47 @@ io.sockets.on('connection', (socket) => {
 
     socket.on("readyUp", async (readiness) => {
         socket.data.ready = readiness;
+        let theRoom;
         for (const room of socket.rooms) {
             if(room != socket.id){
                 //the room the socket is in
                 socket.to(room).emit("otherPlayerReady", socket.id, readiness);
+                theRoom = room;
             }
         }
+
+        //hieronder een niet werkend ready-systeem
+        const sockets = await io.in(theRoom).fetchSockets();
+        let p1Ready = false;
+        let p2Ready = false;
+        for (const _socket of sockets) {
+            if(_socket.data.playerNum == 1){
+                if(_socket.data.ready) {p1Ready=true; console.log("p1ready")}
+            }if(socket.data.playerNum == 2){
+                if(_socket.data.ready) {p2Ready=true;console.log("p2ready")}
+            }
+        }
+        if(p1Ready && p2Ready) {startGame(theRoom); console.log("begonnen")}
+
     });
 
-    socket.on("startGame", () => {
-        for (const room of socket.rooms) {
-            if(room != socket.id){
-                p5Lobbies[room] = new Q5('namespace');
-                with (p5Lobbies[room]) {
-                    p5Lobbies[room].setup = () => 
-                    {
-                        // new Canvas(1280, 720);
-                        noCanvas();
-                        allSprites.autoDraw = false;
-                        //onUpdatePos en dan de shit
-                    };
-                    p5Lobbies[room].draw = () => 
-                    {
-                        background(100);
-                    };
-                }
-            }
+    function startGame(room){
+        p5Lobbies[room] = new Q5('namespace');
+        with (p5Lobbies[room]) {
+            p5Lobbies[room].setup = () => 
+            {
+                new Canvas(1280, 720);
+                // noCanvas();
+                allSprites.autoDraw = false;
+                //onUpdatePos en dan de shit
+            };
+            p5Lobbies[room].draw = () => 
+            {
+                background(100);
+                console.log("ajsdasdjueoe")
+            };
         }
-    });
+    }
 
     
     socket.on("position", (data) =>{
