@@ -120,7 +120,11 @@ io.sockets.on('connection', (socket) => {
                 if(_socket.data.ready) {p2Ready=true;console.log("p2ready")}
             }
         }
-        if(p1Ready && p2Ready) {startGame(theRoom); console.log("begonnen")}
+        if(p1Ready && p2Ready) {
+            startGame(theRoom); 
+            console.log("begonnen");
+            io.to(theRoom).emit("startGame");
+        }
 
     });
 
@@ -129,15 +133,14 @@ io.sockets.on('connection', (socket) => {
         with (p5Lobbies[room]) {
             p5Lobbies[room].setup = () => 
             {
-                new Canvas(1280, 720);
-                // noCanvas();
+                // new Canvas(1280, 720);
+                noCanvas();
                 allSprites.autoDraw = false;
                 //onUpdatePos en dan de shit
             };
             p5Lobbies[room].draw = () => 
             {
-                background(100);
-                console.log("ajsdasdjueoe")
+                // background(100);
             };
         }
     }

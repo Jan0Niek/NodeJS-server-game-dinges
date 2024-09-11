@@ -26,3 +26,7 @@ socket.on("otherPlayerDisconnect", (id) => {
     console.log(otherPlayers.get(id).username + " has left.")
     otherPlayers.delete(id);
 });
+
+socket.on("startGame", () => {
+    scenes.gaming();
+});

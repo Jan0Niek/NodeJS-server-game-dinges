@@ -9,8 +9,6 @@ function setUsername(name){
   chosenUsername = name;
 }
 
-let activeScene = scenes.menu; 
-
 let myPlayerNum = -1;
 function setPlayerNum(num){
   myPlayerNum = num;
@@ -44,6 +42,6 @@ strokeWeight(1);
 
 
 function draw() {
-  activeScene();
+  scenes.menu();
 }
 

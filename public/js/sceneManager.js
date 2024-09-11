@@ -2,6 +2,17 @@
 //eronder de draw overriden
 const scenes = 
 {
+    gaming: () => {
+
+
+
+        draw = () => {
+            background(255)
+
+            circle(40, 40, 40)
+        }
+    },
+
     menu: () => {
         let emojiFinger = loadImage("assets/finger_pointing_at_you.svg");
 
