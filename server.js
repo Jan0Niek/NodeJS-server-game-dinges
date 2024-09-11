@@ -115,14 +115,14 @@ io.sockets.on('connection', (socket) => {
         let p2Ready = false;
         for (const _socket of sockets) {
             if(_socket.data.playerNum == 1){
-                if(_socket.data.ready) {p1Ready=true; console.log("p1ready")}
+                if(_socket.data.ready) p1Ready=true; 
             }if(socket.data.playerNum == 2){
-                if(_socket.data.ready) {p2Ready=true;console.log("p2ready")}
+                if(_socket.data.ready) p2Ready=true; 
             }
         }
         if(p1Ready && p2Ready) {
             startGame(theRoom); 
-            console.log("begonnen");
+            console.log("er is begonnen");
             io.to(theRoom).emit("startGame");
         }
 
