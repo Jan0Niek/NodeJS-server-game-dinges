@@ -19,8 +19,35 @@ const ROOMSTATES = {waitingForOthers:0, inGame:1}
 
 let rooms = [];
 // let players = [];  --> const sockets = await io.in(room).fetchSockets();
-let roomsStates = {}; //key: roomName, value: gameState (e.g. running, waitingForPlayers, empty?, dead?, win?, etc)
+let roomsStates = {}; //key: roomName, value: gameState (e.g. running, waitingForPlayers, empty?, dead?, win?, etc) !mostly unused btw!
 let p5Lobbies = {}; //dictionary of sorts, key being lobbyName, value being the whole p5-sketch
+
+class RoomData{
+    constructor(){
+        this.p1 = {
+            name : null, 
+            pressedKeys : []
+            
+        }
+        this.p2 = {
+            name : null, 
+            pressedKeys : []
+            
+        }
+    }
+}
+
+/**  @type {Map, RoomData}  */
+let roomsDatas = new Map();
+    /* example: 
+    room: {
+        p1: {
+            pressedKeys = [],
+            grounded = false
+            etc etc etc
+        }
+    }
+    */
 
 io.sockets.on('connection', (socket) => {
     
@@ -42,6 +69,7 @@ io.sockets.on('connection', (socket) => {
         if(!rooms.includes(roomName)){
             rooms.push(roomName);
             roomsStates[roomName] = ROOMSTATES.waitingForOthers;
+            roomsDatas.set(roomName, new RoomData())
             socket.data.playerNum = -1;
             socket.join(roomName);
         }else{
@@ -128,30 +156,6 @@ io.sockets.on('connection', (socket) => {
 
     });
 
-    function startGame(room){
-        p5Lobbies[room] = new Q5('namespace');
-        with (p5Lobbies[room]) {
-            p5Lobbies[room].setup = () => 
-            {
-                // new Canvas(1280, 720);
-                noCanvas();
-                allSprites.autoDraw = false;
-                //onUpdatePos en dan de shit
-            };
-            p5Lobbies[room].draw = () => 
-            {
-                // background(100);
-            };
-        }
-    }
-
-    
-    socket.on("position", (data) =>{
-        socket.rooms.forEach(room => {
-            socket.to(room).emit("position", data)
-        });
-    })
-
 
     io.of("/").adapter.on("delete-room", (room) => {
         const index = rooms.indexOf(room);
@@ -162,4 +166,36 @@ io.sockets.on('connection', (socket) => {
         // console.log(socket.data.username + " has left.")
         socket.broadcast.emit("otherPlayerDisconnect", (socket.id));
     });
-   });
+
+
+    socket.on("pressedKeys", (pressedKeys) =>{
+        for (const room of socket.rooms) {
+            if(room != socket.id){
+                //the room the socket is in
+                if(socket.data.playerNum == 1){
+                    roomsDatas.get(room).p1.pressedKeys = pressedKeys;
+                }else if(socket.data.playerNum == 1){
+                    roomsDatas.get(room).p2.pressedKeys = pressedKeys;
+                }
+            }
+        }
+    });
+});
+
+function startGame(room){
+    p5Lobbies[room] = new Q5('namespace');
+    with (p5Lobbies[room]) {
+        p5Lobbies[room].setup = () => 
+        {
+            // new Canvas(1280, 720);
+            noCanvas();
+            allSprites.autoDraw = false;
+            //onUpdatePos en dan de shit
+        };
+        p5Lobbies[room].draw = () => 
+        {
+            // background(100);
+            if(roomsDatas.p1.pressedKeys.contains.includes("a")) console.log("blub");
+        };
+    }
+}

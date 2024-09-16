@@ -5,11 +5,18 @@ const scenes =
     gaming: () => {
 
 
-
+        let pressedKeys = [];
         draw = () => {
-            background(255)
+            background(255);
 
-            circle(40, 40, 40)
+            pressedKeys = [];
+            if(kb.pressing("w")) pressedKeys.push("w");
+            if(kb.pressing("a")) pressedKeys.push("a");
+            if(kb.pressing("s")) pressedKeys.push("s");
+            if(kb.pressing("d")) pressedKeys.push("d");
+            socket.emit("pressedKeys", pressedKeys);
+
+            circle(40, 40, 40);
         }
     },
 
