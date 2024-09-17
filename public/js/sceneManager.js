@@ -4,6 +4,10 @@ const scenes =
 {
     gaming: () => {
 
+        let gamerData;
+        socket.on("gameData", (data) => {
+            gamerData = data;
+        });
 
         let pressedKeys = [];
         draw = () => {
@@ -17,11 +21,15 @@ const scenes =
             socket.emit("pressedKeys", pressedKeys);
 
             circle(40, 40, 40);
+            console.log("banaan" + gamerData.sprit1)
         }
     },
 
     menu: () => {
-        let emojiFinger = loadImage("assets/finger_pointing_at_you.svg");
+        const Button = declareButton();
+        textStyle(BOLD);
+        strokeWeight(1);
+        // let emojiFinger = loadImage("assets/finger_pointing_at_you.svg");
 
         const requestToBePlayerX = (playerNum) => {
             // console.log('knop nr ' + playerNum + ' gedrukt')

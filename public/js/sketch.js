@@ -33,13 +33,7 @@ function setOtherPlayer(id, playerNum=null, readiness=null){
 }
 
 
-//declarations of custom classes:
-const Button = declareButton();
-
 new Canvas(1280, 720); //add pixel density factor multiplier to all variables? geen haast daarmee
-textStyle(BOLD);
-strokeWeight(1);
-
 
 function draw() {
   scenes.menu();

@@ -185,17 +185,29 @@ io.sockets.on('connection', (socket) => {
 function startGame(room){
     p5Lobbies[room] = new Q5('namespace');
     with (p5Lobbies[room]) {
+
+        let abc = new Sprite(20, 20, 20, 20);
         p5Lobbies[room].setup = () => 
         {
             // new Canvas(1280, 720);
             noCanvas();
             allSprites.autoDraw = false;
             //onUpdatePos en dan de shit
+
         };
         p5Lobbies[room].draw = () => 
         {
             // background(100);
-            if(roomsDatas.p1.pressedKeys.contains.includes("a")) console.log("blub");
+            // console.log(roomsDatas)
+            // console.log(roomsDatas.get(room).p1.pressedKeys)
+            
+            if(roomsDatas.get(room).p1.pressedKeys.includes("a")) abc.x++;
+
+            
+            const data = {
+                sprit1: abc
+            }
+            io.to(room).emit("gameData", data);
         };
     }
 }

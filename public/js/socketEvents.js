@@ -27,6 +27,9 @@ socket.on("otherPlayerDisconnect", (id) => {
     otherPlayers.delete(id);
 });
 
+
+
 socket.on("startGame", () => {
     scenes.gaming();
 });
+
