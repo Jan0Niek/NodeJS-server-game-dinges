@@ -184,30 +184,31 @@ io.sockets.on('connection', (socket) => {
 
 function startGame(room){
     p5Lobbies[room] = new Q5('namespace');
-    with (p5Lobbies[room]) {
+    p5Lobbies[room].fram
 
-        let abc = new Sprite(20, 20, 20, 20);
-        p5Lobbies[room].setup = () => 
-        {
-            // new Canvas(1280, 720);
-            noCanvas();
-            allSprites.autoDraw = false;
-            //onUpdatePos en dan de shit
+    /** @type {Sprite} */
+    let abc = new p5Lobbies[room].Sprite(20, 20, 20, 20);
+    
+    p5Lobbies[room].setup = () => 
+    {
+        // new Canvas(1280, 720);
+        p5Lobbies[room].noCanvas();
+        p5Lobbies[room].allSprites.autoDraw = false;
+        //onUpdatePos en dan de shit
 
-        };
-        p5Lobbies[room].draw = () => 
-        {
-            // background(100);
-            // console.log(roomsDatas)
-            // console.log(roomsDatas.get(room).p1.pressedKeys)
-            
-            if(roomsDatas.get(room).p1.pressedKeys.includes("a")) abc.x++;
+    };
+    p5Lobbies[room].draw = () => 
+    {
+        // background(100);
+        // console.log(roomsDatas)
+        // console.log(roomsDatas.get(room).p1.pressedKeys)
+        
+        if(roomsDatas.get(room).p1.pressedKeys.includes("a")) abc.x++;
 
-            
-            const data = {
-                sprit1: abc
-            }
-            io.to(room).emit("gameData", data);
-        };
-    }
+        
+        const data = {
+            sprit1: abc
+        }
+        io.to(room).emit("gameData", abc.pos);
+    };
 }

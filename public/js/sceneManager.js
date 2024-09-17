@@ -21,7 +21,6 @@ const scenes =
             socket.emit("pressedKeys", pressedKeys);
 
             circle(40, 40, 40);
-            console.log("banaan" + gamerData.sprit1)
         }
     },
 
