@@ -20,7 +20,9 @@ const scenes =
             if(kb.pressing("d")) pressedKeys.push("d");
             socket.emit("pressedKeys", pressedKeys);
 
-            circle(40, 40, 40);
+            if (gamerData) {
+                circle(gamerData.x, gamerData.y, 40);
+            }
         }
     },
 

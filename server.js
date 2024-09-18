@@ -184,7 +184,8 @@ io.sockets.on('connection', (socket) => {
 
 function startGame(room){
     p5Lobbies[room] = new Q5('namespace');
-    p5Lobbies[room].fram
+    p5Lobbies[room].frameRate(30)
+    //verstuur hierboven de levels ofzo? doe dan onderaan de al verzonden sprite-posities updaten?!
 
     /** @type {Sprite} */
     let abc = new p5Lobbies[room].Sprite(20, 20, 20, 20);
@@ -203,12 +204,20 @@ function startGame(room){
         // console.log(roomsDatas)
         // console.log(roomsDatas.get(room).p1.pressedKeys)
         
-        if(roomsDatas.get(room).p1.pressedKeys.includes("a")) abc.x++;
+        if(roomsDatas.get(room).p1.pressedKeys.includes("w")) abc.y--;
+        if(roomsDatas.get(room).p1.pressedKeys.includes("a")) abc.x--;
+        if(roomsDatas.get(room).p1.pressedKeys.includes("s")) abc.y++;
+        if(roomsDatas.get(room).p1.pressedKeys.includes("d")) abc.x++;
 
         
         const data = {
             sprit1: abc
         }
-        io.to(room).emit("gameData", abc.pos);
+        try{
+            io.to(room).emit("gameData", abc.pos);
+        } catch(err){
+            console.log(err.message)
+        }
+        
     };
 }
