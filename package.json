@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Jan0Niek/NodeJS-server-game-dinges#readme",
   "dependencies": {
+    "@socket.io/admin-ui": "^0.5.1",
     "@types/p5": "^1.7.6",
     "canvas": "^2.11.2",
     "express": "^4.18.2",

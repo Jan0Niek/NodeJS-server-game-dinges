@@ -3,6 +3,7 @@
 const scenes = 
 {
     gaming: () => {
+        allSprites.removeAll();
 
         let gamerData;
         socket.on("gameData", (data) => {
@@ -20,8 +21,9 @@ const scenes =
             if(kb.pressing("d")) pressedKeys.push("d");
             socket.emit("pressedKeys", pressedKeys);
 
-            if (gamerData) {
-                circle(gamerData.x, gamerData.y, 40);
+            if (gamerData && gamerData.sprites) {
+                rect(gamerData.sprites[0].x, gamerData.sprites[0].y, gamerData.sprites[0].w, gamerData.sprites[0].h);
+                text(gamerData.sprites[0].text, gamerData.sprites[0].x, gamerData.sprites[0].y);
             }
         }
     },

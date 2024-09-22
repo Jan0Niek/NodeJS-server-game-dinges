@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const express = require('express');
+const { instrument } = require("@socket.io/admin-ui");
 
 require('q5');
 require('p5play');
@@ -9,6 +10,11 @@ const app = express();
 const server = app.listen(3000);
 
 const io = require('socket.io')(server);
+
+instrument(io, {
+    auth: false,
+    mode: "development",
+});
 
 app.set('port', '3000');
 
@@ -182,6 +188,9 @@ io.sockets.on('connection', (socket) => {
     });
 });
 
+
+// FIX DAT ER TWEEMAAL IN DEZELFDE ROOM/LOBBY EEN GAME KAN WORDEN GESTART!!! gamestates checken ofzo?
+
 function startGame(room){
     p5Lobbies[room] = new Q5('namespace');
     p5Lobbies[room].frameRate(30)
@@ -189,11 +198,12 @@ function startGame(room){
 
     /** @type {Sprite} */
     let abc = new p5Lobbies[room].Sprite(20, 20, 20, 20);
+    abc.text = "p11"
     
     p5Lobbies[room].setup = () => 
     {
-        // new Canvas(1280, 720);
-        p5Lobbies[room].noCanvas();
+        new p5Lobbies[room].Canvas(1280, 720);
+        // p5Lobbies[room].noCanvas();
         p5Lobbies[room].allSprites.autoDraw = false;
         //onUpdatePos en dan de shit
 
@@ -211,10 +221,12 @@ function startGame(room){
 
         
         const data = {
-            sprit1: abc
+            sprites : [
+                {x: abc.x, y: abc.y, w: abc.w, h: abc.h, col: abc.color, text: abc.text}
+            ]
         }
         try{
-            io.to(room).emit("gameData", abc.pos);
+            io.to(room).emit("gameData", data);
         } catch(err){
             console.log(err.message)
         }
