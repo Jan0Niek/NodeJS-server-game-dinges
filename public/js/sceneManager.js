@@ -5,7 +5,9 @@ const scenes =
     gaming: () => {
         allSprites.removeAll();
 
-        let gamerData;
+        let gamerData = {
+            sprites : [ ]
+        };
         socket.on("gameData", (data) => {
             gamerData = data;
         });
@@ -22,8 +24,10 @@ const scenes =
             socket.emit("pressedKeys", pressedKeys);
 
             if (gamerData && gamerData.sprites) {
-                rect(gamerData.sprites[0].x, gamerData.sprites[0].y, gamerData.sprites[0].w, gamerData.sprites[0].h);
-                text(gamerData.sprites[0].text, gamerData.sprites[0].x, gamerData.sprites[0].y);
+                for (const sprite of gamerData.sprites) {
+                    rect(sprite.x, sprite.y, sprite.w, sprite.h);
+                    text(sprite.text, sprite.x, sprite.y);
+                }
             }
         }
     },

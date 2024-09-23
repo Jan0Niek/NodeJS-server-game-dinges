@@ -12,3 +12,5 @@ class RoomData{
         }
     }
 }
+
+module.exports = RoomData;

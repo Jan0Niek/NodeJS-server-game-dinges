@@ -2,6 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const express = require('express');
 const { instrument } = require("@socket.io/admin-ui");
+const RoomData = require("./RoomData.js")
 
 require('q5');
 require('p5play');
@@ -12,7 +13,11 @@ const server = app.listen(3000);
 const io = require('socket.io')(server);
 
 instrument(io, {
-    auth: false,
+    auth: {
+        type: "basic",
+        username: "jan",
+        password: "$2a$10$F9hWr6Nq59aofYUBWhVU.uiUJTIuopzCE4bSby.gR./U5lUTB.UAm"
+      },
     mode: "development",
 });
 
@@ -28,32 +33,9 @@ let rooms = [];
 let roomsStates = {}; //key: roomName, value: gameState (e.g. running, waitingForPlayers, empty?, dead?, win?, etc) !mostly unused btw!
 let p5Lobbies = {}; //dictionary of sorts, key being lobbyName, value being the whole p5-sketch
 
-class RoomData{
-    constructor(){
-        this.p1 = {
-            name : null, 
-            pressedKeys : []
-            
-        }
-        this.p2 = {
-            name : null, 
-            pressedKeys : []
-            
-        }
-    }
-}
 
 /**  @type {Map, RoomData}  */
 let roomsDatas = new Map();
-    /* example: 
-    room: {
-        p1: {
-            pressedKeys = [],
-            grounded = false
-            etc etc etc
-        }
-    }
-    */
 
 io.sockets.on('connection', (socket) => {
     
@@ -166,11 +148,22 @@ io.sockets.on('connection', (socket) => {
     io.of("/").adapter.on("delete-room", (room) => {
         const index = rooms.indexOf(room);
         if(index != -1) rooms.splice(index, 1);
+        delete p5Lobbies.room;
     });
     
     socket.on("disconnect", (reason) => { //rooms!!!!
         // console.log(socket.data.username + " has left.")
         socket.broadcast.emit("otherPlayerDisconnect", (socket.id));
+        
+        for (const room of socket.rooms) {
+            if(room != socket.id){
+                //the room the socket is in
+                if(io.in(room).allSockets().size < 2){ //fix deze regel code!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    delete p5Lobbies.room;
+                    console.log("deleted a room cause of too few players")
+                }
+            }
+        }
     });
 
 
@@ -180,7 +173,7 @@ io.sockets.on('connection', (socket) => {
                 //the room the socket is in
                 if(socket.data.playerNum == 1){
                     roomsDatas.get(room).p1.pressedKeys = pressedKeys;
-                }else if(socket.data.playerNum == 1){
+                }else if(socket.data.playerNum == 2){
                     roomsDatas.get(room).p2.pressedKeys = pressedKeys;
                 }
             }
@@ -198,7 +191,9 @@ function startGame(room){
 
     /** @type {Sprite} */
     let abc = new p5Lobbies[room].Sprite(20, 20, 20, 20);
-    abc.text = "p11"
+    abc.text = "p1";
+    let abc1 = new p5Lobbies[room].Sprite(120, 20, 20, 20);
+    abc1.text = "p2"
     
     p5Lobbies[room].setup = () => 
     {
@@ -218,11 +213,18 @@ function startGame(room){
         if(roomsDatas.get(room).p1.pressedKeys.includes("a")) abc.x--;
         if(roomsDatas.get(room).p1.pressedKeys.includes("s")) abc.y++;
         if(roomsDatas.get(room).p1.pressedKeys.includes("d")) abc.x++;
+        
+        if(roomsDatas.get(room).p2.pressedKeys.includes("w")) abc1.y--;
+        if(roomsDatas.get(room).p2.pressedKeys.includes("a")) abc1.x--;
+        if(roomsDatas.get(room).p2.pressedKeys.includes("s")) abc1.y++;
+        if(roomsDatas.get(room).p2.pressedKeys.includes("d")) abc1.x++;
 
         
         const data = {
             sprites : [
-                {x: abc.x, y: abc.y, w: abc.w, h: abc.h, col: abc.color, text: abc.text}
+                {x: abc.x, y: abc.y, w: abc.w, h: abc.h, col: abc.color, text: abc.text},
+                {x: abc1.x, y: abc1.y, w: abc1.w, h: abc1.h, col: abc1.color, text: abc1.text}
+                
             ]
         }
         try{
