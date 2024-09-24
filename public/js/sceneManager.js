@@ -5,11 +5,27 @@ const scenes =
     gaming: () => {
         allSprites.removeAll();
 
+        let theLevel = {
+            sprites : []
+        }
+
+        socket.on("loadLevel", (level) => {
+            console.log("loading level?")
+            theLevel = {
+                sprites : []
+            }
+            level.sprites.forEach(sprite => {
+                theLevel.sprites.push(new Sprite(sprite.x, sprite.y, sprite.w, sprite.h)) //this may change
+            });
+            console.log(theLevel)
+        });
+
         let gamerData = {
             sprites : [ ]
         };
         socket.on("gameData", (data) => {
             gamerData = data;
+            // console.log(gamerData)
         });
 
         let pressedKeys = [];
@@ -23,10 +39,11 @@ const scenes =
             if(kb.pressing("d")) pressedKeys.push("d");
             socket.emit("pressedKeys", pressedKeys);
 
-            if (gamerData && gamerData.sprites) {
-                for (const sprite of gamerData.sprites) {
-                    rect(sprite.x, sprite.y, sprite.w, sprite.h);
-                    text(sprite.text, sprite.x, sprite.y);
+            if(gamerData && gamerData.sprites){
+                for (let i = 0; i < gamerData.sprites.length; i++) {
+                    theLevel.sprites[i].x = gamerData.sprites[i].x;
+                    theLevel.sprites[i].y = gamerData.sprites[i].y;
+                    console.log(theLevel.sprites[i].y + "  " + gamerData.sprites[i].y)
                 }
             }
         }

@@ -149,21 +149,26 @@ io.sockets.on('connection', (socket) => {
         const index = rooms.indexOf(room);
         if(index != -1) rooms.splice(index, 1);
         delete p5Lobbies.room;
+        console.log("er is gestopt")
     });
     
+    // socket.on("disconnecting", async () => {
+    //     for (const room of socket.rooms) {
+    //         if(room != socket.id){
+    //             const sockets = io.sockets.adapter.rooms.get(room);
+    //             //the room the socket is in
+    //             console.log(sockets + "  " + sockets.size)
+    //             if(sockets.size < 2){ 
+    //                 delete p5Lobbies.room;
+    //                 console.log("deleted a room cause of too few players")
+    //             }
+    //         }
+    //     }
+    // })
+
     socket.on("disconnect", (reason) => { //rooms!!!!
         // console.log(socket.data.username + " has left.")
         socket.broadcast.emit("otherPlayerDisconnect", (socket.id));
-        
-        for (const room of socket.rooms) {
-            if(room != socket.id){
-                //the room the socket is in
-                if(io.in(room).allSockets().size < 2){ //fix deze regel code!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    delete p5Lobbies.room;
-                    console.log("deleted a room cause of too few players")
-                }
-            }
-        }
     });
 
 
@@ -188,12 +193,19 @@ function startGame(room){
     p5Lobbies[room] = new Q5('namespace');
     p5Lobbies[room].frameRate(30)
     //verstuur hierboven de levels ofzo? doe dan onderaan de al verzonden sprite-posities updaten?!
+    let level = {
+        sprites : []
+    }
 
     /** @type {Sprite} */
     let abc = new p5Lobbies[room].Sprite(20, 20, 20, 20);
     abc.text = "p1";
     let abc1 = new p5Lobbies[room].Sprite(120, 20, 20, 20);
     abc1.text = "p2"
+
+    level.sprites.push({x: abc.x, y: abc.y, w: abc.w, h: abc.h, col: abc.color, text: abc.text})
+    level.sprites.push({x: abc1.x, y: abc1.y, w: abc1.w, h: abc1.h, col: abc1.color, text: abc1.text})
+
     
     p5Lobbies[room].setup = () => 
     {
@@ -202,28 +214,30 @@ function startGame(room){
         p5Lobbies[room].allSprites.autoDraw = false;
         //onUpdatePos en dan de shit
 
+        io.to(room).emit("loadLevel", level);
     };
+
     p5Lobbies[room].draw = () => 
     {
         // background(100);
         // console.log(roomsDatas)
         // console.log(roomsDatas.get(room).p1.pressedKeys)
         
-        if(roomsDatas.get(room).p1.pressedKeys.includes("w")) abc.y--;
-        if(roomsDatas.get(room).p1.pressedKeys.includes("a")) abc.x--;
-        if(roomsDatas.get(room).p1.pressedKeys.includes("s")) abc.y++;
-        if(roomsDatas.get(room).p1.pressedKeys.includes("d")) abc.x++;
+        if(roomsDatas.get(room).p1.pressedKeys.includes("w")) abc.y -= 10;
+        if(roomsDatas.get(room).p1.pressedKeys.includes("a")) abc.x -= 10;
+        if(roomsDatas.get(room).p1.pressedKeys.includes("s")) abc.y += 10;
+        if(roomsDatas.get(room).p1.pressedKeys.includes("d")) abc.x += 10;
         
-        if(roomsDatas.get(room).p2.pressedKeys.includes("w")) abc1.y--;
-        if(roomsDatas.get(room).p2.pressedKeys.includes("a")) abc1.x--;
-        if(roomsDatas.get(room).p2.pressedKeys.includes("s")) abc1.y++;
-        if(roomsDatas.get(room).p2.pressedKeys.includes("d")) abc1.x++;
+        if(roomsDatas.get(room).p2.pressedKeys.includes("w")) abc1.y -= 10;
+        if(roomsDatas.get(room).p2.pressedKeys.includes("a")) abc1.x -= 10;
+        if(roomsDatas.get(room).p2.pressedKeys.includes("s")) abc1.y += 10;
+        if(roomsDatas.get(room).p2.pressedKeys.includes("d")) abc1.x += 10;
 
         
         const data = {
             sprites : [
-                {x: abc.x, y: abc.y, w: abc.w, h: abc.h, col: abc.color, text: abc.text},
-                {x: abc1.x, y: abc1.y, w: abc1.w, h: abc1.h, col: abc1.color, text: abc1.text}
+                {x: abc.x, y: abc.y},
+                {x: abc1.x, y: abc1.y}
                 
             ]
         }
