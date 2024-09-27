@@ -6,16 +6,17 @@ const scenes =
         allSprites.removeAll();
 
         let theLevel = {
-            sprites : []
+            sprites : new Map()
         }
 
         socket.on("loadLevel", (level) => {
             console.log("loading level?")
             theLevel = {
-                sprites : []
+                sprites: new Map()
             }
             level.sprites.forEach(sprite => {
-                theLevel.sprites.push(new Sprite(sprite.x, sprite.y, sprite.w, sprite.h)) //this may change
+                theLevel.sprites.set(sprite.id, new Sprite(sprite.x, sprite.y, sprite.w, sprite.h, 'n'));
+                theLevel.sprites.get(sprite.id).text = sprite.text;
             });
             console.log(theLevel)
         });
@@ -41,13 +42,16 @@ const scenes =
 
             if(gamerData && gamerData.sprites){
                 for (let i = 0; i < gamerData.sprites.length; i++) {
-                    theLevel.sprites[i].x = gamerData.sprites[i].x;
-                    theLevel.sprites[i].y = gamerData.sprites[i].y;
-                    console.log(theLevel.sprites[i].y + "  " + gamerData.sprites[i].y)
+                    //set local things to the online recieved things
+                    theLevel.sprites.get(gamerData.sprites[i].id).x = gamerData.sprites[i].x;
+                    theLevel.sprites.get(gamerData.sprites[i].id).y = gamerData.sprites[i].y;
+                    theLevel.sprites.get(gamerData.sprites[i].id).rotation = gamerData.sprites[i].rot;
                 }
             }
         }
     },
+
+
 
     menu: () => {
         const Button = declareButton();

@@ -34,8 +34,8 @@ let roomsStates = {}; //key: roomName, value: gameState (e.g. running, waitingFo
 let p5Lobbies = {}; //dictionary of sorts, key being lobbyName, value being the whole p5-sketch
 
 
-/**  @type {Map, RoomData}  */
 let roomsDatas = new Map();
+
 
 io.sockets.on('connection', (socket) => {
     
@@ -147,24 +147,17 @@ io.sockets.on('connection', (socket) => {
 
     io.of("/").adapter.on("delete-room", (room) => {
         const index = rooms.indexOf(room);
-        if(index != -1) rooms.splice(index, 1);
-        delete p5Lobbies.room;
-        console.log("er is gestopt")
+        console.log(`room ${room} removed?`)
+        if(index != -1){
+            rooms.splice(index, 1);
+            delete p5Lobbies.room;
+            console.log("for real removed")
+        }
     });
     
-    // socket.on("disconnecting", async () => {
-    //     for (const room of socket.rooms) {
-    //         if(room != socket.id){
-    //             const sockets = io.sockets.adapter.rooms.get(room);
-    //             //the room the socket is in
-    //             console.log(sockets + "  " + sockets.size)
-    //             if(sockets.size < 2){ 
-    //                 delete p5Lobbies.room;
-    //                 console.log("deleted a room cause of too few players")
-    //             }
-    //         }
-    //     }
-    // })
+    socket.on("disconnecting", async () => {
+        
+    })
 
     socket.on("disconnect", (reason) => { //rooms!!!!
         // console.log(socket.data.username + " has left.")
@@ -192,6 +185,7 @@ io.sockets.on('connection', (socket) => {
 function startGame(room){
     p5Lobbies[room] = new Q5('namespace');
     p5Lobbies[room].frameRate(30)
+    // p5Lobbies[room].world.gravity.y = 10
     //verstuur hierboven de levels ofzo? doe dan onderaan de al verzonden sprite-posities updaten?!
     let level = {
         sprites : []
@@ -203,8 +197,8 @@ function startGame(room){
     let abc1 = new p5Lobbies[room].Sprite(120, 20, 20, 20);
     abc1.text = "p2"
 
-    level.sprites.push({x: abc.x, y: abc.y, w: abc.w, h: abc.h, col: abc.color, text: abc.text})
-    level.sprites.push({x: abc1.x, y: abc1.y, w: abc1.w, h: abc1.h, col: abc1.color, text: abc1.text})
+    level.sprites.push({id: abc.idNum, x: abc.x, y: abc.y, w: abc.w, h: abc.h, col: abc.color, text: abc.text})
+    level.sprites.push({id: abc1.idNum, x: abc1.x, y: abc1.y, w: abc1.w, h: abc1.h, col: abc1.color, text: abc1.text})
 
     
     p5Lobbies[room].setup = () => 
@@ -233,11 +227,13 @@ function startGame(room){
         if(roomsDatas.get(room).p2.pressedKeys.includes("s")) abc1.y += 10;
         if(roomsDatas.get(room).p2.pressedKeys.includes("d")) abc1.x += 10;
 
+        abc.rotation++;
+
         
         const data = {
             sprites : [
-                {x: abc.x, y: abc.y},
-                {x: abc1.x, y: abc1.y}
+                {id: abc.idNum, x: abc.x, y: abc.y, rot: abc.rotation},
+                {id: abc1.idNum, x: abc1.x, y: abc1.y, rot: abc1.rotation}
                 
             ]
         }
