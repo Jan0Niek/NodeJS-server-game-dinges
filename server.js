@@ -31,7 +31,7 @@ const ROOMSTATES = {waitingForOthers:0, inGame:1}
 let rooms = [];
 // let players = [];  --> const sockets = await io.in(room).fetchSockets();
 let roomsStates = {}; //key: roomName, value: gameState (e.g. running, waitingForPlayers, empty?, dead?, win?, etc) !mostly unused btw!
-let p5Lobbies = {}; //dictionary of sorts, key being lobbyName, value being the whole p5-sketch
+let p5Lobbies = new Map(); //dictionary of sorts, key being lobbyName, value being the whole p5-sketch
 
 
 let roomsDatas = new Map();
@@ -40,6 +40,7 @@ let roomsDatas = new Map();
 io.sockets.on('connection', (socket) => {
     
     socket.on("username", (username) => { socket.data.username = username; });
+    socket.on("testtest", () => { console.log(p5Lobbies.keys())} )
 
     socket.on("getLobbies", () => {
         rooms.forEach(async room => {
@@ -150,7 +151,8 @@ io.sockets.on('connection', (socket) => {
         console.log(`room ${room} removed?`)
         if(index != -1){
             rooms.splice(index, 1);
-            delete p5Lobbies.room;
+            p5Lobbies.get(room).remove();
+            p5Lobbies.delete(room);
             console.log("for real removed")
         }
     });
@@ -183,35 +185,36 @@ io.sockets.on('connection', (socket) => {
 // FIX DAT ER TWEEMAAL IN DEZELFDE ROOM/LOBBY EEN GAME KAN WORDEN GESTART!!! gamestates checken ofzo?
 
 function startGame(room){
-    p5Lobbies[room] = new Q5('namespace');
-    p5Lobbies[room].frameRate(30)
-    // p5Lobbies[room].world.gravity.y = 10
+    p5Lobbies.set(room, new Q5('namespace'));
+    p5Lobbies.get(room).frameRate(30)
+    // p5Lobbies.get(room).world.gravity.y = 10
     //verstuur hierboven de levels ofzo? doe dan onderaan de al verzonden sprite-posities updaten?!
     let level = {
         sprites : []
     }
 
     /** @type {Sprite} */
-    let abc = new p5Lobbies[room].Sprite(20, 20, 20, 20);
+    let abc = p5Lobbies.get(room).createSprite(20, 20, 20, 20);
     abc.text = "p1";
-    let abc1 = new p5Lobbies[room].Sprite(120, 20, 20, 20);
+    let abc1 = p5Lobbies.get(room).createSprite(120, 20, 20, 20);
+    
     abc1.text = "p2"
 
     level.sprites.push({id: abc.idNum, x: abc.x, y: abc.y, w: abc.w, h: abc.h, col: abc.color, text: abc.text})
     level.sprites.push({id: abc1.idNum, x: abc1.x, y: abc1.y, w: abc1.w, h: abc1.h, col: abc1.color, text: abc1.text})
 
     
-    p5Lobbies[room].setup = () => 
+    p5Lobbies.get(room).setup = () => 
     {
-        new p5Lobbies[room].Canvas(1280, 720);
-        // p5Lobbies[room].noCanvas();
-        p5Lobbies[room].allSprites.autoDraw = false;
+        p5Lobbies.get(room).createCanvas(1280, 720);
+        // p5Lobbies.get(room).noCanvas();
+        p5Lobbies.get(room).allSprites.autoDraw = false;
         //onUpdatePos en dan de shit
 
         io.to(room).emit("loadLevel", level);
     };
 
-    p5Lobbies[room].draw = () => 
+    p5Lobbies.get(room).draw = () => 
     {
         // background(100);
         // console.log(roomsDatas)
