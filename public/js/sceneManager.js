@@ -18,7 +18,8 @@ const scenes =
                 theLevel.sprites.set(sprite.id, new Sprite(sprite.x, sprite.y, sprite.w, sprite.h, 'n'));
                 theLevel.sprites.get(sprite.id).text = sprite.text;
             });
-            console.log(theLevel)
+            // socket.emit("levelHasLoaded")
+            // dan pas de game-loop aan de server beginnen wanneer zowel P1's als P2's levels zijn ingeladen..?
         });
 
         let gamerData = {
