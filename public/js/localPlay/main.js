@@ -5,6 +5,8 @@ let Block = declareBlock();
 let Player = declarePlayer();
 let Enemy = declareEnemy();
 let Bullet = declareBullet();
+let oneTimeUse = declareOneTimeUse();
+let Finish = declareFinish();
 
 //hier de overige set-up and such
 new Canvas(1280, 720)
@@ -27,24 +29,37 @@ frameRate(parseInt(localStorage.getItem("refresh-rate")));
 let backgroundje = loadImage("assets/achtergrond.jpg");
 textSize(15);
 
+let welkLevel = 1;
 
 
 
-new Sprite (width/2, height-18, 1000000, 20, 'k')
+let level;
+let blocks = [];
+let enemies = [];
+let oneJumpBlocks = [];
+let normalSprites = [];
+let playertje;
 
-let blocks = [new Block(300, 400, 100, 40), new Block(600, 400, 100, 40), new Block(600, 700, 100, 40)]
-let enemies = [new Enemy(40, 600, true)]
 
-let playertje = new Player(400, 160, 30, 100);
+function buildLevel(welkLevel){
+    allSprites.remove()
+    level = loadLevel(welkLevel)
+    blocks = level.blocks
+    enemies = level.enemies
+    playertje = level.player
+    normalSprites = level.normalSprites
+}
+
+buildLevel(welkLevel);
+
 //main game loop enz
 function draw(){
-    if(world.timeScale == 0) text('klik om het spel te starten', width*0.5, height*0.5, 400, 500)
-    if(mouse.presses()){
-        new Sprite(mouse.x, mouse.y, random(20, 120), random(20, 120))
-    }
-    if(mouse.presses('right')){
-        enemies.push(new Enemy(mouse.x, mouse.y, true ))
-    }
+    // if(mouse.presses()){
+    //     new Sprite(mouse.x, mouse.y, random(20, 120), random(20, 120))
+    // }
+    // if(mouse.presses('right')){
+    //     enemies.push(new Enemy(mouse.x, mouse.y, random(4, 80), true))
+    // }
     camera.on()
     background(0, 123, 123);
     //looping background
@@ -72,11 +87,16 @@ function draw(){
     blocks.forEach(block => {
         block.control()
         block.toggleSelection(blocks)
+        block.rotateBlock()
+        // block.moveBetweenPoints()
     });
     playertje.control()
 
     enemies.forEach(enememytje => {
         enememytje.moveBetweenPoints()
         enememytje.shootAtplayer()
+        enememytje.jump()
+        enememytje.toggleSelection(enemies)
+        enememytje.control()
     });
 }
