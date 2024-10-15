@@ -39,27 +39,27 @@ class Player extends Sprite{
         }
     }
 
-
-    control(){ 
+    
+    control( /** @type {string[]} */ pressedKeys){ 
         this.gravityScale = 1.5;
-        if (kb.pressing('w') || kb.pressing(' ')){
+        if (pressedKeys.includes('w') || pressedKeys.includes(' ')){
             if(this.groundsensor.overlapping(allSprites)){
                 this.vel.y = -8;
                 this.grounded = false;
             }
             this.gravityScale -= 0.4;
         }
-        if (kb.pressing('s')){
+        if (pressedKeys.includes('s')){
             this.gravityScale += 1.0;
         }
 
-        if(kb.pressing('a') && this.vel.x > -this.walkSpeed){
+        if(pressedKeys.includes('a') && this.vel.x > -this.walkSpeed){
             this.applyForceScaled(-this.walkSpeed*2, 0);
         }
-        if(kb.pressing('d') && this.vel.x < this.walkSpeed){
+        if(pressedKeys.includes('d') && this.vel.x < this.walkSpeed){
             this.applyForceScaled(this.walkSpeed*2, 0);
         }
-        if(kb.pressing('r')){
+        if(pressedKeys.includes('r')){
             buildLevel(welkLevel);
         }
 

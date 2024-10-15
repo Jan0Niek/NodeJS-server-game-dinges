@@ -2,10 +2,20 @@ const http = require('http');
 const fs = require('fs');
 const express = require('express');
 const { instrument } = require("@socket.io/admin-ui");
-const RoomData = require("./RoomData.js")
+const RoomData = require("./RoomData.js");
+
 
 require('q5');
 require('p5play');
+
+//altough this instance of p5/q5 and p5play goes almost completely unused, it's necessary for the classes that extend p5(play) things such as Sprite.
+//Sprite doesn't exist if there isn't a (global) instance of p5/q5. lovely inheritance jippee
+new Q5();
+noLoop();
+
+
+const Block = require("./game/block.js")
+new Block(10, 10, 10, 10, 10, 10, 10, 10, 10)
 
 const app = express();
 const server = app.listen(3000);
@@ -31,7 +41,7 @@ const ROOMSTATES = {waitingForOthers:0, inGame:1}
 let rooms = [];
 // let players = [];  --> const sockets = await io.in(room).fetchSockets();
 let roomsStates = {}; //key: roomName, value: gameState (e.g. running, waitingForPlayers, empty?, dead?, win?, etc) !mostly unused btw!
-let p5Lobbies = new Map(); //dictionary of sorts, key being lobbyName, value being the whole p5-sketch
+let p5Lobbies = {}; //dictionary of sorts, key being lobbyName, value being the whole p5-sketch
 
 
 let roomsDatas = new Map();
@@ -151,8 +161,8 @@ io.sockets.on('connection', (socket) => {
         console.log(`room ${room} removed?`)
         if(index != -1){
             rooms.splice(index, 1);
-            p5Lobbies.get(room).remove();
-            p5Lobbies.delete(room);
+            p5Lobbies[room].remove();
+            delete p5Lobbies[room];
             console.log("for real removed")
         }
     });
@@ -185,58 +195,53 @@ io.sockets.on('connection', (socket) => {
 // FIX DAT ER TWEEMAAL IN DEZELFDE ROOM/LOBBY EEN GAME KAN WORDEN GESTART!!! gamestates checken ofzo?
 
 function startGame(room){
-    p5Lobbies.set(room, new Q5('namespace'));
-    p5Lobbies.get(room).frameRate(30)
-    // p5Lobbies.get(room).world.gravity.y = 10
+    p5Lobbies[room] = new Q5('namespace');
+    p5Lobbies[room].frameRate(30)
+    // p5Lobbies[room].world.gravity.y = 10
     //verstuur hierboven de levels ofzo? doe dan onderaan de al verzonden sprite-posities updaten?!
     let level = {
         sprites : []
     }
 
-    /** @type {Sprite} */
-    let abc = p5Lobbies.get(room).createSprite(20, 20, 20, 20);
-    abc.text = "p1";
-    let abc1 = p5Lobbies.get(room).createSprite(120, 20, 20, 20);
-    
-    abc1.text = "p2"
+    let playerOne = new p5Lobbies[room].Sprite(-150, p5Lobbies[room].height -20, 30, 100);
+    let playerTwoSelectedSprite;
 
-    level.sprites.push({id: abc.idNum, x: abc.x, y: abc.y, w: abc.w, h: abc.h, col: abc.color, text: abc.text})
-    level.sprites.push({id: abc1.idNum, x: abc1.x, y: abc1.y, w: abc1.w, h: abc1.h, col: abc1.color, text: abc1.text})
+
+    level.sprites.push({id: playerOne.idNum, x: playerOne.x, y: playerOne.y, w: playerOne.w, h: playerOne.h, col: playerOne.color, text: playerOne.text})
+    // level.sprites.push({id: abc1.idNum, x: abc1.x, y: abc1.y, w: abc1.w, h: abc1.h, col: abc1.color, text: abc1.text})
 
     
-    p5Lobbies.get(room).setup = () => 
+    p5Lobbies[room].setup = () => 
     {
-        p5Lobbies.get(room).createCanvas(1280, 720);
-        // p5Lobbies.get(room).noCanvas();
-        p5Lobbies.get(room).allSprites.autoDraw = false;
+        new p5Lobbies[room].Canvas(1280, 720);
+        // p5Lobbies[room].noCanvas();
+        p5Lobbies[room].allSprites.autoDraw = false;
         //onUpdatePos en dan de shit
 
         io.to(room).emit("loadLevel", level);
+        // new Group().forEach()//loop door allsprites en stuur die dan?
     };
 
-    p5Lobbies.get(room).draw = () => 
+    p5Lobbies[room].draw = () => 
     {
         // background(100);
         // console.log(roomsDatas)
         // console.log(roomsDatas.get(room).p1.pressedKeys)
         
-        if(roomsDatas.get(room).p1.pressedKeys.includes("w")) abc.y -= 10;
-        if(roomsDatas.get(room).p1.pressedKeys.includes("a")) abc.x -= 10;
-        if(roomsDatas.get(room).p1.pressedKeys.includes("s")) abc.y += 10;
-        if(roomsDatas.get(room).p1.pressedKeys.includes("d")) abc.x += 10;
+        if(roomsDatas.get(room).p1.pressedKeys.includes("w")) playerOne.y -= 10;
+        if(roomsDatas.get(room).p1.pressedKeys.includes("a")) playerOne.x -= 10;
+        if(roomsDatas.get(room).p1.pressedKeys.includes("s")) playerOne.y += 10;
+        if(roomsDatas.get(room).p1.pressedKeys.includes("d")) playerOne.x += 10;
         
-        if(roomsDatas.get(room).p2.pressedKeys.includes("w")) abc1.y -= 10;
-        if(roomsDatas.get(room).p2.pressedKeys.includes("a")) abc1.x -= 10;
-        if(roomsDatas.get(room).p2.pressedKeys.includes("s")) abc1.y += 10;
-        if(roomsDatas.get(room).p2.pressedKeys.includes("d")) abc1.x += 10;
-
-        abc.rotation++;
-
+        // if(roomsDatas.get(room).p2.pressedKeys.includes("w")) abc1.y -= 10;
+        // if(roomsDatas.get(room).p2.pressedKeys.includes("a")) abc1.x -= 10;
+        // if(roomsDatas.get(room).p2.pressedKeys.includes("s")) abc1.y += 10;
+        // if(roomsDatas.get(room).p2.pressedKeys.includes("d")) abc1.x += 10;
         
+        //zorg dat dit niet handmatig ingevuld hoeft te worden, gebruik allSprites
         const data = {
             sprites : [
-                {id: abc.idNum, x: abc.x, y: abc.y, rot: abc.rotation},
-                {id: abc1.idNum, x: abc1.x, y: abc1.y, rot: abc1.rotation}
+                {id: playerOne.idNum, x: playerOne.x, y: playerOne.y, rot: playerOne.rotation}
                 
             ]
         }
@@ -248,3 +253,9 @@ function startGame(room){
         
     };
 }
+
+
+
+
+//can't get classes to work in separate files ¯\_(ツ)_/¯
+
