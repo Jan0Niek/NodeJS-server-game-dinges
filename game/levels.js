@@ -1,4 +1,5 @@
-exports.loadLevel = function loadLevel(levelNum) {
+
+exports.loadLevel = function loadLevel(levelNum, Block, Enemy, OneTimeUse, Player, Finish) {
     switch (levelNum) {
         case 1:
             return{
@@ -7,7 +8,7 @@ exports.loadLevel = function loadLevel(levelNum) {
                     // new Block(500, 300, 100, 40),
                     new Block(800, 500, 100, 40),
                     new Block(-300, 500, 100, 40),
-                    new Block(10, 650, 40, 100),
+                    new Block(10, 650, 40, 100), 
                     new Block(310, 650, 40, 100),
                     new Block(160, 590, 340, 40),
                     new Block(160, 670, 30, 30), 
@@ -22,7 +23,7 @@ exports.loadLevel = function loadLevel(levelNum) {
                     // new Enemy(200, 500, 80, true)
                 ],
                 oneJumpBlocks: [
-                    new oneTimeUse(200, 200, 100, 40)
+                    new OneTimeUse(200, 200, 100, 40)
 
                 ],
                 normalSprites: [

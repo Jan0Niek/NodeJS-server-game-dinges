@@ -1,5 +1,5 @@
 class Player extends Sprite{
-    constructor(x, y, width, height){
+    constructor(x, y, width, height, level){
         super(x, y, width, height, 'd');
         this.x = x;
         this.y = y;
@@ -17,7 +17,7 @@ class Player extends Sprite{
         this.groundsensor = new Sprite(this.x, this.y+this.halfHeight, this.width*0.8, 5, 'n');
         this.groundsensor.visible = true;
         new GlueJoint(this, this.groundsensor).visible=false;
-        this.colliding(allSprites, this.isColliding)
+        this.colliding(allSprites, (player, sprite2)=>{this.isColliding(player, sprite2, level)})
 
         this.lastStoodOnSprite; //sprite player is standing on
         this.groundsensor.overlapping(allSprites, (player, sprite2) => {
@@ -25,14 +25,14 @@ class Player extends Sprite{
         });
     }
 
-    isColliding(player, sprite2){
+    isColliding(player, sprite2, level){
         //deze if is to make sure that the player is only moving relatively along with the sprite it's standing on, not a sprite it's touching on its side 
         if(sprite2 == this.lastStoodOnSprite){
             this.y+=0.06; //nail him to the platform // nagel hem vast aan het platform
             this.x += (sprite2.pos.x - sprite2.prevPos.x);
         }
 
-        if(sprite2 == level.finish){
+        if(level.hasOwnProperty(finish) && sprite2 == level.finish){
             console.log('next level')
             welkLevel++;
             buildLevel(welkLevel);

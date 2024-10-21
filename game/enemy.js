@@ -1,11 +1,11 @@
 class Enemy extends Sprite{
-    constructor(x, y, width, canMove, canJump, canShoot){  
+    constructor(x, y, width, canMove, canJump, canShoot, playerId){  
         super(x, y, width, 'triangle', 'd')
         this.x = x;
         this.y = y;
         this.maxSpeed = 3;
-        this.color = new color(145, 1, 8);
-        this.stroke = new color(255, 46, 56);
+        this.color = color(145, 1, 8);
+        this.stroke = color(255, 46, 56);
         this.strokeWeight = 3;
         this.canMove = canMove;
         this.canShoot = canShoot;
@@ -34,7 +34,7 @@ class Enemy extends Sprite{
         new GlueJoint(this, this.hitbox).visible = false;
         this.hitbox.overlapping(allSprites, this.somethingIsOnTop);
 
-        this.colliding(allSprites, this.dead);
+        this.colliding(allSprites, (enememytje, sprite2)=>{this.dead(enememytje, sprite2, playerId)});
         
 
     }
@@ -131,8 +131,8 @@ class Enemy extends Sprite{
         }
     }
 
-    dead(enememytje, sprite2){
-        if(sprite2 == playertje){
+    dead(enememytje, sprite2, playerId){
+        if(sprite2.idNum == playerId){
             console.log('rip');
             buildLevel(welkLevel);
         }

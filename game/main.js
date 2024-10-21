@@ -31,7 +31,7 @@ let playertje;
 
 
 function buildLevel(welkLevel){
-    allSprites.remove()
+    allSprites.removeAll()
     level = loadLevel(welkLevel)
     blocks = level.blocks
     enemies = level.enemies

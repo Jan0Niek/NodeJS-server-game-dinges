@@ -13,9 +13,19 @@ require('p5play');
 //Sprite doesn't exist if there isn't a (global) instance of p5/q5. lovely inheritance jippee
 new Q5();
 noLoop();
+// noCanvas(); uncomment when q5's fixed
+allSprites.autoDraw=false;
 
 //my custom (sprite-)classes
-const Block = require("./game/block.js")
+const Block = require("./game/block.js");
+const Player = require('./game/player.js');
+const Enemy = require('./game/enemy.js');
+const Bullet = require('./game/bullet.js');
+const OneTimeUse = require('./game/oneTimeUse.js');
+const Finish = require('./game/finish.js');
+const { loadLevel } = require('./game/levels.js');
+
+loadLevel(1, Block, Enemy, OneTimeUse, Player, Finish)
 
 const app = express();
 const server = app.listen(3000);
@@ -203,9 +213,7 @@ function startGame(room){
         sprites : []
     }
 
-    let playerOne = new p5Lobbies[room].Sprite(-150, p5Lobbies[room].height -20, 30, 100);
-    let blockje = new Block(10, 10, 10, 10, 10, 10, 10, 10, 10)
-    let playerTwoSelectedSprite;
+    let currentLevel = loadLevel()
 
 
     for (let i = 0; i < allSprites.length; i++) {
