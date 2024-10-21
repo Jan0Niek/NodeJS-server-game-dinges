@@ -1,3 +1,4 @@
+//dependencies and or such
 const http = require('http');
 const fs = require('fs');
 const express = require('express');
@@ -13,9 +14,8 @@ require('p5play');
 new Q5();
 noLoop();
 
-
+//my custom (sprite-)classes
 const Block = require("./game/block.js")
-new Block(10, 10, 10, 10, 10, 10, 10, 10, 10)
 
 const app = express();
 const server = app.listen(3000);
@@ -192,7 +192,7 @@ io.sockets.on('connection', (socket) => {
 });
 
 
-// FIX DAT ER TWEEMAAL IN DEZELFDE ROOM/LOBBY EEN GAME KAN WORDEN GESTART!!! gamestates checken ofzo?
+// FIX DAT ER TWEEMAAL IN DEZELFDE ROOM/LOBBY EEN GAME KAN WORDEN GESTART!!! gamestates checken ofzo? is dit al gefixt of niet?
 
 function startGame(room){
     p5Lobbies[room] = new Q5('namespace');
@@ -204,9 +204,14 @@ function startGame(room){
     }
 
     let playerOne = new p5Lobbies[room].Sprite(-150, p5Lobbies[room].height -20, 30, 100);
+    let blockje = new Block(10, 10, 10, 10, 10, 10, 10, 10, 10)
     let playerTwoSelectedSprite;
 
 
+    for (let i = 0; i < allSprites.length; i++) {
+        const sprite = allSprites.at(i);
+        level.sprites.push({id: sprite.idNum, x: sprite.x, y: sprite.y, w: sprite.w, h: sprite.h, col: sprite.color, text: sprite.text, imageName: sprite.imageName})
+    }
     level.sprites.push({id: playerOne.idNum, x: playerOne.x, y: playerOne.y, w: playerOne.w, h: playerOne.h, col: playerOne.color, text: playerOne.text})
     // level.sprites.push({id: abc1.idNum, x: abc1.x, y: abc1.y, w: abc1.w, h: abc1.h, col: abc1.color, text: abc1.text})
 
