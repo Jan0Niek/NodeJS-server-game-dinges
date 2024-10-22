@@ -13,7 +13,7 @@ require('p5play');
 //Sprite doesn't exist if there isn't a (global) instance of p5/q5. lovely inheritance jippee
 new Q5();
 noLoop();
-// noCanvas(); uncomment when q5's fixed
+noCanvas();
 allSprites.autoDraw=false;
 
 //my custom (sprite-)classes
@@ -25,7 +25,7 @@ const OneTimeUse = require('./game/oneTimeUse.js');
 const Finish = require('./game/finish.js');
 const { loadLevel } = require('./game/levels.js');
 
-loadLevel(1, Block, Enemy, OneTimeUse, Player, Finish)
+// loadLevel(1, Block, Enemy, OneTimeUse, Player, Finish)
 
 const app = express();
 const server = app.listen(3000);
@@ -46,14 +46,16 @@ app.set('port', '3000');
 app.use(express.static('public'));
 console.log('server started/starting');
 
-const ROOMSTATES = {waitingForOthers:0, inGame:1}
+const ROOMSTATES = {unset:-1, waitingForSecondPlayer:1, notBothReadiedUp:2, oneOfTwoReadiedUp:7, everybodyReadiedUp:3, gameStarting:8, gameRunning:4, gamePaused:20, onePlayerLeft:5, bothPlayersLeft:6}
 
-let rooms = [];
+let rooms = []; // probably shouldn't use this anymore
+
 // let players = [];  --> const sockets = await io.in(room).fetchSockets();
 let roomsStates = {}; //key: roomName, value: gameState (e.g. running, waitingForPlayers, empty?, dead?, win?, etc) !mostly unused btw!
 let p5Lobbies = {}; //dictionary of sorts, key being lobbyName, value being the whole p5-sketch
 
-
+//key is roomName , value is everything in the room by using an instance of the RoomData class
+/** @type {Map.<string, RoomData>} */
 let roomsDatas = new Map();
 
 
@@ -209,18 +211,18 @@ function startGame(room){
     p5Lobbies[room].frameRate(30)
     // p5Lobbies[room].world.gravity.y = 10
     //verstuur hierboven de levels ofzo? doe dan onderaan de al verzonden sprite-posities updaten?!
-    let level = {
+    roomsDatas.get(room).currentLevel = {
         sprites : []
     }
 
-    let currentLevel = loadLevel()
+    
 
 
     for (let i = 0; i < allSprites.length; i++) {
         const sprite = allSprites.at(i);
         level.sprites.push({id: sprite.idNum, x: sprite.x, y: sprite.y, w: sprite.w, h: sprite.h, col: sprite.color, text: sprite.text, imageName: sprite.imageName})
     }
-    level.sprites.push({id: playerOne.idNum, x: playerOne.x, y: playerOne.y, w: playerOne.w, h: playerOne.h, col: playerOne.color, text: playerOne.text})
+    // level.sprites.push({id: playerOne.idNum, x: playerOne.x, y: playerOne.y, w: playerOne.w, h: playerOne.h, col: playerOne.color, text: playerOne.text})
     // level.sprites.push({id: abc1.idNum, x: abc1.x, y: abc1.y, w: abc1.w, h: abc1.h, col: abc1.color, text: abc1.text})
 
     

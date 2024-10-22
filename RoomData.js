@@ -1,5 +1,6 @@
 class RoomData{
     constructor(){
+        this.roomState =
         this.p1 = {
             name : null, 
             pressedKeys : []
@@ -10,7 +11,11 @@ class RoomData{
             pressedKeys : []
             
         }
+        this.currentLevel = {
+            sprites : []
+        }
     }
+
 }
 
 module.exports = RoomData;
