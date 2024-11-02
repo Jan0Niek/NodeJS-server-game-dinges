@@ -209,6 +209,8 @@ io.sockets.on('connection', (socket) => {
 function startGame(room){
     p5Lobbies[room] = new Q5('namespace');
     p5Lobbies[room].frameRate(30)
+    noCanvas();
+    allSprites.autoDraw = false;
     // p5Lobbies[room].world.gravity.y = 10
     //verstuur hierboven de levels ofzo? doe dan onderaan de al verzonden sprite-posities updaten?!
     roomsDatas.get(room).currentLevel = {
