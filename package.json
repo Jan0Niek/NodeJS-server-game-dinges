@@ -19,7 +19,9 @@
   "dependencies": {
     "@socket.io/admin-ui": "^0.5.1",
     "@types/p5": "^1.7.6",
+    "canvas": "^2.11.2",
     "express": "^4.18.2",
+    "jsdom": "^25.0.1",
     "nodemon": "^3.1.7",
     "p5play": "^3.22.11",
     "q5": "^2.0.17",
