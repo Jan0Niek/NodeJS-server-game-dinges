@@ -51,8 +51,8 @@ const ROOMSTATES = {unset:-1, waitingForSecondPlayer:1, notBothReadiedUp:2, oneO
 let rooms = []; // probably shouldn't use this anymore
 
 // let players = [];  --> const sockets = await io.in(room).fetchSockets();
-let roomsStates = {}; //key: roomName, value: gameState (e.g. running, waitingForPlayers, empty?, dead?, win?, etc) !mostly unused btw!
-let p5Lobbies = {}; //dictionary of sorts, key being lobbyName, value being the whole p5-sketch
+// let roomsStates = {}; //key: roomName, value: gameState (e.g. running, waitingForPlayers, empty?, dead?, win?, etc) !mostly unused btw!
+// let p5Lobbies = {}; //dictionary of sorts, key being lobbyName, value being the whole p5-sketch
 
 //key is roomName , value is everything in the room by using an instance of the RoomData class
 /** @type {Map.<string, RoomData>} */
@@ -62,7 +62,11 @@ let roomsDatas = new Map();
 io.sockets.on('connection', (socket) => {
     
     socket.on("username", (username) => { socket.data.username = username; });
-    socket.on("testtest", () => { console.log(p5Lobbies.keys())} )
+    socket.on("testtest", () => { 
+        roomsDatas.forEach(roomData => {
+            console.log(roomData.p5Lobby)
+        });
+    });
 
     socket.on("getLobbies", () => {
         rooms.forEach(async room => {
@@ -79,7 +83,7 @@ io.sockets.on('connection', (socket) => {
     socket.on("newRoom", (roomName) => {
         if(!rooms.includes(roomName)){
             rooms.push(roomName);
-            roomsStates[roomName] = ROOMSTATES.waitingForOthers;
+            roomsDatas.get(room).roomState = ROOMSTATES.waitingForSecondPlayer //may change this bs
             roomsDatas.set(roomName, new RoomData())
             socket.data.playerNum = -1;
             socket.join(roomName);
@@ -173,7 +177,7 @@ io.sockets.on('connection', (socket) => {
         console.log(`room ${room} removed?`)
         if(index != -1){
             rooms.splice(index, 1);
-            p5Lobbies[room].remove();
+            roomsDatas.get(room).p5Lobby.remove(); // ga vanaf hier verder
             delete p5Lobbies[room];
             console.log("for real removed")
         }

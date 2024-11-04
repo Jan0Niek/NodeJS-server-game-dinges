@@ -1,6 +1,7 @@
 class RoomData{
     constructor(){
-        this.roomState =
+        this.roomState=null;
+        this.p5Lobby=null;
         this.p1 = {
             name : null, 
             pressedKeys : []
