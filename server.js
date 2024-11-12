@@ -5,7 +5,6 @@ const express = require('express');
 const { instrument } = require("@socket.io/admin-ui");
 const RoomData = require("./RoomData.js");
 
-
 require('q5');
 require('p5play');
 
@@ -55,7 +54,7 @@ let rooms = []; // probably shouldn't use this anymore
 // let p5Lobbies = {}; //dictionary of sorts, key being lobbyName, value being the whole p5-sketch
 
 //key is roomName , value is everything in the room by using an instance of the RoomData class
-/** @type {Map.<string, RoomData>} */
+/** @type {Map<string, RoomData>} */
 let roomsDatas = new Map();
 
 
@@ -177,8 +176,9 @@ io.sockets.on('connection', (socket) => {
         console.log(`room ${room} removed?`)
         if(index != -1){
             rooms.splice(index, 1);
-            roomsDatas.get(room).p5Lobby.remove(); // ga vanaf hier verder
-            delete p5Lobbies[room];
+            roomsDatas.get(room).p5Lobby.remove();
+            roomsDatas.get(room).p5Lobby.removeAll();
+            roomsDatas.get(room).p5Lobby = null;
             console.log("for real removed")
         }
     });
@@ -211,11 +211,11 @@ io.sockets.on('connection', (socket) => {
 // FIX DAT ER TWEEMAAL IN DEZELFDE ROOM/LOBBY EEN GAME KAN WORDEN GESTART!!! gamestates checken ofzo? is dit al gefixt of niet?
 
 function startGame(room){
-    p5Lobbies[room] = new Q5('namespace');
-    p5Lobbies[room].frameRate(30)
+    roomsDatas.get(room).p5Lobby = new Q5('namespace');
+    roomsDatas.get(room).p5Lobby.frameRate(30)
     noCanvas();
     allSprites.autoDraw = false;
-    // p5Lobbies[room].world.gravity.y = 10
+    // roomsDatas.get(room).p5Lobby.world.gravity.y = 10
     //verstuur hierboven de levels ofzo? doe dan onderaan de al verzonden sprite-posities updaten?!
     roomsDatas.get(room).currentLevel = {
         sprites : []
@@ -232,18 +232,18 @@ function startGame(room){
     // level.sprites.push({id: abc1.idNum, x: abc1.x, y: abc1.y, w: abc1.w, h: abc1.h, col: abc1.color, text: abc1.text})
 
     
-    p5Lobbies[room].setup = () => 
+    roomsDatas.get(room).p5Lobby.setup = () => 
     {
-        new p5Lobbies[room].Canvas(1280, 720);
-        // p5Lobbies[room].noCanvas();
-        p5Lobbies[room].allSprites.autoDraw = false;
+        new roomsDatas.get(room).p5Lobby.Canvas(1280, 720);
+        // roomsDatas.get(room).p5Lobby.noCanvas();
+        roomsDatas.get(room).p5Lobby.allSprites.autoDraw = false;
         //onUpdatePos en dan de shit
 
         io.to(room).emit("loadLevel", level);
         // new Group().forEach()//loop door allsprites en stuur die dan?
     };
 
-    p5Lobbies[room].draw = () => 
+    roomsDatas.get(room).p5Lobby.draw = () => 
     {
         // background(100);
         // console.log(roomsDatas)
