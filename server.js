@@ -1,4 +1,5 @@
 //dependencies and or such
+const Q5 = require('./node_modules/q5/q5-server.js');
 const http = require('http');
 const fs = require('fs');
 const express = require('express');
@@ -47,7 +48,7 @@ console.log('server started/starting');
 
 const ROOMSTATES = {unset:-1, waitingForSecondPlayer:1, notBothReadiedUp:2, oneOfTwoReadiedUp:7, everybodyReadiedUp:3, gameStarting:8, gameRunning:4, gamePaused:20, onePlayerLeft:5, bothPlayersLeft:6}
 
-let rooms = []; // probably shouldn't use this anymore
+// let rooms = []; // probably shouldn't use this anymore
 
 // let players = [];  --> const sockets = await io.in(room).fetchSockets();
 // let roomsStates = {}; //key: roomName, value: gameState (e.g. running, waitingForPlayers, empty?, dead?, win?, etc) !mostly unused btw!
@@ -67,8 +68,8 @@ io.sockets.on('connection', (socket) => {
         });
     });
 
-    socket.on("getLobbies", () => {
-        rooms.forEach(async room => {
+    socket.on("getLobbies", async () => {
+        for (const room of roomsDatas.keys()) {
             const sockets = await io.in(room).fetchSockets();
             let players = [];
             for (const socket of sockets){
@@ -76,13 +77,13 @@ io.sockets.on('connection', (socket) => {
                 // console.log(socket.data.username);
             }
             socket.emit("room", room, players);
-        });
+        }
     });
 
     socket.on("newRoom", (roomName) => {
-        if(!rooms.includes(roomName)){
-            rooms.push(roomName);
-            roomsDatas.get(room).roomState = ROOMSTATES.waitingForSecondPlayer //may change this bs
+        if(!roomsDatas.has(roomName)){
+            roomsDatas.set(roomName, new RoomData())
+            roomsDatas.get(roomName).roomState = ROOMSTATES.waitingForSecondPlayer //may change this bs
             roomsDatas.set(roomName, new RoomData())
             socket.data.playerNum = -1;
             socket.join(roomName);
@@ -172,15 +173,16 @@ io.sockets.on('connection', (socket) => {
 
 
     io.of("/").adapter.on("delete-room", (room) => {
-        const index = rooms.indexOf(room);
         console.log(`room ${room} removed?`)
-        if(index != -1){
-            rooms.splice(index, 1);
-            roomsDatas.get(room).p5Lobby.remove();
-            roomsDatas.get(room).p5Lobby.removeAll();
-            roomsDatas.get(room).p5Lobby = null;
-            console.log("for real removed")
+        if(roomsDatas.has(room)){
+            if(roomsDatas.get(room).p5Lobby != null){
+                roomsDatas.get(room).p5Lobby.allSprites.removeAll();
+                roomsDatas.get(room).p5Lobby = null;
+            }
         }
+        roomsDatas.delete(room)
+        console.log("for real removed")
+
     });
     
     socket.on("disconnecting", async () => {
@@ -211,10 +213,10 @@ io.sockets.on('connection', (socket) => {
 // FIX DAT ER TWEEMAAL IN DEZELFDE ROOM/LOBBY EEN GAME KAN WORDEN GESTART!!! gamestates checken ofzo? is dit al gefixt of niet?
 
 function startGame(room){
-    roomsDatas.get(room).p5Lobby = new Q5('namespace');
+    roomsDatas.get(room).p5Lobby = new Q5("instance")
     roomsDatas.get(room).p5Lobby.frameRate(30)
-    noCanvas();
-    allSprites.autoDraw = false;
+    roomsDatas.get(room).p5Lobby.noCanvas();
+    roomsDatas.get(room).p5Lobby.allSprites.autoDraw = false;
     // roomsDatas.get(room).p5Lobby.world.gravity.y = 10
     //verstuur hierboven de levels ofzo? doe dan onderaan de al verzonden sprite-posities updaten?!
     roomsDatas.get(room).currentLevel = {
