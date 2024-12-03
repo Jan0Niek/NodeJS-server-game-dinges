@@ -5,8 +5,8 @@ function declareEnemy(){
             this.x = x;
             this.y = y;
             this.maxSpeed = 3;
-            this.color = new color(145, 1, 8);
-            this.stroke = new color(255, 46, 56);
+            this.color = color(145, 1, 8);
+            this.stroke = color(255, 46, 56);
             this.strokeWeight = 3;
             this.canMove = canMove;
             this.canShoot = canShoot;
