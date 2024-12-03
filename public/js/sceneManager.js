@@ -1,37 +1,48 @@
-//bovenaan setup
-//eronder de draw overriden
+let currentScene;
+function setScene(sceneName){
+    if(scenes.hasOwnProperty(sceneName)){
+        currentScene = scenes[sceneName];
+        allSprites.removeAll();
+        currentScene.start();
+    }
+}
+
+
 const scenes = 
 {
-    gaming: () => {
-        allSprites.removeAll();
+    gaming: {
+        gamerdata:null,
+        theLevel:null,
 
-        let theLevel = {
-            sprites : new Map()
-        }
+        start: function() {
+            // allSprites.removeAll();
 
-        socket.on("loadLevel", (level) => {
-            console.log("loading level?")
             theLevel = {
-                sprites: new Map()
+                sprites : new Map()
             }
-            level.sprites.forEach(sprite => {
-                theLevel.sprites.set(sprite.id, new Sprite(sprite.x, sprite.y, sprite.w, sprite.h, 'n'));
-                theLevel.sprites.get(sprite.id).text = sprite.text;
+
+            socket.on("loadLevel", (level) => {
+                theLevel = {
+                    sprites: new Map()
+                }
+                level.sprites.forEach(sprite => {
+                    theLevel.sprites.set(sprite.id, new Sprite(sprite.x, sprite.y, sprite.w, sprite.h, 'n'));
+                    theLevel.sprites.get(sprite.id).text = sprite.text;
+                });
+                // socket.emit("levelHasLoaded")
+                // dan pas de game-loop aan de server beginnen wanneer zowel P1's als P2's levels zijn ingeladen..?
             });
-            // socket.emit("levelHasLoaded")
-            // dan pas de game-loop aan de server beginnen wanneer zowel P1's als P2's levels zijn ingeladen..?
-        });
 
-        let gamerData = {
-            sprites : [ ]
-        };
-        socket.on("gameData", (data) => {
-            gamerData = data;
-            // console.log(gamerData)
-        });
+            gamerData = {
+                sprites : [ ]
+            };
+            socket.on("gameData", (data) => {
+                gamerData = data;
+            });
 
-        let pressedKeys = [];
-        draw = () => {
+            // let pressedKeys = [];
+        },
+        loop: function() {
             background(255);
 
             pressedKeys = [];
@@ -54,37 +65,42 @@ const scenes =
 
 
 
-    menu: () => {
-        const Button = declareButton();
-        textStyle(BOLD);
-        strokeWeight(1);
-        // let emojiFinger = loadImage("assets/finger_pointing_at_you.svg");
+    menu:{
+        //put all scene variables on top, functions under
+        button1:null,
+        button2:null,
+        readyButton:null,
 
-        const requestToBePlayerX = (playerNum) => {
-            // console.log('knop nr ' + playerNum + ' gedrukt')
-            socket.emit("requestToBePlayerX", (playerNum))
-        }
-        let readiness = false;
-        const readyUp = () =>{
-            if(myPlayerNum == -1) return; //fake assert
-            readiness = !readiness;
-            socket.emit("readyUp", (readiness));
-        }
+        //DON'T USE ARROW FUNCTION HERE
+        start: function() {
+            const Button = declareButton();
+            textStyle(BOLD);
+            strokeWeight(1);
+            // let emojiFinger = loadImage("assets/finger_pointing_at_you.svg");
+
+            const requestToBePlayerX = (playerNum) => {
+                socket.emit("requestToBePlayerX", (playerNum))
+            }
+            let readiness = false;
+            const readyUp = () =>{
+                if(myPlayerNum == -1) return; //fake assert
+                readiness = !readiness;
+                socket.emit("readyUp", (readiness));
+            }
 
 
-        textStyle(BOLD);
-        strokeWeight(1);    
+            textStyle(BOLD);
+            strokeWeight(1);    
 
-        let button1 = new Button(200, 400, 300, 100, color(200, 80, 160), 'P1', 20, requestToBePlayerX, (1), false, color(160, 20, 100));
-        let button2 = new Button(600, 400, 300, 100, color(200, 80, 160), 'P2', 20, requestToBePlayerX, (2), false, color(160, 20, 100));
-        console.log('here1')
+            
+            button1 = new Button(200, 400, 300, 100, color(200, 80, 160), 'P1', 20, requestToBePlayerX, (1), false, color(160, 20, 100));
+            button2 = new Button(600, 400, 300, 100, color(200, 80, 160), 'P2', 20, requestToBePlayerX, (2), false, color(160, 20, 100));
 
-        let readyButton = new Button(canvas.hw, 680, 300, 40, color(20, 240, 20), "Ready up", 40, readyUp, null, true, color(0, 60, 0), "Readied", color(0, 0, 0), color(240, 240, 240));
-        readyButton.autoDraw = false;
-
-        draw = () => {
+            readyButton = new Button(canvas.hw, 680, 300, 40, color(20, 240, 20), "Ready up", 40, readyUp, null, true, color(0, 60, 0), "Readied", color(0, 0, 0), color(240, 240, 240));
+            readyButton.autoDraw = false;
+        },
+        loop: function() {
             background(255);
-            console.log('here2')
             // allSprites.draw()
 
             button1.checkPressed();
@@ -134,7 +150,6 @@ const scenes =
                 button2.text = `${button2.origText}: 🫵 (you!)`;
                 button2.color = button2.col2;
             }
-            console.log('here3')
         }
     }
 }

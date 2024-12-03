@@ -223,12 +223,12 @@ function startGame(room){
         sprites : []
     }
 
-    
+    let playerOne = new Sprite(20, 20, 30, 20)
 
 
     for (let i = 0; i < allSprites.length; i++) {
         const sprite = allSprites.at(i);
-        level.sprites.push({id: sprite.idNum, x: sprite.x, y: sprite.y, w: sprite.w, h: sprite.h, col: sprite.color, text: sprite.text, imageName: sprite.imageName})
+        roomsDatas.get(room).currentLevel.sprites.push({id: sprite.idNum, x: sprite.x, y: sprite.y, w: sprite.w, h: sprite.h, col: sprite.color, text: sprite.text, imageName: sprite.imageName})
     }
     // level.sprites.push({id: playerOne.idNum, x: playerOne.x, y: playerOne.y, w: playerOne.w, h: playerOne.h, col: playerOne.color, text: playerOne.text})
     // level.sprites.push({id: abc1.idNum, x: abc1.x, y: abc1.y, w: abc1.w, h: abc1.h, col: abc1.color, text: abc1.text})
@@ -236,12 +236,12 @@ function startGame(room){
     
     roomsDatas.get(room).p5Lobby.setup = () => 
     {
-        new roomsDatas.get(room).p5Lobby.Canvas(1280, 720);
-        // roomsDatas.get(room).p5Lobby.noCanvas();
+        // new roomsDatas.get(room).p5Lobby.Canvas(1280, 720);
+        roomsDatas.get(room).p5Lobby.noCanvas();
         roomsDatas.get(room).p5Lobby.allSprites.autoDraw = false;
         //onUpdatePos en dan de shit
 
-        io.to(room).emit("loadLevel", level);
+        io.to(room).emit("loadLevel", roomsDatas.get(room).currentLevel);
         // new Group().forEach()//loop door allsprites en stuur die dan?
     };
 

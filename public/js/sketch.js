@@ -35,7 +35,9 @@ function setOtherPlayer(id, playerNum=null, readiness=null){
 
 new Canvas(1280, 720); //add pixel density factor multiplier to all variables? geen haast daarmee
 
+setScene("menu");
+
 function draw(){
-  scenes.menu(); //need a new way to switch local (not server) scenes
+  currentScene.loop()
 }
 

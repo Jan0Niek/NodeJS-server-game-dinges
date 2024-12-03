@@ -30,6 +30,6 @@ socket.on("otherPlayerDisconnect", (id) => {
 
 
 socket.on("startGame", () => {
-    scenes.gaming();
+    setScene("gaming")
 });
 
