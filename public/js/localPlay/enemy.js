@@ -37,7 +37,7 @@ function declareEnemy(){
 
             this.colliding(allSprites, this.dead);
             
-
+            this.tile = 'e'
         }
 
         moveBetweenPoints(){   

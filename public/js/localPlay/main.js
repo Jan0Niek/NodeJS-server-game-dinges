@@ -1,5 +1,6 @@
 new Q5();
 
+
 //maak hier de custom classes aan (van andere bestanden)
 let Block = declareBlock();
 let Player = declarePlayer();
@@ -31,7 +32,25 @@ textSize(15);
 
 let welkLevel = 1;
 
+let the; 
+async function loadTheLevels(){
+    try{
+        const apiCallPromise  = await fetch('assets/levels.json'); //stomme code
+        const apiCallObj = await apiCallPromise.json();
+        return apiCallObj;
+     }
+     catch(error){
+        console.error(error);
+     };
+    
+}
 
+( async () => {
+    the = await loadTheLevels()
+    console.log(the)
+    console.log("OIAHSD")
+} )();
+console.log(the)
 
 let level;
 let blocks = [];
@@ -44,6 +63,7 @@ let playertje;
 function buildLevel(welkLevel){
     allSprites.remove()
     level = loadLevel(welkLevel)
+    
     blocks = level.blocks
     enemies = level.enemies
     playertje = level.player

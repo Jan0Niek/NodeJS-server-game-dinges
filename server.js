@@ -276,9 +276,3 @@ function startGame(room){
         
     };
 }
-
-
-
-
-//can't get classes to work in separate files ¯\_(ツ)_/¯
-

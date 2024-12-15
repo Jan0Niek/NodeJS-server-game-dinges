@@ -25,6 +25,7 @@ function declarePlayer(){
             this.groundsensor.overlapping(allSprites, (player, sprite2) => {
                 this.lastStoodOnSprite = sprite2;
             });
+            this.tile = "p";
         }
 
         isColliding(player, sprite2){

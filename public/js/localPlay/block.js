@@ -18,7 +18,7 @@ function declareBlock(){
 
             this.gravityScale = 0;
             this.mass=10;
-            // this.tile = 'b';
+            this.tile = 'b';
             this.rotationLock = true;
             this.selected = false;
             this.stroke = color(0);
