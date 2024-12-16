@@ -15,10 +15,8 @@ world.gravity.y = 9.81;
 allSprites.drag = 0.24;
 world.allowSleeping = false;
 
-let tileSize;
-function setTileSize(size){
-    tileSize = size;
-}
+//global tilesize in px
+const TILESIZE = 40;
 
 
 if(localStorage.getItem("refresh-rate") == null){
@@ -62,7 +60,7 @@ let playertje;
 
 function buildLevel(welkLevel){
     allSprites.remove()
-    level = loadLevel(welkLevel)
+    // level = loadLevel(welkLevel)
     
     blocks = level.blocks
     enemies = level.enemies
@@ -71,6 +69,10 @@ function buildLevel(welkLevel){
 }
 
 buildLevel(welkLevel);
+
+function setup(){
+    
+}
 
 //main game loop enz
 function draw(){
