@@ -1,6 +1,6 @@
 [
     {
-        "levelTiles": [ "rowonetileshere",
+        "levelTilesRows": [ "rowonetileshere",
                         "WWWWWWWWWWW",
                         "..........."],
         "otherLevelData" : "the data? or someth"

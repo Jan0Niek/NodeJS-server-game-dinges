@@ -9,6 +9,7 @@ let Bullet = declareBullet();
 let oneTimeUse = declareOneTimeUse();
 let Finish = declareFinish();
 
+const TILE_CHOICES = [Player, Block, Enemy, Bullet, oneTimeUse, Finish, Sprite]
 //hier de overige set-up and such
 new Canvas(1280, 720)
 world.gravity.y = 9.81;
@@ -19,7 +20,7 @@ world.allowSleeping = false;
 const TILESIZE = 40;
 
 
-if(localStorage.getItem("refresh-rate") == null){
+if(localStorage.getItem("refresh-rate") == null || isNaN(localStorage.getItem("refresh-rate"))){
     localStorage.setItem("refresh-rate", parseInt(prompt("Wat is de refresh-rate van diens monitor (in Hertz)?")));
 }
 frameRate(parseInt(localStorage.getItem("refresh-rate")));
@@ -30,7 +31,6 @@ textSize(15);
 
 let welkLevel = 1;
 
-let the; 
 async function loadTheLevels(){
     try{
         const apiCallPromise  = await fetch('assets/levels.json'); //stomme code
@@ -43,13 +43,6 @@ async function loadTheLevels(){
     
 }
 
-( async () => {
-    the = await loadTheLevels()
-    console.log(the)
-    console.log("OIAHSD")
-} )();
-console.log(the)
-
 let level;
 let blocks = [];
 let enemies = [];
@@ -57,11 +50,21 @@ let oneJumpBlocks = [];
 let normalSprites = [];
 let playertje;
 
-
-function buildLevel(welkLevel){
+let theLevels;
+async function buildLevel(welkLevel){
     allSprites.remove()
-    // level = loadLevel(welkLevel)
-    
+    theLevels = await loadTheLevels()
+    for (let rowNumber = 0; rowNumber < theLevels[welkLevel].levelTilesRows.length; rowNumber++) {
+        const currentRow = theLevels[welkLevel].levelTilesRows[rowNumber];
+        for (let column = 0; column < currentRow.length; column++) {
+            const currentTile = currentRow[column];
+            for (const tile_choice of TILE_CHOICES) {
+                if(tile_choice.tile == currentTile) new tile_choice() // doe hier nog de x en y positie van iedere tile
+            }
+        }
+        
+    }
+
     blocks = level.blocks
     enemies = level.enemies
     playertje = level.player

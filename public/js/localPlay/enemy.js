@@ -1,6 +1,7 @@
 function declareEnemy(){
     return class Enemy extends Sprite{
-        constructor(x, y, width, canMove, canJump, canShoot){  
+        static tile = 'e';
+        constructor(x, y, width, canMove=false, canJump=false, canShoot=true){  
             super(x, y, width, 'triangle', 'd')
             this.x = x;
             this.y = y;

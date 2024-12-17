@@ -1,5 +1,6 @@
 function declareOneTimeUse(){
     return class OneTimeUse extends Sprite{
+        static tile = 'o'
         constructor(x, y, width, height){
             super(x, y, width, height, 'k');
             this.x = x;

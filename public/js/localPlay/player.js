@@ -1,6 +1,7 @@
 function declarePlayer(){
 
     return class Player extends Sprite{
+        static tile = 'p';
         constructor(x, y, width, height){
             super(x, y, width, height, 'd');
             this.x = x;

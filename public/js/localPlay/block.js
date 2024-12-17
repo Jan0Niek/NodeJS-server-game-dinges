@@ -1,6 +1,7 @@
 function declareBlock(){
     return class Block extends Sprite{
-        constructor(x, y, width, height, canRotate, x1, y1, x2, y2){
+        static tile = 'b';
+        constructor(x, y, width, height){
             super(x, y, width, height, 'k');
             this.x = x;
             this.y = y;
@@ -8,17 +9,17 @@ function declareBlock(){
             this.height = height;
             this.maxSpeed = 3;
 
-            this.canRotate = canRotate;
+            // this.canRotate = canRotate;
 
-            this.x1 = x1;
-            this.y1 = y1;
+            // this.x1 = x1;
+            // this.y1 = y1;
 
-            this.x2 = x2;
-            this.y2 = y2;
+            // this.x2 = x2;
+            // this.y2 = y2;
 
             this.gravityScale = 0;
             this.mass=10;
-            this.tile = 'b';
+            
             this.rotationLock = true;
             this.selected = false;
             this.stroke = color(0);
@@ -67,11 +68,11 @@ function declareBlock(){
             }
         }
 
-        rotateBlock(){
-            if(this.canRotate == true){
-                this.rotate(1, 1);
-            }
-        }
+        // rotateBlock(){
+        //     if(this.canRotate == true){
+        //         this.rotate(1, 1);
+        //     }
+        // }
 
         
         // moveBetweenPoints(x1, x2, y1, y2){
