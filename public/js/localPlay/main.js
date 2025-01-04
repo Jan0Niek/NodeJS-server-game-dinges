@@ -29,7 +29,7 @@ frameRate(parseInt(localStorage.getItem("refresh-rate")));
 let backgroundje = loadImage("assets/achtergrond.jpg");
 textSize(15);
 
-let welkLevel = 1;
+let welkLevel = 0;
 
 async function loadTheLevels(){
     try{
@@ -48,7 +48,7 @@ let blocks = [];
 let enemies = [];
 let oneJumpBlocks = [];
 let normalSprites = [];
-let playertje;
+let playertje = new Player(10, 10, 10, 10);
 
 let theLevels;
 async function buildLevel(welkLevel){
@@ -65,13 +65,14 @@ async function buildLevel(welkLevel){
         
     }
 
-    blocks = level.blocks
-    enemies = level.enemies
-    playertje = level.player
-    normalSprites = level.normalSprites
+    // blocks = level.blocks
+    // enemies = level.enemies
+    // playertje = level.player
+    // normalSprites = level.normalSprites
 }
 
 buildLevel(welkLevel);
+noLoop()
 
 function setup(){
     
