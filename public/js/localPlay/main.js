@@ -17,7 +17,7 @@ allSprites.drag = 0.24;
 world.allowSleeping = false;
 
 //global tilesize in px
-const TILESIZE = 40;
+const TILESIZE = {x:40, y:40};
 
 
 if(localStorage.getItem("refresh-rate") == null || isNaN(localStorage.getItem("refresh-rate"))){
@@ -59,7 +59,7 @@ async function buildLevel(welkLevel){
         for (let column = 0; column < currentRow.length; column++) {
             const currentTile = currentRow[column];
             for (const tile_choice of TILE_CHOICES) {
-                if(tile_choice.tile == currentTile) new tile_choice() // doe hier nog de x en y positie van iedere tile
+                if(tile_choice.tile == currentTile) new tile_choice(TILESIZE.x*column, TILESIZE.y*rowNumber, TILESIZE.x, TILESIZE.y) // doe hier nog de x en y positie van iedere tile
             }
         }
         
