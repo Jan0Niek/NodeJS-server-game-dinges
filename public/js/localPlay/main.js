@@ -15,9 +15,13 @@ new Canvas(1280, 720)
 world.gravity.y = 9.81;
 allSprites.drag = 0.24;
 world.allowSleeping = false;
+p5play.renderStats = true
 
 //global tilesize in px
 const TILESIZE = {x:40, y:40};
+allSprites.w = TILESIZE.x
+allSprites.h = TILESIZE.y
+
 
 
 if(localStorage.getItem("refresh-rate") == null || isNaN(localStorage.getItem("refresh-rate"))){
@@ -48,7 +52,8 @@ let blocks = [];
 let enemies = [];
 let oneJumpBlocks = [];
 let normalSprites = [];
-let playertje = new Player(10, 10, 10, 10);
+let sprites = {"TILE_CHOICES[0]" : {}}
+
 
 let theLevels;
 async function buildLevel(welkLevel){
@@ -59,7 +64,7 @@ async function buildLevel(welkLevel){
         for (let column = 0; column < currentRow.length; column++) {
             const currentTile = currentRow[column];
             for (const tile_choice of TILE_CHOICES) {
-                if(tile_choice.tile == currentTile) new tile_choice(TILESIZE.x*column, TILESIZE.y*rowNumber, TILESIZE.x, TILESIZE.y) // doe hier nog de x en y positie van iedere tile
+                if(tile_choice.tile == currentTile) new tile_choice(TILESIZE.x*column, TILESIZE.y*rowNumber, TILESIZE.x, TILESIZE.y) 
             }
         }
         
@@ -71,11 +76,8 @@ async function buildLevel(welkLevel){
     // normalSprites = level.normalSprites
 }
 
-buildLevel(welkLevel);
-noLoop()
-
-function setup(){
-    
+async function setup(){
+    await buildLevel(welkLevel);
 }
 
 //main game loop enz
@@ -101,7 +103,7 @@ function draw(){
     
     camera.off()
     text(frameRate().toFixed(2), 20, 20)
-    text(    floor(camera.x/backgroundje.width), 100, 15    )
+    text(    camera.x, 100, 15    )
     text("FPS: "+frameRate().toFixed(2) + "   deltaTime: "+deltaTime.toFixed(2), 0, 35);
     text('xpos: ' + playertje.x.toFixed(1) + '   ypos: ' + playertje.y.toFixed(1), 0, 70);
     text('xvel: ' + playertje.vel.x.toFixed(1) + '   yvel: ' + playertje.vel.y.toFixed(1), 0, 105);
