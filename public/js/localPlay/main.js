@@ -1,16 +1,6 @@
 new Q5();
 
 
-//maak hier de custom classes aan (van andere bestanden)
-let Block = declareBlock();
-let Player = declarePlayer();
-let Enemy = declareEnemy();
-let Bullet = declareBullet();
-let oneTimeUse = declareOneTimeUse();
-let Finish = declareFinish();
-
-const TILE_CHOICES = [Player, Block, Enemy, Bullet, oneTimeUse, Finish, Sprite]
-//hier de overige set-up and such
 new Canvas(1280, 720)
 world.gravity.y = 9.81;
 allSprites.drag = 0.24;
@@ -21,6 +11,9 @@ p5play.renderStats = true
 const TILESIZE = {x:40, y:40};
 allSprites.w = TILESIZE.x
 allSprites.h = TILESIZE.y
+
+//maak hier de custom classes aan (van andere bestanden)
+declareSelectables()
 
 
 
@@ -47,33 +40,21 @@ async function loadTheLevels(){
     
 }
 
-let level;
-let blocks = [];
-let enemies = [];
-let oneJumpBlocks = [];
-let normalSprites = [];
-let sprites = {"TILE_CHOICES[0]" : {}}
-
 
 let theLevels;
 async function buildLevel(welkLevel){
     allSprites.remove()
     theLevels = await loadTheLevels()
-    for (let rowNumber = 0; rowNumber < theLevels[welkLevel].levelTilesRows.length; rowNumber++) {
-        const currentRow = theLevels[welkLevel].levelTilesRows[rowNumber];
-        for (let column = 0; column < currentRow.length; column++) {
-            const currentTile = currentRow[column];
-            for (const tile_choice of TILE_CHOICES) {
-                if(tile_choice.tile == currentTile) new tile_choice(TILESIZE.x*column, TILESIZE.y*rowNumber, TILESIZE.x, TILESIZE.y) 
-            }
-        }
-        
-    }
-
-    // blocks = level.blocks
-    // enemies = level.enemies
-    // playertje = level.player
-    // normalSprites = level.normalSprites
+    // for (let rowNumber = 0; rowNumber < theLevels[welkLevel].levelTilesRows.length; rowNumber++) {
+    //     const currentRow = theLevels[welkLevel].levelTilesRows[rowNumber];
+    //     for (let column = 0; column < currentRow.length; column++) {
+    //         const currentTile = currentRow[column];
+    //         for (const tile_choice of TILE_CHOICES) {
+    //             if(tile_choice.tile == currentTile) new tile_choice(TILESIZE.x*column, TILESIZE.y*rowNumber, TILESIZE.x, TILESIZE.y) 
+    //         }
+    //     }
+    // }
+    new Tiles(theLevels[welkLevel].levelTilesRows, 0, 0)
 }
 
 async function setup(){
@@ -109,22 +90,5 @@ function draw(){
     text('xvel: ' + playertje.vel.x.toFixed(1) + '   yvel: ' + playertje.vel.y.toFixed(1), 0, 105);
 
     text(playertje.friction, 800, 20)
-    
 
-    //uhuh
-    blocks.forEach(block => {
-        block.control()
-        block.toggleSelection(blocks)
-        block.rotateBlock()
-        // block.moveBetweenPoints()
-    });
-    playertje.control()
-
-    enemies.forEach(enememytje => {
-        enememytje.moveBetweenPoints()
-        enememytje.shootAtplayer()
-        enememytje.jump()
-        enememytje.toggleSelection(enemies)
-        enememytje.control()
-    });
 }

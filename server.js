@@ -16,17 +16,6 @@ noLoop();
 noCanvas();
 allSprites.autoDraw=false;
 
-//my custom (sprite-)classes
-const Block = require("./game/block.js");
-const Player = require('./game/player.js');
-const Enemy = require('./game/enemy.js');
-const Bullet = require('./game/bullet.js');
-const OneTimeUse = require('./game/oneTimeUse.js');
-const Finish = require('./game/finish.js');
-const { loadLevel } = require('./game/levels.js');
-
-// loadLevel(1, Block, Enemy, OneTimeUse, Player, Finish)
-
 const app = express();
 const server = app.listen(3000);
 

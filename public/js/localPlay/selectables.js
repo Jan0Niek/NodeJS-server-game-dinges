@@ -87,6 +87,8 @@ function declareSelectables(){
 
     let selectables = new Group()
     selectables.selected = false
+    blocks.w = TILESIZE.x
+    blocks.h = TILESIZE.y
 
     selectables.update = function(){
         selectables.forEach(selectable =>{
@@ -107,8 +109,6 @@ function declareSelectables(){
 
 
     let blocks = new selectables.Group();
-    blocks.w = TILESIZE.x
-    blocks.h = TILESIZE.y
     blocks.collider = 'k'
     blocks.movementspeed = 4
     blocks.rotationLock = true //maybe rotating blocks someday
@@ -139,7 +139,6 @@ function declareSelectables(){
     
     let selectableEnemies = new selectables.Group()
     selectableEnemies.shape = 'triangle';
-    selectableEnemies.w = TILESIZE.x;
 
     selectableEnemies.collides(allSprites, killCheck) //kan ook in 1x enkel collision checken met player-(group?)
     
