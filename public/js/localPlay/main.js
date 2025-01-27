@@ -13,8 +13,8 @@ allSprites.w = TILESIZE.x
 allSprites.h = TILESIZE.y
 
 //maak hier de custom classes aan (van andere bestanden)
-declareSelectables()
-
+declareSelectables(TILESIZE)
+new Group().tile = 's'
 
 
 if(localStorage.getItem("refresh-rate") == null || isNaN(localStorage.getItem("refresh-rate"))){
@@ -54,41 +54,38 @@ async function buildLevel(welkLevel){
     //         }
     //     }
     // }
-    new Tiles(theLevels[welkLevel].levelTilesRows, 0, 0)
+    new Tiles(theLevels[welkLevel].levelTilesRows, 0, 0, TILESIZE.x, TILESIZE.y)
 }
 
 async function setup(){
     await buildLevel(welkLevel);
+new Sprite (0, 720, 10000, 40, 'k')
+
 }
 
 //main game loop enz
 function draw(){
-    // if(mouse.presses()){
-    //     new Sprite(mouse.x, mouse.y, random(20, 120), random(20, 120))
-    // }
-    // if(mouse.presses('right')){
-    //     enemies.push(new Enemy(mouse.x, mouse.y, random(4, 80), true))
-    // }
-    camera.on()
-    background(0, 123, 123);
-    //looping background
-    image(backgroundje, backgroundje.width*(-1+floor(camera.x/backgroundje.width)), 0)
-    image(backgroundje, backgroundje.width*floor(camera.x/backgroundje.width), 0)
-    image(backgroundje, backgroundje.width*(1+floor(camera.x/backgroundje.width)), 0)
-    
-    
-    allSprites.draw()
-    
-    let deltaX = playertje.x - camera.x;
-    camera.x += deltaX * 0.1;
-    
-    camera.off()
-    text(frameRate().toFixed(2), 20, 20)
-    text(    camera.x, 100, 15    )
-    text("FPS: "+frameRate().toFixed(2) + "   deltaTime: "+deltaTime.toFixed(2), 0, 35);
-    text('xpos: ' + playertje.x.toFixed(1) + '   ypos: ' + playertje.y.toFixed(1), 0, 70);
-    text('xvel: ' + playertje.vel.x.toFixed(1) + '   yvel: ' + playertje.vel.y.toFixed(1), 0, 105);
 
-    text(playertje.friction, 800, 20)
+    // camera.on()
+    background(0, 123, 123);
+
+    // image(backgroundje, backgroundje.width*(-1+floor(camera.x/backgroundje.width)), 0)
+    // image(backgroundje, backgroundje.width*floor(camera.x/backgroundje.width), 0)
+    // image(backgroundje, backgroundje.width*(1+floor(camera.x/backgroundje.width)), 0)
+    
+    
+    // allSprites.draw()
+    
+    // let deltaX = playertje.x - camera.x;
+    // camera.x += deltaX * 0.1;
+    
+    // camera.off()
+    // text(frameRate().toFixed(2), 20, 20)
+    // text(    camera.x, 100, 15    )
+    // text("FPS: "+frameRate().toFixed(2) + "   deltaTime: "+deltaTime.toFixed(2), 0, 35);
+    // text('xpos: ' + playertje.x.toFixed(1) + '   ypos: ' + playertje.y.toFixed(1), 0, 70);
+    // text('xvel: ' + playertje.vel.x.toFixed(1) + '   yvel: ' + playertje.vel.y.toFixed(1), 0, 105);
+
+    // text(playertje.friction, 800, 20)
 
 }

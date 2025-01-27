@@ -1,4 +1,4 @@
-function declareSelectables(){
+function declareSelectables(TILESIZE){
     // class Block extends Sprite{
     //     static tile = 'b';
     //     constructor(x, y, width, height){
@@ -86,13 +86,18 @@ function declareSelectables(){
     // }
 
     let selectables = new Group()
+    // selectables.collider = 'k'
     selectables.selected = false
-    blocks.w = TILESIZE.x
-    blocks.h = TILESIZE.y
+    selectables.w = TILESIZE.x
+    selectables.h = TILESIZE.y
+    selectables.color = color(100, 200, 100)
 
     selectables.update = function(){
         selectables.forEach(selectable =>{
             if (selectable.mouse.presses()) {
+                console.log("selectable was pressed!");
+                
+                selectable.color = random(0, 255)
                 selectables.selected = false
                 selectable.selected = true
             }
@@ -100,10 +105,10 @@ function declareSelectables(){
 
         selectables.horizontalInput = 0
         selectables.verticalInput = 0
-        if(kb.pressing('arrowRight')) horizontalInput += 1
-        if(kb.pressing('arrowLeft'))  horizontalInput -= 1
-        if(kb.pressing('arrowDown'))  verticalInput += 1
-        if(kb.pressing('arrowUp'))    verticalInput -= 1
+        if(kb.pressing('arrowRight')) selectables.horizontalInput += 1
+        if(kb.pressing('arrowLeft'))  selectables.horizontalInput -= 1
+        if(kb.pressing('arrowDown'))  selectables.verticalInput += 1
+        if(kb.pressing('arrowUp'))    selectables.verticalInput -= 1
     }
 
 
@@ -112,6 +117,7 @@ function declareSelectables(){
     blocks.collider = 'k'
     blocks.movementspeed = 4
     blocks.rotationLock = true //maybe rotating blocks someday
+    blocks.tile = 'b'
 
     blocks.stopGlideMovement = function(){
         if(selectables.verticalInput !== 0)   return;
