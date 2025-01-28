@@ -89,21 +89,21 @@ function declareSelectables(TILESIZE){
     // selectables.collider = 'k'
     selectables.selected = false
     selectables.w = TILESIZE.x
-    selectables.h = TILESIZE.y
     selectables.color = color(100, 200, 100)
 
     selectables.checkSelection = function(){
-        selectables.forEach(selectable =>{
-            if (selectable.mouse.presses()) {
-                // console.log("selectable was pressed!" + selectable.idNum);
-                
-                selectable.color = random(0, 255)
-                selectables.forEach(selectable => {
-                    selectable.selected = false
-                });
-                selectable.selected = true
-            }
-        })
+            selectables.forEach(selectable => {
+                if (selectable.mouse.presses()) {
+                    selectables.forEach(selectable => {
+                        // idk why just setting it to false for the whole group doesnt work or something like selectables.selected = () => false but another forEach works ig
+                        selectable.selected = false
+                    })
+                    // console.log("selectable was pressed!" + selectable.idNum);
+                    
+                    selectable.color = random(0, 255)
+                    selectable.selected = true
+                }
+            })
 
         selectables.horizontalInput = 0
         selectables.verticalInput = 0
@@ -149,8 +149,10 @@ function declareSelectables(TILESIZE){
     //maak blocks.draw function ooit!!
     
     let selectableEnemies = new selectables.Group()
-    selectableEnemies.shape = 'triangle';
+    selectableEnemies.h = 'triangle';
+    selectableEnemies.collider = 'd'
     selectableEnemies.movementspeed = 3
+    selectableEnemies.tile = 'e'
 
     selectableEnemies.collides(allSprites, killCheck) //kan ook in 1x enkel collision checken met player-(group?)
     
@@ -162,18 +164,20 @@ function declareSelectables(TILESIZE){
 
     selectableEnemies.normalMovement = function(){
         //zorg dat--e heen en weer beweegt, mogelijk met 2 ge-GlueJointe sensoren
+        this.vel.x = this.movementspeed;
+        if(this.collides(allSprites)) this.vel.x = -this.vel.x
     }
     selectableEnemies.controlledMovement = function(){
-        selectableEnemies.velocity.set(0, 0)
+        this.velocity.x = 0
         
-        selectableEnemies.vel.x += selectables.horizontalInput*selectableEnemies.movementspeed
+        this.vel.x += selectables.horizontalInput*selectableEnemies.movementspeed
     }
 
     selectableEnemies.update = function(){
-        if (selectableEnemies.selected) {
-            selectableEnemies.controlledMovement()
+        if (this.selected) {
+            this.controlledMovement()
         } else {
-            selectableEnemies.normalMovement()
+            this.normalMovement()
         }
     }
 }
