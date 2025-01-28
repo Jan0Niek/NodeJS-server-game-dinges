@@ -151,8 +151,17 @@ function declareSelectables(TILESIZE){
     let selectableEnemies = new selectables.Group()
     selectableEnemies.h = 'triangle';
     selectableEnemies.collider = 'd'
-    selectableEnemies.movementspeed = 3
+    selectableEnemies.movementspeed = 1
     selectableEnemies.tile = 'e'
+    selectableEnemies.rotationLock = true
+    // selectableEnemies.leftSensor = (i) => new Sprite(selectableEnemies[i].x-selectableEnemies[i].w*0.5, selectableEnemies[i].y, 5, 10, 'n')
+    selectableEnemies.leftSensor = (i) => new Sprite(selectableEnemies[i].x-selectableEnemies[i].w*0.5, selectableEnemies[i].y, 5, 10, 'n')
+    selectableEnemies.rightSensor = (i) => new Sprite(selectableEnemies[i].x+selectableEnemies[i].w*0.5, selectableEnemies[i].y, 5, 10, 'n')
+    //fuck je kan geen gluejoints maken met sprites die er nog niet zijn arghhh wat is dit voor shit
+    selectableEnemies.leftGlue  = (i) => new GlueJoint(selectableEnemies[i], selectableEnemies[i].leftSensor)
+    selectableEnemies.rightGlue = (i) => new GlueJoint(selectableEnemies[i], selectableEnemies[i].rightSensor)
+
+    // selectableEnemies.hat = (i) => new Sprite(selectableEnemies[i].x, selectableEnemies[i].y - 10, selectableEnemies[i].w, 10, 'n')
 
     selectableEnemies.collides(allSprites, killCheck) //kan ook in 1x enkel collision checken met player-(group?)
     
@@ -163,9 +172,11 @@ function declareSelectables(TILESIZE){
     }
 
     selectableEnemies.normalMovement = function(){
-        //zorg dat--e heen en weer beweegt, mogelijk met 2 ge-GlueJointe sensoren
+        //zorg dat-ie heen en weer beweegt met 2 ge-GlueJointe sensoren!!!!
         this.vel.x = this.movementspeed;
-        if(this.collides(allSprites)) this.vel.x = -this.vel.x
+        if(this.collides(allSprites)){
+            this.movementspeed = -this.movementspeed;
+        }
     }
     selectableEnemies.controlledMovement = function(){
         this.velocity.x = 0
