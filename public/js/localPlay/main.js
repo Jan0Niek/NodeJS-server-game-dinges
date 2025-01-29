@@ -59,7 +59,10 @@ async function buildLevel(welkLevel){
 
 async function setup(){
     await buildLevel(welkLevel);
-new Sprite (0, 720, 10000, 40, 'k')
+    new Sprite (0, 720, 10000, 40, 'k')
+    allSprites.forEach(sprite => {
+        if(sprite.setup != null) sprite.setup()
+    })
 
 }
 
