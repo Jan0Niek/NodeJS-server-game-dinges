@@ -91,6 +91,8 @@ function declareSelectables(TILESIZE){
     selectables.w = TILESIZE.x
     selectables.color = color(100, 200, 100)
 
+    selectables.friction=0
+
     selectables.checkSelection = function(){
             selectables.forEach(selectable => {
                 if (selectable.mouse.presses()) {
@@ -118,9 +120,22 @@ function declareSelectables(TILESIZE){
 
     let blocks = new selectables.Group();
     blocks.collider = 'k'
-    blocks.movementspeed = 4
+    blocks.movementspeed = 3
     blocks.rotationLock = true //maybe rotating blocks someday
     blocks.tile = 'b'
+
+    function blocksRelativity(sensor, sprite2){
+        sprite2.vel.x = (sensor.vel.x);
+        
+    }
+
+    blocks.setup = function(){
+        this.topSensor = new Sprite(this.x, this.y-this.halfHeight, this.w*0.9, 4, 'n');
+
+        this.topSensorGlue = new GlueJoint(this, this.topSensor);
+
+        this.topSensor.overlapping(allSprites, blocksRelativity)
+    }
 
     blocks.stopGlideMovement = function(){
         if(selectables.verticalInput !== 0)   return;
@@ -134,6 +149,8 @@ function declareSelectables(TILESIZE){
         this.vel.x += selectables.horizontalInput*this.movementspeed
         this.vel.y += selectables.verticalInput*this.movementspeed
     }
+
+
     blocks.update = function(){
         selectables.checkSelection()
         //how 'this' works in js is a mess... hate it
@@ -149,7 +166,7 @@ function declareSelectables(TILESIZE){
     //maak blocks.draw function ooit!!
     
     let selectableEnemies = new selectables.Group()
-    selectableEnemies.w = selectables.w*0.8
+    selectableEnemies.w = selectables.w*0.9
     selectableEnemies.h = 'triangle';
     selectableEnemies.collider = 'd'
     selectableEnemies.movementspeed = 2
@@ -169,19 +186,24 @@ function declareSelectables(TILESIZE){
     selectableEnemies.addGlueJoints = function(){
         this.leftGlue  = new GlueJoint(this, this.leftSensor)
         this.rightGlue = new GlueJoint(this, this.rightSensor)
+
+        this.rightGlue.visible = false;
+        this.leftGlue.visible = false;
     }
     selectableEnemies.addLeftRightSensors = function(){
         this.leftSensor = new Sprite(this.x-this.w*0.5, this.y-5, 5, 10, 'n')
         this.rightSensor = new Sprite(this.x+this.w*0.5, this.y-5, 5, 10, 'n')
 
+        this.leftSensor.visible = false;
+        this.rightSensor.visible = false;
         // this.leftSensor.overlaps(allSprites, turnRight)
         // this.rightSensor.overlaps(allSprites, turnLeft)
     }
     
 
     selectableEnemies.normalMovement = function(){
-        //zorg dat-ie heen en weer beweegt met 2 ge-GlueJointe sensoren!!!!
-        this.vel.x = this.movingspeed;
+        this.x += this.movingspeed; //ik zou dingen met velocity's en met forces moeten doen, maar zo is makkelijker
+
         if(this.leftSensor.overlapping(allSprites)) this.movingspeed = this.movementspeed;
         if(this.rightSensor.overlapping(allSprites)) this.movingspeed = -this.movementspeed;
     }
@@ -194,7 +216,7 @@ function declareSelectables(TILESIZE){
     selectableEnemies.setup = function(){
         this.addLeftRightSensors()
         this.addGlueJoints()
-        console.log("as")
+        // console.log("as")
     }
 
     selectableEnemies.update = function(){

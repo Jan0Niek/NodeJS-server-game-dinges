@@ -15,6 +15,8 @@ allSprites.h = TILESIZE.y
 //maak hier de custom classes aan (van andere bestanden)
 declareSelectables(TILESIZE)
 new Group().tile = 's'
+declarePlayer()
+
 
 
 if(localStorage.getItem("refresh-rate") == null || isNaN(localStorage.getItem("refresh-rate"))){
