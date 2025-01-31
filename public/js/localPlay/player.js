@@ -88,24 +88,28 @@ function declarePlayer(){
     playerGroup.coyoteTime = 100; //miliseconds
 
     playerGroup.setup = function(){
-        this.groundSensor = new Sprite(this.x, this.y+this.halfHeight, this.w, 5)
+        this.groundSensor = new Sprite(this.x, this.y+this.halfHeight, this.w, 1)
         this.groundSensorGlue = new GlueJoint(this, this.groundSensor)
+        this.groundSensor.visible=false;
+        this.groundSensorGlue.visible=false;
 
-        this.groundSensor.overlapping(allSprites, () =>{
-            this.grounded = true;
-        })
-        this.groundSensor.overlapped(allSprites, () =>{
-            setTimeout(()=>{
-                if(!this.groundSensor.overlapping(allSprites)) this.grounded = false;
-            }, this.coyoteTime)
-        })
     }
 
     playerGroup.update = function(){
-        if((kb.presses(' ') || kb.presses('w'))&& this.grounded){
+        if((kb.presses(' ') || kb.presses('w')) && this.grounded){
             this.vel.y = -this.jumpStrength
+            this.grounded = false;
+        }
+        if(this.groundSensor.overlapping(allSprites)){
+            this.grounded = true;
+        }       
+        if(this.groundSensor.overlapped(allSprites)){
+            setTimeout(()=>{
+                if(!this.groundSensor.overlapping(allSprites)) this.grounded = false;
+            }, this.coyoteTime)
         }
         
+
         // this.vel.x = 0 
         // comment hieronderaan is ongeldig aangezien ik überhaupt al geen velocity's gebruik volgens mij dan ofzo
         if(kb.pressing('a')){

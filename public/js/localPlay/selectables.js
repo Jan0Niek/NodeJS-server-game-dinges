@@ -131,8 +131,10 @@ function declareSelectables(TILESIZE){
 
     blocks.setup = function(){
         this.topSensor = new Sprite(this.x, this.y-this.halfHeight, this.w*0.9, 4, 'n');
-
         this.topSensorGlue = new GlueJoint(this, this.topSensor);
+
+        this.topSensor.visible=false;
+        this.topSensorGlue.visible=false;
 
         this.topSensor.overlapping(allSprites, blocksRelativity)
     }
