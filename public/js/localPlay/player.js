@@ -76,7 +76,7 @@ function declarePlayer(){
     let playerGroup = new Group(); //om de een of andere reden werkt dit (tile) alleen als group, niet als sprite... bruh
     playerGroup.tile = 'p';
     playerGroup.w = TILESIZE.x
-    playerGroup.h = TILESIZE.h*2
+    playerGroup.h = TILESIZE.y*2
     playerGroup.rotationLock = true;
     playerGroup.friction = 0;
 
@@ -86,12 +86,40 @@ function declarePlayer(){
     playerGroup.grounded = false;
     playerGroup.jumpingAble = false
     playerGroup.coyoteTime = 100; //miliseconds
+    playerGroup.leftAllowed = true;
+    playerGroup.rightAllowed = true;
+
+
+    playerGroup.addGlueJoints = function(){
+        this.leftGlue  = new GlueJoint(this, this.leftSensor)
+        this.rightGlue = new GlueJoint(this, this.rightSensor)
+
+        // this.rightGlue.visible = false;
+        // this.leftGlue.visible = false;
+    }
+    playerGroup.addLeftRightSensors = function(){
+        this.leftSensor = new Sprite(this.x-this.w*0.5, this.y-this.halfHeight*0.5, 1, this.halfHeight, 'n')
+        this.rightSensor = new Sprite(this.x+this.w*0.5, this.y-this.halfHeight*0.5, 1, this.halfHeight, 'n')
+
+        // this.leftSensor.visible = false;
+        // this.rightSensor.visible = false;
+    }
 
     playerGroup.setup = function(){
-        this.groundSensor = new Sprite(this.x, this.y+this.halfHeight, this.w, 1)
+        this.addLeftRightSensors()
+        this.addGlueJoints()
+
+
+        this.groundSensor = new Sprite(this.x, this.y+this.halfHeight, this.w*0.8, this.movementspeed)
         this.groundSensorGlue = new GlueJoint(this, this.groundSensor)
         this.groundSensor.visible=false;
         this.groundSensorGlue.visible=false;
+
+        this.groundSensor.overlapping(allSprites, (sensor, sprite2)=>{
+            if(sprite2.vel.x == 0) this.vel.x = 0 //dit is shitcode puur omdat ik niet de al ingebouwde physics van p5play met friction gebruik, mAAR:
+                                            // in dat geval had ik weer andere shitcode om te voorkomen dat hij ook verticaal met platformpjes zou wrijven en dan wallslides doen;
+                                            //beide opties zijn matig volgens mij, deze vast het matigst. het werkt, dus..? 
+        })
 
     }
 
@@ -109,13 +137,24 @@ function declarePlayer(){
             }, this.coyoteTime)
         }
         
+        this.leftAllowed = true
+        this.rightAllowed = true
+        if(this.leftSensor.overlapping(allSprites)){
+            this.leftAllowed = false
+            // this.x+=this.movementspeed;
+        }
+        if(this.rightSensor.overlapping(allSprites)){
+            this.rightAllowed = false
+            // this.x-=this.movementspeed;
+        }
+        
 
-        // this.vel.x = 0 
+        
         // comment hieronderaan is ongeldig aangezien ik überhaupt al geen velocity's gebruik volgens mij dan ofzo
-        if(kb.pressing('a')){
+        if(kb.pressing('a') && this.leftAllowed){
             this.x += -this.movementspeed
         }
-        if(kb.pressing('d')){
+        if(kb.pressing('d') && this.rightAllowed){
             this.x +=  this.movementspeed
         }
 

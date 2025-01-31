@@ -8,7 +8,7 @@ world.allowSleeping = false;
 p5play.renderStats = true
 
 //global tilesize in px
-const TILESIZE = {x:40, y:40};
+const TILESIZE = {x:40, y:40, w:40, h:40};
 allSprites.w = TILESIZE.x
 allSprites.h = TILESIZE.y
 
