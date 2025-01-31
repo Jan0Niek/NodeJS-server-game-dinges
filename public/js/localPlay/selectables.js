@@ -125,7 +125,7 @@ function declareSelectables(TILESIZE){
     blocks.tile = 'b'
 
     function blocksRelativity(sensor, sprite2){
-        sprite2.vel.x = (sensor.vel.x);
+        if(sensor.joints[0].spriteA.selected) sprite2.vel.x = (sensor.vel.x);
         
     }
 
@@ -169,7 +169,8 @@ function declareSelectables(TILESIZE){
     selectableEnemies.w = selectables.w*0.9
     selectableEnemies.h = 'triangle';
     selectableEnemies.collider = 'd'
-    selectableEnemies.movementspeed = 2
+    selectableEnemies.movementspeed = 0
+    selectableEnemies.friction=0
     selectableEnemies.movingspeed = selectableEnemies.movementspeed //for reversing left-right movement
     selectableEnemies.tile = 'e'
     selectableEnemies.rotationLock = true
@@ -179,7 +180,7 @@ function declareSelectables(TILESIZE){
     
     function killCheck(enemy, col){
         if(col.tile == 'p'){
-            //dan restart level ofzo
+            setup()
         }
     }
 

@@ -73,9 +73,49 @@
 // }
 
 function declarePlayer(){
-    let playerGroup = new Group();
+    let playerGroup = new Group(); //om de een of andere reden werkt dit (tile) alleen als group, niet als sprite... bruh
     playerGroup.tile = 'p';
     playerGroup.w = TILESIZE.x
     playerGroup.h = TILESIZE.h*2
+    playerGroup.rotationLock = true;
+    playerGroup.friction = 0;
 
+    playerGroup.jumpStrength = 6;
+    playerGroup.movementspeed = 4;
+    playerGroup.movingspeed = 0;
+    playerGroup.grounded = false;
+    playerGroup.jumpingAble = false
+    playerGroup.coyoteTime = 100; //miliseconds
+
+    playerGroup.setup = function(){
+        this.groundSensor = new Sprite(this.x, this.y+this.halfHeight, this.w, 5)
+        this.groundSensorGlue = new GlueJoint(this, this.groundSensor)
+
+        this.groundSensor.overlapping(allSprites, () =>{
+            this.grounded = true;
+        })
+        this.groundSensor.overlapped(allSprites, () =>{
+            setTimeout(()=>{
+                if(!this.groundSensor.overlapping(allSprites)) this.grounded = false;
+            }, this.coyoteTime)
+        })
+    }
+
+    playerGroup.update = function(){
+        if((kb.presses(' ') || kb.presses('w'))&& this.grounded){
+            this.vel.y = -this.jumpStrength
+        }
+        
+        // this.vel.x = 0 
+        // comment hieronderaan is ongeldig aangezien ik überhaupt al geen velocity's gebruik volgens mij dan ofzo
+        if(kb.pressing('a')){
+            this.x += -this.movementspeed
+        }
+        if(kb.pressing('d')){
+            this.x +=  this.movementspeed
+        }
+
+        // this.vel.x *= 0.98
+        //ik zou movement moeten lerp'en ofzoiets om het soepeler te maken dan een accel van ∞
+    }
 }
