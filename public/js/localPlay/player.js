@@ -79,8 +79,10 @@ function declarePlayer(){
     playerGroup.h = TILESIZE.y*2
     playerGroup.rotationLock = true;
     playerGroup.friction = 0;
+    playerGroup.gravityScale = 1.5
 
-    playerGroup.jumpStrength = 6;
+    playerGroup.constantGravityScale = 1.5
+    playerGroup.jumpStrength = 9;
     playerGroup.movementspeed = 4;
     playerGroup.movingspeed = 0;
     playerGroup.grounded = false;
@@ -94,15 +96,15 @@ function declarePlayer(){
         this.leftGlue  = new GlueJoint(this, this.leftSensor)
         this.rightGlue = new GlueJoint(this, this.rightSensor)
 
-        // this.rightGlue.visible = false;
-        // this.leftGlue.visible = false;
+        this.rightGlue.visible = false;
+        this.leftGlue.visible = false;
     }
     playerGroup.addLeftRightSensors = function(){
-        this.leftSensor = new Sprite(this.x-this.w*0.5, this.y-this.halfHeight*0.5, 1, this.halfHeight, 'n')
-        this.rightSensor = new Sprite(this.x+this.w*0.5, this.y-this.halfHeight*0.5, 1, this.halfHeight, 'n')
+        this.leftSensor = new Sprite(this.x-this.w*0.5, this.y-(this.halfHeight*0.5 - 6), 1, this.halfHeight+6, 'n')
+        this.rightSensor = new Sprite(this.x+this.w*0.5, this.y-(this.halfHeight*0.5 - 6), 1, this.halfHeight+6, 'n')
 
-        // this.leftSensor.visible = false;
-        // this.rightSensor.visible = false;
+        this.leftSensor.visible = false;
+        this.rightSensor.visible = false;
     }
 
     playerGroup.setup = function(){
@@ -112,22 +114,30 @@ function declarePlayer(){
 
         this.groundSensor = new Sprite(this.x, this.y+this.halfHeight, this.w*0.8, this.movementspeed)
         this.groundSensorGlue = new GlueJoint(this, this.groundSensor)
-        this.groundSensor.visible=false;
+        // this.groundSensor.visible=false;
         this.groundSensorGlue.visible=false;
 
         this.groundSensor.overlapping(allSprites, (sensor, sprite2)=>{
-            if(sprite2.vel.x == 0) this.vel.x = 0 //dit is shitcode puur omdat ik niet de al ingebouwde physics van p5play met friction gebruik, mAAR:
-                                            // in dat geval had ik weer andere shitcode om te voorkomen dat hij ook verticaal met platformpjes zou wrijven en dan wallslides doen;
-                                            //beide opties zijn matig volgens mij, deze vast het matigst. het werkt, dus..? 
+            if(sprite2.vel.x == 0 && (!this.leftSensor.overlapping(allSprites) || this.rightSensor.overlapping(allSprites))) this.vel.x = 0 
+                    //dit is shitcode puur omdat ik niet de al ingebouwde physics van p5play met friction gebruik, mAAR:
+                    // in dat geval had ik weer andere shitcode om te voorkomen dat hij ook verticaal met platformpjes zou wrijven en dan wallslides doen;
+                    //beide opties zijn matig volgens mij, deze vast het matigst. het werkt, dus..? 
         })
 
     }
 
     playerGroup.update = function(){
+        // this.gravityScale = this.constantGravityScale;
         if((kb.presses(' ') || kb.presses('w')) && this.grounded){
-            this.vel.y = -this.jumpStrength
+            //let's just say that the double jump bug is actually a feature for the pro gamers
+            this.vel.y = -this.jumpStrength;
+            // this.applyForceScaled(0, -this.jumpStrength*100)
             this.grounded = false;
         }
+        if(kb.pressing(' ') || kb.pressing('w')) this.applyForceScaled(0, -this.jumpStrength*0.6)
+        // if(kb.pressing('s')) this.applyForceScaled(0, this.jumpStrength)
+
+
         if(this.groundSensor.overlapping(allSprites)){
             this.grounded = true;
         }       
@@ -141,11 +151,11 @@ function declarePlayer(){
         this.rightAllowed = true
         if(this.leftSensor.overlapping(allSprites)){
             this.leftAllowed = false
-            // this.x+=this.movementspeed;
+            this.x+=0.04;
         }
         if(this.rightSensor.overlapping(allSprites)){
             this.rightAllowed = false
-            // this.x-=this.movementspeed;
+            this.x-=0.04;
         }
         
 
