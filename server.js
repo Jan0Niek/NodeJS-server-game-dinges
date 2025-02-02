@@ -148,7 +148,7 @@ io.sockets.on('connection', (socket) => {
         for (const _socket of sockets) {
             if(_socket.data.playerNum == 1){
                 if(_socket.data.ready) p1Ready=true; 
-            }if(socket.data.playerNum == 2){
+            }if(_socket.data.playerNum == 2){
                 if(_socket.data.ready) p2Ready=true; 
             }
         }
