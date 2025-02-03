@@ -13,17 +13,8 @@ const LEVELS = require("./game/levels.json")
 require('q5');
 require('p5play');
 
-//altough this instance of p5/q5 and p5play goes almost completely unused, it's necessary for the classes that extend p5(play) things such as Sprite.
-new Q5();
-noLoop();
-noCanvas();
-allSprites.autoDraw=false;
 
 const TILESIZE = {x:40, y:40, w:40, h:40};
-allSprites.w = TILESIZE.x
-allSprites.h = TILESIZE.y
-declareSelectables(TILESIZE)
-declarePlayer(TILESIZE)
 
 const app = express();
 const server = app.listen(3000);
@@ -211,48 +202,53 @@ io.sockets.on('connection', (socket) => {
 // FIX DAT ER TWEEMAAL IN DEZELFDE ROOM/LOBBY EEN GAME KAN WORDEN GESTART!!! gamestates checken ofzo? is dit al gefixt of niet?
 
 function startGame(room){
-    roomsDatas.get(room).p5Lobby = new Q5("instance")
-    roomsDatas.get(room).p5Lobby.frameRate(30)
-    roomsDatas.get(room).p5Lobby.noCanvas();
-    roomsDatas.get(room).p5Lobby.allSprites.autoDraw = false;
-    roomsDatas.get(room).p5Lobby.world.gravity.y = 9.81;
-    roomsDatas.get(room).p5Lobby.allSprites.drag = 0.24;
-    roomsDatas.get(room).p5Lobby.world.allowSleeping = false;
-    // roomsDatas.get(room).p5Lobby.allSprites.autoUpdate = true;
-    // allSprites.autoUpdate = true;
+    roomsDatas.get(room).p5Lobby = new Q5("instance");
+    let p5 = roomsDatas.get(room).p5Lobby;
+
+    declareSelectables(TILESIZE, p5)
+    declarePlayer(TILESIZE, p5)
+
+    p5.frameRate(30)
+    p5.noCanvas();
+    p5.allSprites.autoDraw = false;
+    p5.world.gravity.y = 9.81;
+    p5.allSprites.drag = 0.24;
+    p5.world.allowSleeping = false;
+    // p5.allSprites.autoUpdate = true;
+    // p5.allSprites.autoUpdate = true;
 
     roomsDatas.get(room).setLevel(0, LEVELS)
 
-    new Tiles(roomsDatas.get(room).currentLevel.levelTilesRows, 0, 0, TILESIZE.x, TILESIZE.y)
-    // roomsDatas.get(room).p5Lobby.world.gravity.y = 10
+    new p5.Tiles(roomsDatas.get(room).currentLevel.levelTilesRows, 0, 0, TILESIZE.x, TILESIZE.y)
+    // p5.world.gravity.y = 10
     //verstuur hierboven de levels ofzo? doe dan onderaan de al verzonden sprite-posities updaten?!
 
     // let playerOne;
-    // allSprites.forEach(sprite => {if(sprite.tile=='p') playerOne=sprite;})
+    // p5.allSprites.forEach(sprite => {if(sprite.tile=='p') playerOne=sprite;})
 
     
-    roomsDatas.get(room).p5Lobby.setup = () => 
+    p5.setup = () => 
     {
-        // new roomsDatas.get(room).p5Lobby.Canvas(1280, 720);
-        roomsDatas.get(room).p5Lobby.noCanvas();
-        roomsDatas.get(room).p5Lobby.allSprites.autoDraw = false;
+        // new p5.Canvas(1280, 720);
+        p5.noCanvas();
+        p5.allSprites.autoDraw = false;
         //onUpdatePos en dan de shit
 
-        new Sprite (0, 720, 10000, 40, 'k')
-        allSprites.forEach(sprite => {
-            if(sprite.setup != null) sprite.setup(roomsDatas.get(room))
+        new p5.Sprite (0, 720, 10000, 40, 'k')
+        let currentRoom = roomsDatas.get(room)
+        p5.allSprites.forEach(sprite => {
+            if(sprite.setup != null) sprite.setup(currentRoom.p1)
         })
 
         let levelDataToSend = [];
-        allSprites.forEach(sprite =>{
+        p5.allSprites.forEach(sprite =>{
             levelDataToSend.push({id: sprite.idNum, x: sprite.x, y: sprite.y, w: sprite.w, h: sprite.h, col: sprite.color, text: sprite.text, imageName: sprite.imageName})
         })
 
         io.to(room).emit("loadLevel", levelDataToSend);
-        // new Group().forEach()//loop door allsprites en stuur die dan?
     };
 
-    roomsDatas.get(room).p5Lobby.draw = () => 
+    p5.draw = () => 
     {
         // background(100);
         // console.log(roomsDatas)
@@ -263,11 +259,11 @@ function startGame(room){
         // if(roomsDatas.get(room).p1.pressedKeys.includes("s")) playerOne.y += 10;
         // if(roomsDatas.get(room).p1.pressedKeys.includes("d")) playerOne.x += 10;
                 
-        //zorg dat dit niet handmatig ingevuld hoeft te worden, gebruik allSprites
+        //zorg dat dit niet handmatig ingevuld hoeft te worden, gebruik p5.allSprites
         const data = [];
-        allSprites.forEach(sprite =>{
-            sprite.currentRoom = roomsDatas.get(room)
-            sprite.update()
+        p5.allSprites.forEach(sprite =>{
+            // sprite.currentRoom = roomsDatas.get(room)
+            sprite.update(roomsDatas.get(room))
             data.push({id: sprite.idNum, x: sprite.x, y: sprite.y, rot: sprite.rotation})
         })
         try{
