@@ -5,16 +5,25 @@ const fs = require('fs');
 const express = require('express');
 const { instrument } = require("@socket.io/admin-ui");
 const RoomData = require("./RoomData.js");
+const {declareSelectables} = require("./game/selectables.js")
+const {declarePlayer} = require("./game/player.js")
+const LEVELS = require("./game/levels.json")
+
 
 require('q5');
 require('p5play');
 
 //altough this instance of p5/q5 and p5play goes almost completely unused, it's necessary for the classes that extend p5(play) things such as Sprite.
-//Sprite doesn't exist if there isn't a (global) instance of p5/q5. lovely inheritance jippee
 new Q5();
 noLoop();
 noCanvas();
 allSprites.autoDraw=false;
+
+const TILESIZE = {x:40, y:40, w:40, h:40};
+allSprites.w = TILESIZE.x
+allSprites.h = TILESIZE.y
+declareSelectables(TILESIZE)
+declarePlayer(TILESIZE)
 
 const app = express();
 const server = app.listen(3000);
@@ -206,21 +215,20 @@ function startGame(room){
     roomsDatas.get(room).p5Lobby.frameRate(30)
     roomsDatas.get(room).p5Lobby.noCanvas();
     roomsDatas.get(room).p5Lobby.allSprites.autoDraw = false;
+    roomsDatas.get(room).p5Lobby.world.gravity.y = 9.81;
+    roomsDatas.get(room).p5Lobby.allSprites.drag = 0.24;
+    roomsDatas.get(room).p5Lobby.world.allowSleeping = false;
+    // roomsDatas.get(room).p5Lobby.allSprites.autoUpdate = true;
+    // allSprites.autoUpdate = true;
+
+    roomsDatas.get(room).setLevel(0, LEVELS)
+
+    new Tiles(roomsDatas.get(room).currentLevel.levelTilesRows, 0, 0, TILESIZE.x, TILESIZE.y)
     // roomsDatas.get(room).p5Lobby.world.gravity.y = 10
     //verstuur hierboven de levels ofzo? doe dan onderaan de al verzonden sprite-posities updaten?!
-    roomsDatas.get(room).currentLevel = {
-        sprites : []
-    }
 
-    let playerOne = new Sprite(20, 20, 30, 20)
-
-
-    for (let i = 0; i < allSprites.length; i++) {
-        const sprite = allSprites.at(i);
-        roomsDatas.get(room).currentLevel.sprites.push({id: sprite.idNum, x: sprite.x, y: sprite.y, w: sprite.w, h: sprite.h, col: sprite.color, text: sprite.text, imageName: sprite.imageName})
-    }
-    // level.sprites.push({id: playerOne.idNum, x: playerOne.x, y: playerOne.y, w: playerOne.w, h: playerOne.h, col: playerOne.color, text: playerOne.text})
-    // level.sprites.push({id: abc1.idNum, x: abc1.x, y: abc1.y, w: abc1.w, h: abc1.h, col: abc1.color, text: abc1.text})
+    // let playerOne;
+    // allSprites.forEach(sprite => {if(sprite.tile=='p') playerOne=sprite;})
 
     
     roomsDatas.get(room).p5Lobby.setup = () => 
@@ -230,7 +238,17 @@ function startGame(room){
         roomsDatas.get(room).p5Lobby.allSprites.autoDraw = false;
         //onUpdatePos en dan de shit
 
-        io.to(room).emit("loadLevel", roomsDatas.get(room).currentLevel);
+        new Sprite (0, 720, 10000, 40, 'k')
+        allSprites.forEach(sprite => {
+            if(sprite.setup != null) sprite.setup(roomsDatas.get(room))
+        })
+
+        let levelDataToSend = [];
+        allSprites.forEach(sprite =>{
+            levelDataToSend.push({id: sprite.idNum, x: sprite.x, y: sprite.y, w: sprite.w, h: sprite.h, col: sprite.color, text: sprite.text, imageName: sprite.imageName})
+        })
+
+        io.to(room).emit("loadLevel", levelDataToSend);
         // new Group().forEach()//loop door allsprites en stuur die dan?
     };
 
@@ -240,23 +258,18 @@ function startGame(room){
         // console.log(roomsDatas)
         // console.log(roomsDatas.get(room).p1.pressedKeys)
         
-        if(roomsDatas.get(room).p1.pressedKeys.includes("w")) playerOne.y -= 10;
-        if(roomsDatas.get(room).p1.pressedKeys.includes("a")) playerOne.x -= 10;
-        if(roomsDatas.get(room).p1.pressedKeys.includes("s")) playerOne.y += 10;
-        if(roomsDatas.get(room).p1.pressedKeys.includes("d")) playerOne.x += 10;
-        
-        // if(roomsDatas.get(room).p2.pressedKeys.includes("w")) abc1.y -= 10;
-        // if(roomsDatas.get(room).p2.pressedKeys.includes("a")) abc1.x -= 10;
-        // if(roomsDatas.get(room).p2.pressedKeys.includes("s")) abc1.y += 10;
-        // if(roomsDatas.get(room).p2.pressedKeys.includes("d")) abc1.x += 10;
-        
-        //zorg dat dit niet handmatig ingevuld hoeft te worden, gebruik allSprites
-        const data = {
-            sprites : [
-                {id: playerOne.idNum, x: playerOne.x, y: playerOne.y, rot: playerOne.rotation}
+        // if(roomsDatas.get(room).p1.pressedKeys.includes("w")) playerOne.y -= 10;
+        // if(roomsDatas.get(room).p1.pressedKeys.includes("a")) playerOne.x -= 10;
+        // if(roomsDatas.get(room).p1.pressedKeys.includes("s")) playerOne.y += 10;
+        // if(roomsDatas.get(room).p1.pressedKeys.includes("d")) playerOne.x += 10;
                 
-            ]
-        }
+        //zorg dat dit niet handmatig ingevuld hoeft te worden, gebruik allSprites
+        const data = [];
+        allSprites.forEach(sprite =>{
+            sprite.currentRoom = roomsDatas.get(room)
+            sprite.update()
+            data.push({id: sprite.idNum, x: sprite.x, y: sprite.y, rot: sprite.rotation})
+        })
         try{
             io.to(room).emit("gameData", data);
         } catch(err){

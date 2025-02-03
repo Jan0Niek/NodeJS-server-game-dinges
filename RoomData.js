@@ -12,9 +12,12 @@ class RoomData{
             pressedKeys : []
             
         }
-        this.currentLevel = {
-            sprites : []
-        }
+        this.currentLevel = { }
+        this.levelNum = 0;
+    }
+    setLevel(welke, allLevels){
+        this.levelNum = welke;
+        this.currentLevel = allLevels[this.levelNum]
     }
 
 }

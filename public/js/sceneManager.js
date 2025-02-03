@@ -12,30 +12,27 @@ const scenes =
 {
     gaming: {
         gamerdata:null,
-        theLevel:null,
+        allLevelSprites:null,
 
         start: function() {
             // allSprites.removeAll();
 
-            theLevel = {
-                sprites : new Map()
-            }
 
-            socket.on("loadLevel", (level) => {
+            this.allLevelSprites = new Map()
+
+            socket.on("loadLevel", (levelData) => {
                 theLevel = {
                     sprites: new Map()
                 }
-                level.sprites.forEach(sprite => {
-                    theLevel.sprites.set(sprite.id, new Sprite(sprite.x, sprite.y, sprite.w, sprite.h, 'n'));
-                    theLevel.sprites.get(sprite.id).text = sprite.text;
+                levelData.forEach(sprite => {
+                    this.allLevelSprites.set(sprite.id, new Sprite(sprite.x, sprite.y, sprite.w, sprite.h, 'n'));
+                    this.allLevelSprites.get(sprite.id).text = sprite.text;
                 });
                 // socket.emit("levelHasLoaded")
                 // dan pas de game-loop aan de server beginnen wanneer zowel P1's als P2's levels zijn ingeladen..?
             });
 
-            gamerData = {
-                sprites : [ ]
-            };
+            gamerData = []
             socket.on("gameData", (data) => {
                 gamerData = data;
             });
@@ -52,12 +49,12 @@ const scenes =
             if(kb.pressing("d")) pressedKeys.push("d");
             socket.emit("pressedKeys", pressedKeys);
 
-            if(gamerData && gamerData.sprites){
-                for (let i = 0; i < gamerData.sprites.length; i++) {
+            if(gamerData){
+                for (let i = 0; i < gamerData.length; i++) {
                     //set local things to the online recieved things
-                    theLevel.sprites.get(gamerData.sprites[i].id).x = gamerData.sprites[i].x;
-                    theLevel.sprites.get(gamerData.sprites[i].id).y = gamerData.sprites[i].y;
-                    theLevel.sprites.get(gamerData.sprites[i].id).rotation = gamerData.sprites[i].rot;
+                    this.allLevelSprites.get(gamerData[i].id).x = gamerData[i].x;
+                    this.allLevelSprites.get(gamerData[i].id).y = gamerData[i].y;
+                    this.allLevelSprites.get(gamerData[i].id).rotation = gamerData[i].rot;
                 }
             }
         }
