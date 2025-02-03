@@ -171,7 +171,7 @@ function declareSelectables(TILESIZE){
     selectableEnemies.w = selectables.w*0.9
     selectableEnemies.h = 'triangle';
     selectableEnemies.collider = 'd'
-    selectableEnemies.movementspeed = 0
+    selectableEnemies.movementspeed = 3
     selectableEnemies.friction=0
     selectableEnemies.movingspeed = selectableEnemies.movementspeed //for reversing left-right movement
     selectableEnemies.tile = 'e'

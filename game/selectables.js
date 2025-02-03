@@ -8,9 +8,8 @@ function declareSelectables(TILESIZE, p5){
     selectables.friction=0
     selectables.pressedKeys = []
 
-    selectables.checkSelection = function(currentRoom){
-        console.log(currentRoom)
-        selectables.pressedKeys = roomsDatas.get(room).p2.pressedKeys;
+    selectables.checkSelection = function(){
+        // selectables.pressedKeys = pressedKeys
             selectables.forEach(selectable => {
                 //mouse.presses moet veranderd worden!!!!!!! die kan nie!
                 if (selectable.mouse.presses()) {
@@ -32,7 +31,7 @@ function declareSelectables(TILESIZE, p5){
         if(selectables.pressedKeys.includes('w'))  selectables.verticalInput += 1
         if(selectables.pressedKeys.includes('s'))  selectables.verticalInput -= 1
     }
-    selectables.update = function(currentRoom){ selectables.checkSelection(currentRoom) }
+    selectables.update = function(){ selectables.checkSelection() }
 
 
 

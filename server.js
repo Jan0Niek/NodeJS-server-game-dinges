@@ -205,17 +205,269 @@ function startGame(room){
     roomsDatas.get(room).p5Lobby = new Q5("instance");
     let p5 = roomsDatas.get(room).p5Lobby;
 
-    declareSelectables(TILESIZE, p5)
-    declarePlayer(TILESIZE, p5)
+    // declareSelectables(TILESIZE, p5)
+    // declarePlayer(TILESIZE, p5)
 
-    p5.frameRate(30)
+    
+    let playerGroup = new p5.Group(); //om de een of andere reden werkt dit (tile) alleen als group, niet als sprite... bruh
+    playerGroup.tile = 'p';
+    playerGroup.w = TILESIZE.x
+    playerGroup.h = TILESIZE.y*2
+    playerGroup.rotationLock = true;
+    playerGroup.friction = 0;
+    playerGroup.gravityScale = 1.5
+
+    playerGroup.constantGravityScale = 1.5
+    playerGroup.jumpStrength = 9;
+    playerGroup.movementspeed = 4;
+    playerGroup.movingspeed = 0;
+    playerGroup.grounded = false;
+    playerGroup.jumpingAble = false
+    playerGroup.coyoteTime = 100; //miliseconds
+    playerGroup.leftAllowed = true;
+    playerGroup.rightAllowed = true;
+    playerGroup.pressedKeys = [];
+
+
+    playerGroup.addGlueJoints = function(){
+        this.leftGlue  = new p5.GlueJoint(this, this.leftSensor)
+        this.rightGlue = new p5.GlueJoint(this, this.rightSensor)
+
+        this.rightGlue.visible = false;
+        this.leftGlue.visible = false;
+    }
+    playerGroup.addLeftRightSensors = function(){
+        this.leftSensor = new p5.Sprite(this.x-this.w*0.5, this.y-(this.halfHeight*0.5 - 6), 1, this.halfHeight+6, 'n')
+        this.rightSensor = new p5.Sprite(this.x+this.w*0.5, this.y-(this.halfHeight*0.5 - 6), 1, this.halfHeight+6, 'n')
+
+        this.leftSensor.visible = false;
+        this.rightSensor.visible = false;
+    }
+
+    playerGroup.setup = function(){
+        // console.log("aaaaAA!!" + typeof currentRoom.pressedKeys)
+        this.addLeftRightSensors()
+        this.addGlueJoints()
+
+
+        this.groundSensor = new p5.Sprite(this.x, this.y+this.halfHeight, this.w*0.8, this.movementspeed)
+        this.groundSensorGlue = new p5.GlueJoint(this, this.groundSensor)
+        // this.groundSensor.visible=false;
+        this.groundSensorGlue.visible=false;
+
+        this.groundSensor.overlapping(p5.allSprites, (sensor, sprite2)=>{
+            if(sprite2.vel.x == 0 && (!this.leftSensor.overlapping(p5.allSprites) || this.rightSensor.overlapping(p5.allSprites))) this.vel.x = 0 
+                    //dit is shitcode puur omdat ik niet de al ingebouwde physics van p5play met friction gebruik, mAAR:
+                    // in dat geval had ik weer andere shitcode om te voorkomen dat hij ook verticaal met platformpjes zou wrijven en dan wallslides doen;
+                    //beide opties zijn matig volgens mij, deze vast het matigst. het werkt, dus..? 
+        })
+
+    }
+
+    playerGroup.update = function(){
+        // this.pressedKeys = theKeys;
+        // console.log(`p1 keys: ${roomsDatas.get(room).p1.pressedKeys}`)
+        // this.gravityScale = this.constantGravityScale;
+        //should be something different than just pressedkeys.includes(), since it's a thing you shouldn't hold, but re-press
+        if((roomsDatas.get(room).p1.pressedKeys.includes(' ') || roomsDatas.get(room).p1.pressedKeys.includes('w')) && this.grounded){
+            //let's just say that the double jump bug is actually a feature for the pro gamers
+            this.vel.y = -this.jumpStrength;
+            // this.applyForceScaled(0, -this.jumpStrength*100)
+            this.grounded = false;
+        }
+        if(roomsDatas.get(room).p1.pressedKeys.includes(' ') || roomsDatas.get(room).p1.pressedKeys.includes('w')) this.applyForceScaled(0, -this.jumpStrength*0.6)
+        // if(this.pressedKeys.includes('s')) this.applyForceScaled(0, this.jumpStrength)
+
+
+        if(this.groundSensor.overlapping(p5.allSprites)){
+            this.grounded = true;
+        }       
+        if(this.groundSensor.overlapped(p5.allSprites)){
+            setTimeout(()=>{
+                if(!this.groundSensor.overlapping(p5.allSprites)) this.grounded = false;
+            }, this.coyoteTime)
+        }
+        
+        this.leftAllowed = true
+        this.rightAllowed = true
+        if(this.leftSensor.overlapping(p5.allSprites)){
+            this.leftAllowed = false
+            this.x+=0.04;
+        }
+        if(this.rightSensor.overlapping(p5.allSprites)){
+            this.rightAllowed = false
+            this.x-=0.04;
+        }
+        
+
+        
+        // comment hieronderaan is ongeldig aangezien ik überhaupt al geen velocity's gebruik volgens mij dan ofzo
+        if(roomsDatas.get(room).p1.pressedKeys.includes('a') && this.leftAllowed){
+            this.x += -this.movementspeed
+        }
+        if(roomsDatas.get(room).p1.pressedKeys.includes('d') && this.rightAllowed){
+            this.x +=  this.movementspeed
+        }
+
+        // this.vel.x *= 0.98
+        //ik zou movement moeten lerp'en ofzoiets om het soepeler te maken dan een accel van ∞
+    }
+    
+    let selectables = new p5.Group()
+    // selectables.collider = 'k'
+    selectables.selected = false
+    selectables.w = TILESIZE.x
+    selectables.color = p5.color(100, 200, 100)
+
+    selectables.friction=0
+    selectables.pressedKeys = []
+
+    selectables.checkSelection = function(){
+        // selectables.pressedKeys = pressedKeys
+            selectables.forEach(selectable => {
+                //mouse.presses moet veranderd worden!!!!!!! die kan nie!
+                if (selectable.mouse.presses()) {
+                    selectables.forEach(selectable => {
+                        // idk why just setting it to false for the whole group doesnt work or something like selectables.selected = () => false but another forEach works ig
+                        selectable.selected = false
+                    })
+                    // console.log("selectable was pressed!" + selectable.idNum);
+                    
+                    selectable.color = random(0, 255)
+                    selectable.selected = true
+                }
+            })
+
+        selectables.horizontalInput = 0
+        selectables.verticalInput = 0
+        if(roomsDatas.get(room).p2.pressedKeys.includes('d'))  selectables.horizontalInput += 1
+        if(roomsDatas.get(room).p2.pressedKeys.includes('a'))  selectables.horizontalInput -= 1
+        if(roomsDatas.get(room).p2.pressedKeys.includes('w'))  selectables.verticalInput += 1
+        if(roomsDatas.get(room).p2.pressedKeys.includes('s'))  selectables.verticalInput -= 1
+    }
+    selectables.update = function(){ selectables.checkSelection() }
+
+
+
+    let blocks = new selectables.Group();
+    blocks.collider = 'k'
+    blocks.movementspeed = 3
+    blocks.rotationLock = true //maybe rotating blocks someday
+    blocks.tile = 'b'
+
+    function blocksRelativity(sensor, sprite2){
+        if(sensor.joints[0].spriteA.selected) sprite2.vel.x = (sensor.vel.x);
+        
+    }
+
+    blocks.setup = function(){
+        this.topSensor = new p5.Sprite(this.x, this.y-this.halfHeight, this.w*0.9, 4, 'n');
+        this.topSensorGlue = new p5.GlueJoint(this, this.topSensor);
+
+        this.topSensor.visible=false;
+        this.topSensorGlue.visible=false;
+
+        this.topSensor.overlapping(p5.allSprites, blocksRelativity)
+    }
+
+    blocks.stopGlideMovement = function(){
+        if(selectables.verticalInput !== 0)   return;
+        this.y -= (this.pos.y - this.prevPos.y);
+
+        if(selectables.horizontalInput !== 0)  return;
+        this.x -= (this.pos.x - this.prevPos.x);
+    }
+    blocks.movement = function(){
+        this.velocity.set(0, 0)
+        this.vel.x += selectables.horizontalInput*this.movementspeed
+        this.vel.y += selectables.verticalInput*this.movementspeed
+    }
+
+
+    blocks.update = function(){
+        selectables.checkSelection()
+        //how 'this' works in js is a mess... hate it
+        if (this.selected) {
+            this.collider = 'd'
+            this.stopGlideMovement()
+            this.movement()
+        } else {
+            this.vel.set(0, 0) // have seriously no clue why i have to set their velocity to nil, they should be of collider kinematic and thusly not move...
+            this.collider = 'k'
+        }
+    }
+    //maak blocks.draw function ooit!!
+    
+    let selectableEnemies = new selectables.Group()
+    selectableEnemies.w = selectables.w*0.9
+    selectableEnemies.h = 'triangle';
+    selectableEnemies.collider = 'd'
+    selectableEnemies.movementspeed = 0
+    selectableEnemies.friction=0
+    selectableEnemies.movingspeed = selectableEnemies.movementspeed //for reversing left-right movement
+    selectableEnemies.tile = 'e'
+    selectableEnemies.rotationLock = true
+
+
+    selectableEnemies.collides(p5.allSprites, killCheck) //kan ook in 1x enkel collision checken met player-(group?)
+    
+    function killCheck(enemy, col){
+        if(col.tile == 'p'){
+            p5.setup()
+        }
+    }
+
+    selectableEnemies.addGlueJoints = function(){
+        this.leftGlue  = new p5.GlueJoint(this, this.leftSensor)
+        this.rightGlue = new p5.GlueJoint(this, this.rightSensor)
+
+        this.rightGlue.visible = false;
+        this.leftGlue.visible = false;
+    }
+    selectableEnemies.addLeftRightSensors = function(){
+        this.leftSensor = new p5.Sprite(this.x-this.w*0.5, this.y-5, 5, 10, 'n')
+        this.rightSensor = new p5.Sprite(this.x+this.w*0.5, this.y-5, 5, 10, 'n')
+
+        this.leftSensor.visible = false;
+        this.rightSensor.visible = false;
+        // this.leftSensor.overlaps(p5.allSprites, turnRight)
+        // this.rightSensor.overlaps(p5.allSprites, turnLeft)
+    }
+    
+
+    selectableEnemies.normalMovement = function(){
+        this.x += this.movingspeed; //ik zou dingen met velocity's en met forces moeten doen, maar zo is makkelijker
+
+        if(this.leftSensor.overlapping(p5.allSprites)) this.movingspeed = this.movementspeed;
+        if(this.rightSensor.overlapping(p5.allSprites)) this.movingspeed = -this.movementspeed;
+    }
+    selectableEnemies.controlledMovement = function(){
+        this.velocity.x = 0
+        
+        this.vel.x += selectables.horizontalInput*selectableEnemies.movementspeed
+    }
+
+    selectableEnemies.setup = function(){
+        this.addLeftRightSensors()
+        this.addGlueJoints()
+        // console.log("as")
+    }
+
+    selectableEnemies.update = function(){
+        if (this.selected) {
+            this.controlledMovement()
+        } else {
+            this.normalMovement()
+        }
+    }
+
+    p5.frameRate(60)
     p5.noCanvas();
     p5.allSprites.autoDraw = false;
     p5.world.gravity.y = 9.81;
     p5.allSprites.drag = 0.24;
     p5.world.allowSleeping = false;
-    // p5.allSprites.autoUpdate = true;
-    // p5.allSprites.autoUpdate = true;
+    // p5.allSprites.autoUpdate = false;
 
     roomsDatas.get(room).setLevel(0, LEVELS)
 
@@ -223,8 +475,8 @@ function startGame(room){
     // p5.world.gravity.y = 10
     //verstuur hierboven de levels ofzo? doe dan onderaan de al verzonden sprite-posities updaten?!
 
-    // let playerOne;
-    // p5.allSprites.forEach(sprite => {if(sprite.tile=='p') playerOne=sprite;})
+    let playerOne;
+    p5.allSprites.forEach(sprite => {if(sprite.tile=='p') playerOne=sprite;})
 
     
     p5.setup = () => 
@@ -232,7 +484,17 @@ function startGame(room){
         // new p5.Canvas(1280, 720);
         p5.noCanvas();
         p5.allSprites.autoDraw = false;
-        //onUpdatePos en dan de shit
+        p5.allSprites.removeAll()
+
+        roomsDatas.get(room).setLevel(0, LEVELS)
+
+        new p5.Tiles(roomsDatas.get(room).currentLevel.levelTilesRows, 0, 0, TILESIZE.x, TILESIZE.y)
+        // p5.world.gravity.y = 10
+        //verstuur hierboven de levels ofzo? doe dan onderaan de al verzonden sprite-posities updaten?!
+    
+        let playerOne;
+        p5.allSprites.forEach(sprite => {if(sprite.tile=='p') playerOne=sprite;})
+
 
         new p5.Sprite (0, 720, 10000, 40, 'k')
         let currentRoom = roomsDatas.get(room)
@@ -258,12 +520,14 @@ function startGame(room){
         // if(roomsDatas.get(room).p1.pressedKeys.includes("a")) playerOne.x -= 10;
         // if(roomsDatas.get(room).p1.pressedKeys.includes("s")) playerOne.y += 10;
         // if(roomsDatas.get(room).p1.pressedKeys.includes("d")) playerOne.x += 10;
+        // selectables.pressedKeys = roomsDatas.get(room).p2.pressedKeys;
+        // playerGroup.pressedKeys = roomsDatas.get(room).p1.pressedKeys
                 
         //zorg dat dit niet handmatig ingevuld hoeft te worden, gebruik p5.allSprites
         const data = [];
         p5.allSprites.forEach(sprite =>{
             // sprite.currentRoom = roomsDatas.get(room)
-            sprite.update(roomsDatas.get(room))
+            // sprite.update(roomsDatas.get(room).p1.pressedKeys)
             data.push({id: sprite.idNum, x: sprite.x, y: sprite.y, rot: sprite.rotation})
         })
         try{

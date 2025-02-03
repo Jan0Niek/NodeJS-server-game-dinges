@@ -54,8 +54,8 @@ function declarePlayer(TILESIZE, p5){
 
     }
 
-    playerGroup.update = function(theKeys){
-        this.pressedKeys = theKeys;
+    playerGroup.update = function(){
+        // this.pressedKeys = theKeys;
         console.log(`p1 keys: ${this.pressedKeys}`)
         // this.gravityScale = this.constantGravityScale;
         //should be something different than just pressedkeys.includes(), since it's a thing you shouldn't hold, but re-press

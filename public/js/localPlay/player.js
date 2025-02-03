@@ -118,7 +118,7 @@ function declarePlayer(){
         this.groundSensorGlue.visible=false;
 
         this.groundSensor.overlapping(allSprites, (sensor, sprite2)=>{
-            if(sprite2.vel.x == 0 && (!this.leftSensor.overlapping(allSprites) || this.rightSensor.overlapping(allSprites))) this.vel.x = 0 
+            if(sprite2.vel.x == 0 && (!(this.leftSensor.overlapping(allSprites) || this.rightSensor.overlapping(allSprites)))) this.vel.x = 0 
                     //dit is shitcode puur omdat ik niet de al ingebouwde physics van p5play met friction gebruik, mAAR:
                     // in dat geval had ik weer andere shitcode om te voorkomen dat hij ook verticaal met platformpjes zou wrijven en dan wallslides doen;
                     //beide opties zijn matig volgens mij, deze vast het matigst. het werkt, dus..? 
