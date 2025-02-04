@@ -201,7 +201,7 @@ io.sockets.on('connection', (socket) => {
             if(room != socket.id){
                 //the room the socket is in
                 if(socket.data.playerNum == 2){
-                    roomsDatas.get(room).ZORG DAT MUIS WORDT GEKLIKT!!!
+                    roomsDatas.get(room).mouseClickP2() //call een functie die in room door alle p5.selectables loopt en checkt of muis erin zit
                 }
             }
         }
@@ -215,7 +215,7 @@ function startGame(room){
     roomsDatas.get(room).p5Lobby = new Q5("instance");
     let p5 = roomsDatas.get(room).p5Lobby;
 
-    // declareSelectables(TILESIZE, p5)
+    // declarep5.Selectables(TILESIZE, p5)
     // declarePlayer(TILESIZE, p5)
     
     let playerGroup = new p5.Group(); //om de een of andere reden werkt dit (tile) alleen als group, niet als sprite... bruh
@@ -322,22 +322,22 @@ function startGame(room){
         //ik zou movement moeten lerp'en ofzoiets om het soepeler te maken dan een accel van ∞
     }
     
-    let selectables = new p5.Group()
-    // selectables.collider = 'k'
-    selectables.selected = false
-    selectables.w = TILESIZE.x
-    selectables.color = p5.color(100, 200, 100)
+    p5.selectables = new p5.Group()
+    // p5.selectables.collider = 'k'
+    p5.selectables.selected = false
+    p5.selectables.w = TILESIZE.x
+    p5.selectables.color = p5.color(100, 200, 100)
 
-    selectables.friction=0
-    selectables.pressedKeys = []
+    p5.selectables.friction=0
+    p5.selectables.pressedKeys = []
 
-    selectables.checkSelection = function(){
-        // selectables.pressedKeys = pressedKeys
-            selectables.forEach(selectable => {
+    p5.selectables.checkSelection = function(){
+        // p5.selectables.pressedKeys = pressedKeys
+            p5.selectables.forEach(selectable => {
                 //mouse.presses moet veranderd worden!!!!!!! die kan nie!
                 if (selectable.mouse.presses()) {
-                    selectables.forEach(selectable => {
-                        // idk why just setting it to false for the whole group doesnt work or something like selectables.selected = () => false but another forEach works ig
+                    p5.selectables.forEach(selectable => {
+                        // idk why just setting it to false for the whole group doesnt work or something like p5.selectables.selected = () => false but another forEach works ig
                         selectable.selected = false
                     })
                     // console.log("selectable was pressed!" + selectable.idNum);
@@ -347,18 +347,18 @@ function startGame(room){
                 }
             })
 
-        selectables.horizontalInput = 0
-        selectables.verticalInput = 0
-        if(roomsDatas.get(room).p2.pressedKeys.includes('d'))  selectables.horizontalInput += 1
-        if(roomsDatas.get(room).p2.pressedKeys.includes('a'))  selectables.horizontalInput -= 1
-        if(roomsDatas.get(room).p2.pressedKeys.includes('w'))  selectables.verticalInput += 1
-        if(roomsDatas.get(room).p2.pressedKeys.includes('s'))  selectables.verticalInput -= 1
+        p5.selectables.horizontalInput = 0
+        p5.selectables.verticalInput = 0
+        if(roomsDatas.get(room).p2.pressedKeys.includes('d'))  p5.selectables.horizontalInput += 1
+        if(roomsDatas.get(room).p2.pressedKeys.includes('a'))  p5.selectables.horizontalInput -= 1
+        if(roomsDatas.get(room).p2.pressedKeys.includes('w'))  p5.selectables.verticalInput += 1
+        if(roomsDatas.get(room).p2.pressedKeys.includes('s'))  p5.selectables.verticalInput -= 1
     }
-    selectables.update = function(){ selectables.checkSelection() }
+    p5.selectables.update = function(){ p5.selectables.checkSelection() }
 
 
 
-    let blocks = new selectables.Group();
+    let blocks = new p5.selectables.Group();
     blocks.collider = 'k'
     blocks.movementspeed = 3
     blocks.rotationLock = true //maybe rotating blocks someday
@@ -380,21 +380,21 @@ function startGame(room){
     }
 
     blocks.stopGlideMovement = function(){
-        if(selectables.verticalInput !== 0)   return;
+        if(p5.selectables.verticalInput !== 0)   return;
         this.y -= (this.pos.y - this.prevPos.y);
 
-        if(selectables.horizontalInput !== 0)  return;
+        if(p5.selectables.horizontalInput !== 0)  return;
         this.x -= (this.pos.x - this.prevPos.x);
     }
     blocks.movement = function(){
         this.velocity.set(0, 0)
-        this.vel.x += selectables.horizontalInput*this.movementspeed
-        this.vel.y += selectables.verticalInput*this.movementspeed
+        this.vel.x += p5.selectables.horizontalInput*this.movementspeed
+        this.vel.y += p5.selectables.verticalInput*this.movementspeed
     }
 
 
     blocks.update = function(){
-        selectables.checkSelection()
+        p5.selectables.checkSelection()
         //how 'this' works in js is a mess... hate it
         if (this.selected) {
             this.collider = 'd'
@@ -407,8 +407,8 @@ function startGame(room){
     }
     //maak blocks.draw function ooit!!
     
-    let selectableEnemies = new selectables.Group()
-    selectableEnemies.w = selectables.w*0.9
+    let selectableEnemies = new p5.selectables.Group()
+    selectableEnemies.w = p5.selectables.w*0.9
     selectableEnemies.h = 'triangle';
     selectableEnemies.collider = 'd'
     selectableEnemies.movementspeed = 0
@@ -453,7 +453,7 @@ function startGame(room){
     selectableEnemies.controlledMovement = function(){
         this.velocity.x = 0
         
-        this.vel.x += selectables.horizontalInput*selectableEnemies.movementspeed
+        this.vel.x += p5.selectables.horizontalInput*selectableEnemies.movementspeed
     }
 
     selectableEnemies.setup = function(){
@@ -529,7 +529,7 @@ function startGame(room){
         // if(roomsDatas.get(room).p1.pressedKeys.includes("a")) playerOne.x -= 10;
         // if(roomsDatas.get(room).p1.pressedKeys.includes("s")) playerOne.y += 10;
         // if(roomsDatas.get(room).p1.pressedKeys.includes("d")) playerOne.x += 10;
-        // selectables.pressedKeys = roomsDatas.get(room).p2.pressedKeys;
+        // p5.selectables.pressedKeys = roomsDatas.get(room).p2.pressedKeys;
         // playerGroup.pressedKeys = roomsDatas.get(room).p1.pressedKeys
                 
         //zorg dat dit niet handmatig ingevuld hoeft te worden, gebruik p5.allSprites
