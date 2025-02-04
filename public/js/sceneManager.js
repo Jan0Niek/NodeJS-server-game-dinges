@@ -49,6 +49,8 @@ const scenes =
             if(kb.pressing("d")) pressedKeys.push("d");
             socket.emit("pressedKeys", pressedKeys);
 
+            if(myPlayerNum == 2 && mouse.presses()) socket.emit("mousePressed", mouse.canvasPos.x, mouse.canvasPos.x)
+
             if(gamerData){
                 for (let i = 0; i < gamerData.length; i++) {
                     //set local things to the online recieved things

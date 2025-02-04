@@ -196,6 +196,16 @@ io.sockets.on('connection', (socket) => {
             }
         }
     });
+    socket.on("mousePressed", (x, y) =>{
+        for (const room of socket.rooms) {
+            if(room != socket.id){
+                //the room the socket is in
+                if(socket.data.playerNum == 2){
+                    roomsDatas.get(room).ZORG DAT MUIS WORDT GEKLIKT!!!
+                }
+            }
+        }
+    });
 });
 
 
@@ -207,7 +217,6 @@ function startGame(room){
 
     // declareSelectables(TILESIZE, p5)
     // declarePlayer(TILESIZE, p5)
-
     
     let playerGroup = new p5.Group(); //om de een of andere reden werkt dit (tile) alleen als group, niet als sprite... bruh
     playerGroup.tile = 'p';
